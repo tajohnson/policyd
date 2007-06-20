@@ -8,6 +8,7 @@
  *
  *  policy daemon is used in conjuction with postfix to combat spam.
  *
+ *  Copyright (C) 2007 Nigel Kukard <nkukard@lbsd.net>
  *  Copyright (C) 2004 Cami Sardinha (cami@mweb.co.za)
  *
  *
@@ -216,10 +217,11 @@ main(int argc, char **argv)
           logmessage("DEBUG: fd: %d select(): fd %d is ready for read\n", sockfd, sockfd);
      
         /* read as much data as we can */
-	rres = w_read(sockfd,buf[sockfd]);
+        rres = w_read(sockfd,buf[sockfd],MAXLINE);
 	switch (rres)
 	{
-	  case -1:
+          case -3:
+          case -1:
             w_close(sockfd);            /* shut down socket           */
             FD_CLR(sockfd, &rallset);   /* remove fd from read set    */
             client[numi] = -1;          /* make descriptor available  */

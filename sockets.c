@@ -7,6 +7,7 @@
  *
  *  policy daemon is used in conjuction with postfix to combat spam.
  *
+ *  Copyright (C) 2007 Nigel Kukard <nkukard@lbsd.net>
  *  Copyright (C) 2004 Cami Sardinha (cami@mweb.co.za)
  *
  *
@@ -147,7 +148,7 @@ w_listen(unsigned int fd, unsigned int backlog)
  *   return: number bytes read
  */ 
 ssize_t
-w_read(unsigned int fd, char *ptr)
+w_read(unsigned int fd, char *ptr, size_t max_size)
 {       
   ssize_t  n;
   size_t   data_read = 0;                                    /* for debug only */
@@ -158,6 +159,16 @@ w_read(unsigned int fd, char *ptr)
     data_read++;
     buf_counter[fd]++;
     buf_size[fd]++;
+
+
+    /* check if we've reached the end of the buffer */
+    if (buf_counter[fd] == max_size)
+    {
+      if (DEBUG > 2)
+        logmessage("DEBUG: fd: %d reached end of buffer, aborting\n", fd);
+
+      return -3;
+    }
 
     /* need at least 2 bytes to check against */
     if (buf_counter[fd] > 2)

@@ -5,6 +5,7 @@
  *
  *  policy daemon is used in conjuction with postfix to combat spam.
  *
+ *  Copyright (C) 2007 Nigel Kukard <nkukard@lbsd.net>
  *  Copyright (C) 2004 Cami Sardinha (cami@mweb.co.za)
  *
  *
@@ -59,7 +60,7 @@
 
 /* CONFIGS */
 #define PROJECT         "policyd"
-#define VERSION         "v1.80"
+#define VERSION         "v1.81a"
 
 /* Miscellaneous constants */
 #define LISTENQ         1023    /* 2nd argument to listen() */
@@ -221,7 +222,7 @@ unsigned long int mysql_timeout;        /* mysql query timeout   */
   int    cidr_ip_match (unsigned long ip, char *range);
   pid_t w_fork(void);
 const char *w_inet_ntop(int family, const void *addrptr, char *strptr, size_t len);
- ssize_t w_read(unsigned int fd, char *ptr);
+ ssize_t w_read(unsigned int fd, char *ptr, size_t max_size);
  ssize_t w_write(unsigned int fd, const void *vbuf);
  ssize_t f_write(unsigned int volatile fd, const void *vptr, size_t n);
  void w_close(unsigned int fd);
