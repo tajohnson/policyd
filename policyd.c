@@ -153,6 +153,8 @@ main(int argc, char **argv)
 
     if(FD_ISSET(listenfd, &rset))                     /* new client connection */
     {
+      int found_free_slot = 0;
+
       clilen=sizeof(cliaddr);
       connfd=w_accept(listenfd, (struct sockaddr *) &cliaddr, &clilen);
 
@@ -161,8 +163,19 @@ main(int argc, char **argv)
           client[numi] = connfd;                       /* save file descriptor */
           if(DEBUG > 0)
             logmessage("DEBUG: saved fd: numi = %d, connfd = %d\n", numi, connfd);
+          found_free_slot = 1;
           break;
         }
+      }
+
+      /* check if we ran out of slots and didn't find one above */
+      if (!found_free_slot)
+      {
+        logmessage("WARNING: No free slots found, closing connection from %s:%d\n",
+          w_inet_ntop(AF_INET, &cliaddr.sin_addr, host, sizeof(host)),
+          ntohs(cliaddr.sin_port));
+        w_close(connfd);
+        continue;
       }
 
       /* tcp acl check */
@@ -176,16 +189,6 @@ main(int argc, char **argv)
       }
 */
       /* max fds */
-
-      if(numi==MAXFDS)
-      {
-        logmessage("connection from: %s port: %d slots: %d of %d used (**WARNING**)\n",
-          w_inet_ntop(AF_INET, &cliaddr.sin_addr, host, sizeof(host)),
-          ntohs(cliaddr.sin_port), numi, MAXFDS);
-
-        w_close(connfd);
-        continue;
-      }
 
       logmessage("connection from: %s port: %d slots: %d of %d used\n",
         w_inet_ntop(AF_INET, &cliaddr.sin_addr, host, sizeof(host)),
