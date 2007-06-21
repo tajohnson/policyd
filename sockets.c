@@ -162,7 +162,7 @@ w_read(unsigned int fd, char *ptr, size_t max_size)
 
 
     /* check if we've reached the end of the buffer */
-    if (buf_counter[fd] == max_size)
+    if (buf_counter[fd] >= max_size)
     {
       if (DEBUG > 2)
         logmessage("DEBUG: fd: %d reached end of buffer, aborting\n", fd);
