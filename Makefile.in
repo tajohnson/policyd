@@ -163,9 +163,9 @@ EXTRA_DIST = database/mysql.sql contrib/policyd-1.73.ebuild \
 	contrib/policyd.cron contrib/policyd.debian.init \
 	contrib/policyd.freebsd.sh contrib/policyd.gentoo.init \
 	contrib/policyd.redhat.init contrib/policyd.solaris.init \
-	contrib/policyd.suse.init doc/blacklist_helo.sql \
-	doc/support.txt doc/whitelist.sql policyd.conf policyd.spec \
-	policyd.spec.fedora
+	contrib/policyd.suse.init contrib/policyd.spec \
+	contrib/policyd.spec.fedora doc/blacklist_helo.sql \
+	doc/support.txt doc/whitelist.sql policyd.conf
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
