@@ -1,5 +1,5 @@
 ####
-# Policy Daemon v1.80
+# Policy Daemon
 #######################
 
   Policyd is an anti-spam plugin for Postfix (written in C) that
@@ -243,8 +243,9 @@ INSERT INTO throttle_rcpt (_rcpt,_count_max,_time_limit,_date)
 #####################
 
   # cd policy-VERSION
-  # gmake build
-  # gmake install
+  # ./configure
+  # make
+  # make install
 
   Create a crontab entry to run the cleanup script:
 
