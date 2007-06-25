@@ -1,18 +1,18 @@
 #
 # systems which install in /usr
-inc  = -I /usr/include/mysql
-lib  = -L /usr/lib/mysql -L /usr/lib64/mysql
+inc  = -I/usr/include/mysql
+lib  = -L/usr/lib/mysql -L/usr/lib64/mysql
 # systems with single mysql subdir
-inc += -I /usr/local/mysql/include -I /usr/local/mysql/include/mysql
-lib += -L /usr/local/mysql/lib -L /usr/local/mysql/lib/mysql
+inc += -I/usr/local/mysql/include -I/usr/local/mysql/include/mysql
+lib += -L/usr/local/mysql/lib -L/usr/local/mysql/lib/mysql
 # freebsd ports
-inc += -I /usr/local/include/mysql
-lib += -L /usr/local/lib/mysql
+inc += -I/usr/local/include/mysql
+lib += -L/usr/local/lib/mysql
 # netbsd pkgsrc
-inc += -I /usr/pkg/include/mysql
-lib += -L /usr/pkg/lib/mysql
+inc += -I/usr/pkg/include/mysql
+lib += -L/usr/pkg/lib/mysql
 # os x
-lib += -L /usr/local/mysql
+lib += -L/usr/local/mysql
 
 
 CC       := gcc
