@@ -346,6 +346,7 @@ chk_pol(unsigned int fd)
   /*
    * future modules go here: (order matters)
    * 
+   *  [X]: rcpt_acl
    *  [X]: whitelisting
    *  [X]: whitelisting(sender/domain)
    *  [X]: whitelisting(dnsname)
@@ -359,7 +360,23 @@ chk_pol(unsigned int fd)
    *  [X]: recipient throttling
    * 
    */
-  
+
+  /* rcpt_acl */
+  if(RCPT_ACL==1)
+    switch(rcpt_acl_check(fd))
+    {
+      case 1:                      /* whitelisted */
+        policy_reply(fd, 0, 0);
+        return;
+
+      case 2:                      /* blacklisted */
+        policy_reply(fd, -2, 0);
+        return;
+
+      case -20:
+        return;
+    }                              /* none        */
+
   /* check if whitelisted */
   if(WHITELISTING==1)
   {

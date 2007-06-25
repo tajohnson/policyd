@@ -58,6 +58,15 @@ CREATE TABLE throttle_rcpt (
   UNIQUE KEY _rcpt (_rcpt)
 ) TYPE=MyISAM;
 
+CREATE TABLE rcpt_acl (
+  _sender      char(60) NOT NULL default '',
+  _rcpt        char(60) NOT NULL default '',
+  _wblist      char(60) NOT NULL default '',
+  _priority    int(10) unsigned NOT NULL default '0',
+  UNIQUE KEY _rcpt (_rcpt,_sender)
+) TYPE=MyISAM;
+
+
 CREATE TABLE triplet (
   _from        char(60) NOT NULL default '',
   _rcpt        char(60) NOT NULL default '',

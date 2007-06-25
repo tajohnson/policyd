@@ -134,6 +134,7 @@ char *MYSQLOPT;
  int AUTO_BLACK_LISTING;
  int GREYLISTING;
  int SPAMTRAPPING;
+ int RCPT_ACL;
  int HELO_CHECK;
  int HELO_MAX_COUNT;
  int HELO_BLACKLIST_AUTO_EXPIRE;
@@ -260,6 +261,7 @@ const char *w_inet_ntop(int family, const void *addrptr, char *strptr, size_t le
   int blacklist_dnsname_check(unsigned int fd);
   void policy_reply(unsigned int fd, int code, int status);
   int blacklist_check(unsigned int fd);
+  int rcpt_acl_check (unsigned int fd);
   int extract_seconds(char *token);
   int parse_syslog_priority (char *str);
   int database_probe(unsigned int fd);

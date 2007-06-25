@@ -1,3 +1,18 @@
+[25 Jun 2007]
+Changes from v1.80 -> v1.81 (new functionality)
+
+ *   rcpt_acl.c: added new per user whitelist/blacklist module.
+
+  (NB!!) if you are upgrading from <= v1.80 then please add to policyd.conf:
+  CREATE TABLE rcpt_acl (
+    _sender      char(60) NOT NULL default '',
+    _rcpt        char(60) NOT NULL default '',
+    _wblist      char(60) NOT NULL default '',
+    _priority    int(10) unsigned NOT NULL default '0',
+    UNIQUE KEY _rcpt (_rcpt,_sender)
+  ) TYPE=MyISAM;
+ 
+
 
 [10 Jul 2006]
 Changes from v1.79 -> v1.80 (bug fixes & new functionality)

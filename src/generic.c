@@ -266,6 +266,13 @@ read_conf(unsigned int prog)
       BLACKLISTING=atol(extract_array[0]);
     }
 
+    /* RCPT_ACL */
+    if(strncmp(confbuf, "RCPT_ACL=", 9) == 0)
+    { 
+      extract(0, confbuf, 8);
+      RCPT_ACL=atol(extract_array[0]);
+    }
+
     /* AUTO_BLACK_LISTING */
     if(strncmp(confbuf, "AUTO_BLACK_LISTING=", 19) == 0)
     { 

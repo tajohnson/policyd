@@ -63,7 +63,8 @@ am_policyd_OBJECTS = policyd-policyd.$(OBJEXT) \
 	policyd-whitelist.$(OBJEXT) policyd-throttle_host.$(OBJEXT) \
 	policyd-throttle_sasl.$(OBJEXT) \
 	policyd-throttle_from.$(OBJEXT) \
-	policyd-throttle_rcpt.$(OBJEXT) policyd-helo.$(OBJEXT)
+	policyd-throttle_rcpt.$(OBJEXT) policyd-helo.$(OBJEXT) \
+	policyd-rcpt_acl.$(OBJEXT)
 policyd_OBJECTS = $(am_policyd_OBJECTS)
 policyd_LDADD = $(LDADD)
 am_stats_OBJECTS = stats-stats.$(OBJEXT) stats-cidr.$(OBJEXT) \
@@ -174,7 +175,7 @@ target_alias = @target_alias@
 policyd_SOURCES = policyd.c syslog.c generic.c mysql.c greylist.c \
 	throttle.c sockets.c cidr.c spamtrap.c blacklist.c \
 	blacklist_helo.c whitelist.c throttle_host.c throttle_sasl.c \
-	throttle_from.c throttle_rcpt.c helo.c
+	throttle_from.c throttle_rcpt.c helo.c rcpt_acl.c
 policyd_LDFLAGS = @LIBMYSQLCLIENT@
 policyd_CFLAGS = @MYSQL_INCLUDE@ $(AM_CFLAGS)
 cleanup_SOURCES = cleanup.c syslog.c cidr.c generic.c sockets.c mysql.c
@@ -269,6 +270,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/policyd-helo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/policyd-mysql.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/policyd-policyd.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/policyd-rcpt_acl.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/policyd-sockets.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/policyd-spamtrap.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/policyd-syslog.Po@am__quote@
@@ -620,6 +622,20 @@ policyd-helo.obj: helo.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='helo.c' object='policyd-helo.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(policyd_CFLAGS) $(CFLAGS) -c -o policyd-helo.obj `if test -f 'helo.c'; then $(CYGPATH_W) 'helo.c'; else $(CYGPATH_W) '$(srcdir)/helo.c'; fi`
+
+policyd-rcpt_acl.o: rcpt_acl.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(policyd_CFLAGS) $(CFLAGS) -MT policyd-rcpt_acl.o -MD -MP -MF "$(DEPDIR)/policyd-rcpt_acl.Tpo" -c -o policyd-rcpt_acl.o `test -f 'rcpt_acl.c' || echo '$(srcdir)/'`rcpt_acl.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/policyd-rcpt_acl.Tpo" "$(DEPDIR)/policyd-rcpt_acl.Po"; else rm -f "$(DEPDIR)/policyd-rcpt_acl.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='rcpt_acl.c' object='policyd-rcpt_acl.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(policyd_CFLAGS) $(CFLAGS) -c -o policyd-rcpt_acl.o `test -f 'rcpt_acl.c' || echo '$(srcdir)/'`rcpt_acl.c
+
+policyd-rcpt_acl.obj: rcpt_acl.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(policyd_CFLAGS) $(CFLAGS) -MT policyd-rcpt_acl.obj -MD -MP -MF "$(DEPDIR)/policyd-rcpt_acl.Tpo" -c -o policyd-rcpt_acl.obj `if test -f 'rcpt_acl.c'; then $(CYGPATH_W) 'rcpt_acl.c'; else $(CYGPATH_W) '$(srcdir)/rcpt_acl.c'; fi`; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/policyd-rcpt_acl.Tpo" "$(DEPDIR)/policyd-rcpt_acl.Po"; else rm -f "$(DEPDIR)/policyd-rcpt_acl.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='rcpt_acl.c' object='policyd-rcpt_acl.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(policyd_CFLAGS) $(CFLAGS) -c -o policyd-rcpt_acl.obj `if test -f 'rcpt_acl.c'; then $(CYGPATH_W) 'rcpt_acl.c'; else $(CYGPATH_W) '$(srcdir)/rcpt_acl.c'; fi`
 
 stats-stats.o: stats.c
 @am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(stats_CFLAGS) $(CFLAGS) -MT stats-stats.o -MD -MP -MF "$(DEPDIR)/stats-stats.Tpo" -c -o stats-stats.o `test -f 'stats.c' || echo '$(srcdir)/'`stats.c; \

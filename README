@@ -413,6 +413,28 @@ INSERT INTO throttle_rcpt (_rcpt,_count_max,_time_limit,_date)
 
 
 ##
+# Recipent ACL's
+##################
+
+  Recipient ACL's gives your users and/or domains the power to whitelist
+  or blacklist sender email addresses. It allows your users to blacklist
+  the whole of hotmail.com but still allow them to recieve mail from
+  user123@hotmail.com or visa versa. Examples:
+
+  # block the whole of hotmail.com (priority = 5)
+  INSERT INTO rcpt_acl (_sender,_rcpt,_wblist,_priority)
+    VALUES ('@hotmail.com','camis@mweb.co.za','b',5);
+
+  # allow user123@hotmail.com (priory = 10)
+  INSERT INTO rcpt_acl (_sender,_rcpt,_wblist,_priority)
+    VALUES ('user123@hotmail.com','camis@mweb.co.za','w',10);
+
+  A Higher priority ALWAYS takes preference.
+
+
+
+
+##
 # Greylist Opt-in / Opt-out
 ########################################
 
