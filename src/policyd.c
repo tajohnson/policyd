@@ -53,7 +53,7 @@ main(int argc, char **argv)
         break;
 
       case 'v':
-	logmessage("%s %s\n", PROJECT, VERSION);
+	logmessage("%s %s\n", PACKAGE_NAME, PACKAGE_VERSION);
 	exit(0);
 
       default:
@@ -61,7 +61,7 @@ main(int argc, char **argv)
     }
   }
   
-  logmessage("starting %s %s\n", PROJECT, VERSION);
+  logmessage("starting %s %s\n", PACKAGE_NAME, PACKAGE_VERSION);
 
   /*
    *  raise RLIMIT_FSIZE to MAXFDS, bail if cannot.

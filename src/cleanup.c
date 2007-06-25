@@ -50,7 +50,7 @@ main(int argc, char **argv)
     }
   }
 
-  logmessage("clean up process starting: %s %s\n", PROJECT, VERSION);
+  logmessage("clean up process starting: %s %s\n", PACKAGE_NAME, PACKAGE_VERSION);
       
   /* connect to mysql */
 #if defined(MYSQL_VERSION_ID) && MYSQL_VERSION_ID >= 40000

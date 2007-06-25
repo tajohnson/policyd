@@ -705,7 +705,7 @@ read_conf(unsigned int prog)
   if(DEBUG > 0)
   {
     logmessage(" ---- DAEMON CONFIG ----\n"); 
-    logmessage("config: version> %s\n", VERSION);
+    logmessage("config: version> %s\n", PACKAGE_VERSION);
     logmessage("config: debug> %d\n", DEBUG);
     logmessage("config: daemon mode> %d\n", DAEMON);
     logmessage("config: bindhost> %s\n", BINDHOST);
@@ -876,7 +876,7 @@ logmessage(const char *fmt, ...)
 void
 usage(char *usag)
 { 
-  logmessage("policyd %s\n", VERSION);
+  logmessage("policyd %s\n", PACKAGE_VERSION);
   logmessage("usage: %s -c /path/to/policyd.conf\n", usag);
   exit(-1);
 }

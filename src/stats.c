@@ -51,7 +51,7 @@ main(int argc, char **argv)
     }
   }
 
-  logmessage("processing statistics: %s %s\n", PROJECT, VERSION);
+  logmessage("processing statistics: %s %s\n", PACKAGE_NAME, PACKAGE_VERSION);
       
   /* connect to mysql */
 #if defined(MYSQL_VERSION_ID) && MYSQL_VERSION_ID >= 40000

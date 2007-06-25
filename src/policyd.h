@@ -28,6 +28,7 @@
  */
 
 /* INCLUDES */
+#include "../config.h"
 #include <ctype.h>
 #include <strings.h>
 #include <sys/types.h>
@@ -68,10 +69,6 @@
     #error Your OS doesnt support MSG_NOSIGNAL or SO_NOSIGPIPE, please report to policyd-devel@lists.sf.net
   #endif
 #endif
-
-/* CONFIGS */
-#define PROJECT         "policyd"
-#define VERSION         "v1.81a"
 
 /* Miscellaneous constants */
 #define LISTENQ         1023    /* 2nd argument to listen() */
