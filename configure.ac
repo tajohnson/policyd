@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.60)
-AC_INIT([policyd], [1.90rc1], [policyd-devel@lists.sourceforge.net])
+AC_INIT([policyd], [1.9x-200706261857], [policyd-devel@lists.sourceforge.net])
 AC_CONFIG_SRCDIR([src/policyd.c])
 AC_CONFIG_HEADER([config.h])
 
@@ -19,12 +19,6 @@ AC_PROG_RANLIB
 
 # Checks for libraries.
 AC_LIB_MYSQLCLIENT
-# FIXME: Replace `main' with a function in `-lm':
-AC_CHECK_LIB([m], [main])
-# FIXME: Replace `main' with a function in `-lnsl':
-AC_CHECK_LIB([nsl], [main])
-# FIXME: Replace `main' with a function in `-lsocket':
-AC_CHECK_LIB([socket], [main])
 
 # Checks for header files.
 AC_HEADER_STDC
