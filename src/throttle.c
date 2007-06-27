@@ -65,7 +65,7 @@ throttle_check (unsigned int fd)
       " _time_limit,_mail_size,_count_tot,_rcpt_max,_rcpt_cur,_rcpt_tot,"
       " _log_warn, _log_panic, _abuse_tot"
       " FROM throttle WHERE _from='%s'", triplet_array[fd][4]);
-  } else {
+  } else if (SENDER_THROTTLE_ENVELOPE == 1)  {
     tnum = 3;
     snprintf(mysqlquery_array[fd], 512,
       "SELECT _from,_count_max,_count_cur,_date,_quota_cur,_quota_max,"
@@ -74,6 +74,13 @@ throttle_check (unsigned int fd)
       " FROM throttle WHERE _from='%s' OR _from='@%s'"
       " ORDER BY _priority DESC LIMIT 1",
       triplet_array[fd][1], host_array[fd][7]);
+  } else {
+    /* No throttling mechanisms are actually enabled - tnum == 0 */
+    if (DEBUG >= 3)
+      logmessage("DEBUG: fd: %d: no throttle set for %s\n",
+        fd, triplet_array[fd][1]);
+
+    return(0);
   }
   if(db_charquery(fd) == -1) return(db_failure(fd, "throttle"));    
   

@@ -378,6 +378,13 @@ read_conf(unsigned int prog)
       SENDER_THROTTLE_HOST=atol(extract_array[0]);
     }
     
+    /* SENDER_THROTTLE_ENVELOPE */
+    if(strncmp(confbuf, "SENDER_THROTTLE_ENVELOPE=", 25) == 0)
+    { 
+      extract(0, confbuf, 24);
+      SENDER_THROTTLE_ENVELOPE=atol(extract_array[0]);
+    }
+    
     /* MAXIMUM SENDER MESSAGE LIMIT */
     if(strncmp(confbuf, "SENDERMSGLIMIT=", 15) == 0)
     { 
