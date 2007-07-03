@@ -973,11 +973,12 @@ extract(unsigned int fd, char *token, unsigned int startlen)
   for( ; clen <= tlen && clen <= 63 ; clen++) {
     if(token[clen]=='=') {
       for(clen++,y=0; clen<=tlen&&clen<=63;clen++) {
-        /* we only want characters [A-Z][a-z][0-9]/@ and . */
+        /* we only want characters [A-Z][a-z][0-9]/@: and . */
         if((isalnum(token[clen]) != 0)
                 || (token[clen] == '@')
                 || (token[clen] == '|')
                 || (token[clen] == '.')
+                || (token[clen] == ':')
                 || (token[clen] == '_')
                 || (token[clen] == '-')
                 || (token[clen] == ' ')
@@ -1023,6 +1024,8 @@ extract_conf(unsigned int fd, char *token, unsigned int startlen)
 
 
 /*
+ * XXX Needs updating to handle IPv6 subnets (use prefix length 
+ * XXX instead of number of octets?)
  * function: extract_ip
  *  purpose: extract ip address from policy variable
  *   return: policy variable (into an array)
@@ -1038,8 +1041,11 @@ extract_ip(unsigned int fd, char *token)
   for(x=15,z=0,y=0;x<len||x<64;x++) {
     if(token[x] == '\n') break;
 
-    /* we only want characters [0-9] and . */
-    if((isdigit(token[x]) != 0) || (token[x] == '.'))
+    /* we only want characters [0-9][a-f][A-F]/: and . */
+    if ( (isdigit(token[x]) != 0)
+	 || ((token[x] == '.') || (token[x] == ':'))
+	 || ((token[x] >= 'a') && (token[x] <= 'f'))
+	 || ((token[x] >= 'A') && (token[x] <= 'F')) )
     {
       if(token[x] == '.') z++;
       if(z == GREYLIST_HOSTADDR) break;
@@ -1052,7 +1058,9 @@ extract_ip(unsigned int fd, char *token)
 
 
 /*
- * function: extract_ip_array
+ * XXX Needs updating to handle IPv6 subnets (use prefix length 
+ * XXX instead of number of octets?)
+ * function: extract_ipfill
  *  purpose: extract ip address from policy variable
  *   return: policy variable (into an array)
  */
@@ -1067,8 +1075,11 @@ extract_ipfill(unsigned int fd, char *token)
   for(x=15,z=0,y=0;x<len||x<64;x++) {
     if(token[x] == '\n') break;
 
-    /* we only want characters [0-9] and . */
-    if((isdigit(token[x]) != 0) || (token[x] == '.'))
+    /* we only want characters [0-9][a-f][A-F]: and . */
+    if ( (isdigit(token[x]) != 0)
+	 || ((token[x] == '.') || (token[x] == ':'))
+	 || ((token[x] >= 'a') && (token[x] <= 'f'))
+	 || ((token[x] >= 'A') && (token[x] <= 'F')) )
     {
       if(token[x] == '.')
       {

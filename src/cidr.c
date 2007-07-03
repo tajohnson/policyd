@@ -30,6 +30,8 @@
 
 
 /*
+ * XXX  Not used - called from w_tcp_conn_acl() which is currently not 
+ * XXX  used.  Needs updating to handle IPv6 addresses.
  *  function: cidr_ip_match
  *   purpose: 
  *    return: 

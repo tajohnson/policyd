@@ -101,10 +101,11 @@ again:
  * function: w_bind (wrapper_bind)
  *  purpose: wrapper for bind()
  */
-void
+int
 w_bind(unsigned int fd, const struct sockaddr *sa, socklen_t salen)
 {
   u_int yes=1;
+  int n;
   
   /* set options on socket (reuse port/address) */
   if(setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) < 0)
@@ -114,11 +115,11 @@ w_bind(unsigned int fd, const struct sockaddr *sa, socklen_t salen)
   }
   
   /* bind a name to a socket */
-  if (bind(fd, sa, salen) < 0) 
+  if ( (n = bind(fd, sa, salen)) < 0) 
   {
-    logmessage("fatal: bind(): %s\n", strerror(errno));
-    exit(-1);
+    logmessage("warning: bind(): %s\n", strerror(errno));
   }
+  return( n );
 }
 
 
@@ -318,6 +319,7 @@ w_close(unsigned int fd)
 
 
 /*
+ * XXX  Currently not used.  Needs updating to handle IPv6 addresses.
  *  function: w_tcp_conn_acl
  *   purpose: check if connecting host is allowed       
  *    return: 0=allow, -1=disallow
@@ -367,8 +369,7 @@ w_socket(int family, int type, int protocol)
   /* create an endpoint for communication */
   if ((n = socket(family, type, protocol)) < 0)
   {
-    logmessage("fatal: socket(): %s\n", strerror(errno));
-    exit(-1);
+    logmessage("warning: socket(): %s\n", strerror(errno));
   }
   
   return (n);
@@ -377,28 +378,47 @@ w_socket(int family, int type, int protocol)
 
 
 /*
- * function: w_socket (wrapper_socket)
+ * function: w_inet_ntop (wrapper_ntop)
  *  purpose: 
- *   return: file descriptor
+ *   return: string pointer
  */
 const char *
-w_inet_ntop(int family, const void *addrptr, char *strptr, size_t len)
+w_inet_ntop(struct sockaddr *saptr, char *strptr, size_t len)
 {
+  const void      *addrptr;
   const char      *ptr;
 
   if (strptr == NULL)             /* check for old code */
   {
-    logmessage("fatal: NULL 3rd argument to w_inet_ntop");
+    logmessage("fatal: NULL 2nd argument to w_inet_ntop");
     exit(-1);
   }
-  
-  if ((ptr=inet_ntop(family, addrptr, strptr, len)) == NULL)
+  if ( saptr->sa_family == AF_INET )
+    addrptr = (void *) &(((struct sockaddr_in *) saptr)->sin_addr);
+  else
+    addrptr = (void *) &(((struct sockaddr_in6 *) saptr)->sin6_addr);
+  if ((ptr=inet_ntop(saptr->sa_family, addrptr, strptr, len)) == NULL)
   {
     logmessage("fatal: inet_ntop(): %s\n", strerror(errno));
     exit(-1);
   }
   
   return(ptr);
+}
+
+/*
+ * function: sockaddrport
+ *  purpose: extracts the port number from a sockaddr structure regardless 
+ *           of its IP version
+ *   return: port
+ */
+uint16_t 
+sockaddrport(struct sockaddr *saptr)
+{
+  if ( saptr->sa_family == AF_INET )
+    return( ntohs( ((struct sockaddr_in *) saptr)->sin_port ) );
+  else
+    return( ntohs( ((struct sockaddr_in6 *) saptr)->sin6_port ) );
 }
 
 

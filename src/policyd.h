@@ -231,12 +231,13 @@ unsigned long int mysql_timeout;        /* mysql query timeout   */
   int w_tcp_conn_acl (const char *host);
   int    cidr_ip_match (unsigned long ip, char *range);
   pid_t w_fork(void);
-const char *w_inet_ntop(int family, const void *addrptr, char *strptr, size_t len);
+ const char *w_inet_ntop(struct sockaddr *addrptr, char *strptr, size_t len);
+ uint16_t sockaddrport(struct sockaddr *addrptr);
  ssize_t w_read(unsigned int fd, char *ptr, size_t max_size);
  ssize_t w_write(unsigned int fd, const void *vbuf);
  ssize_t f_write(unsigned int volatile fd, const void *vptr, size_t n);
  void w_close(unsigned int fd);
- void w_bind(unsigned int fd, const struct sockaddr *sa, socklen_t salen);
+ int w_bind(unsigned int fd, const struct sockaddr *sa, socklen_t salen);
  void w_listen(unsigned int fd, unsigned int backlog);
  void sigalrm_handler (void);
 

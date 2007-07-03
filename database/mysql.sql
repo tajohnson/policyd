@@ -70,7 +70,7 @@ CREATE TABLE rcpt_acl (
 CREATE TABLE triplet (
   _from        char(60) NOT NULL default '',
   _rcpt        char(60) NOT NULL default '',
-  _host        char(15) NOT NULL default '',
+  _host        char(46) NOT NULL default '',
   _datenew     int(10) unsigned NOT NULL default '0',
   _datelast    int(10) unsigned NOT NULL default '0',
   _count       smallint(5) unsigned NOT NULL default '0',
@@ -80,7 +80,7 @@ CREATE TABLE triplet (
 ) TYPE=MyISAM;
   
 CREATE TABLE whitelist (
-  _whitelist   char(15) NOT NULL default '',
+  _whitelist   char(46) NOT NULL default '',
   _description char(60) NOT NULL default '',
   _expire      int(10) unsigned NOT NULL default '0',
   UNIQUE KEY _whitelist (_whitelist),
@@ -104,7 +104,7 @@ CREATE TABLE whitelist_dnsname (
 ) TYPE=MyISAM;
 
 CREATE TABLE blacklist (
-  _blacklist   char(15) NOT NULL default '',
+  _blacklist   char(46) NOT NULL default '',
   _description char(60) NOT NULL default '',
   _expire      int(10) unsigned NOT NULL default '0',
   UNIQUE KEY _blacklist (_blacklist),
@@ -139,7 +139,7 @@ CREATE TABLE spamtrap (
 ) TYPE=MyISAM;
 
 CREATE TABLE helo (
-  _host        char(15) NOT NULL default '',
+  _host        char(46) NOT NULL default '',
   _helo        char(60) NOT NULL default '',
   _expire      int(10) unsigned NOT NULL default '0',
   UNIQUE KEY _host (_host,_helo),

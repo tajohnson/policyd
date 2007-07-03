@@ -294,6 +294,10 @@ INSERT INTO throttle_rcpt (_rcpt,_count_max,_time_limit,_date)
   Please ensure that it matches your policyd.conf settings
   for BINDHOST and BINDPORT.
 
+  If policyd is listening on an IPv6 address you should surround the IPv6 
+  address with brackets in main.cf.
+
+    check_policy_service inet:[::1]:10031
 
 
 ###

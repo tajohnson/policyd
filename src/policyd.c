@@ -39,8 +39,11 @@ main(int argc, char **argv)
   fd_set rset, wset, rallset, wallset;
   char host[48];
   socklen_t clilen;
-  struct sockaddr_in cliaddr, servaddr;
+  struct sockaddr_storage cliaddr, servaddr;
   struct rlimit rlimit_nofile;
+  struct addrinfo aihints, *airesults;
+  char portstr[6];
+  int gaierrnum;
 
   if(argc < 2) usage(argv[0]);
   while ((c = getopt(argc,argv,":c:v")) != EOF)
@@ -91,13 +94,34 @@ main(int argc, char **argv)
   /*
    *  bind to port
    */
-  listenfd = w_socket(AF_INET, SOCK_STREAM, 0);
-  bzero(&servaddr, sizeof(servaddr));
-  servaddr.sin_family = AF_INET;
-  servaddr.sin_addr.s_addr=inet_addr(BINDHOST);
-  servaddr.sin_port=htons(BINDPORT);
+  bzero(&aihints, sizeof (struct addrinfo));
+  aihints.ai_family = AF_UNSPEC;
+  aihints.ai_socktype = SOCK_STREAM;
+  aihints.ai_flags = AI_PASSIVE;
+  snprintf(portstr, sizeof portstr, "%d", BINDPORT);
+  if ( (gaierrnum = getaddrinfo(BINDHOST, portstr, &aihints, &airesults)) )
+  {
+    logmessage("fatal: getaddrinfo(): %s\n", gai_strerror(gaierrnum));
+    exit(EXIT_FAILURE);
+  }
+  while ( airesults != NULL )
+  {
+    if ( ( listenfd = w_socket(airesults->ai_family, airesults->ai_socktype,
+			       airesults->ai_protocol) ) >= 0 )
+    {
+      bcopy(airesults->ai_addr, &servaddr, airesults->ai_addrlen);
+      if ( w_bind(listenfd, (struct sockaddr *) &servaddr, sizeof(servaddr))
+	   == 0 ) break;
+    }
+    close(listenfd);
+    airesults = airesults->ai_next;
+  }
+  if ( airesults == NULL )
+  {
+    logmessage("fatal: can't bind to any address\n");
+    exit(EXIT_FAILURE);
+  }
 
-  w_bind(listenfd, (struct sockaddr *) &servaddr, sizeof(servaddr));
   w_listen(listenfd, LISTENQ);
 
   /*
@@ -172,18 +196,19 @@ main(int argc, char **argv)
       if (!found_free_slot)
       {
         logmessage("WARNING: No free slots found, closing connection from %s:%d\n",
-          w_inet_ntop(AF_INET, &cliaddr.sin_addr, host, sizeof(host)),
-          ntohs(cliaddr.sin_port));
+          w_inet_ntop((struct sockaddr *) &cliaddr, host, sizeof(host)),
+          sockaddrport((struct sockaddr *) &cliaddr));
         w_close(connfd);
         continue;
       }
 
       /* tcp acl check */
 /*
-      if(w_tcp_conn_acl(w_inet_ntop(AF_INET, &cliaddr.sin_addr, host, sizeof(host))) == -1)
+      if(w_tcp_conn_acl((struct sockaddr *) &cliaddr, host,
+			sizeof(host))) == -1)
       {
 	 logmessage("WARNING: connection attempt from: %s\n",
-	   w_inet_ntop(AF_INET, &cliaddr.sin_addr, host, sizeof(host)));
+	   w_inet_ntop((struct sockaddr *) &cliaddr, host, sizeof(host)));
 	 w_close(connfd);
 	 continue;
       }
@@ -191,8 +216,8 @@ main(int argc, char **argv)
       /* max fds */
 
       logmessage("connection from: %s port: %d slots: %d of %d used\n",
-        w_inet_ntop(AF_INET, &cliaddr.sin_addr, host, sizeof(host)),
-        ntohs(cliaddr.sin_port), numi, MAXFDS);
+        w_inet_ntop((struct sockaddr *) &cliaddr, host, sizeof(host)),
+        sockaddrport((struct sockaddr *) &cliaddr), numi, MAXFDS);
 
       FD_SET(connfd, &rallset);            /* add new descriptor to set        */
       buf_counter[connfd] = 0;             /* zero current buffer counters     */
