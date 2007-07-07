@@ -412,7 +412,7 @@ w_inet_ntop(struct sockaddr *saptr, char *strptr, size_t len)
  *           of its IP version
  *   return: port
  */
-uint16_t 
+int 
 sockaddrport(struct sockaddr *saptr)
 {
   if ( saptr->sa_family == AF_INET )

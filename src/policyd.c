@@ -107,11 +107,12 @@ main(int argc, char **argv)
   while ( airesults != NULL )
   {
     if ( ( listenfd = w_socket(airesults->ai_family, airesults->ai_socktype,
-			       airesults->ai_protocol) ) >= 0 )
+        airesults->ai_protocol) ) >= 0 )
     {
       bcopy(airesults->ai_addr, &servaddr, airesults->ai_addrlen);
-      if ( w_bind(listenfd, (struct sockaddr *) &servaddr, sizeof(servaddr))
-	   == 0 ) break;
+      if ( w_bind(listenfd, (struct sockaddr *) &servaddr, 
+          airesults->ai_addrlen) == 0 )
+        break;
     }
     close(listenfd);
     airesults = airesults->ai_next;
