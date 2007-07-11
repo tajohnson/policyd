@@ -1,4 +1,4 @@
-%define ver v1.80
+%define ver v1.81
 %define rel 1
 #%{!?key: %define fedora 0}
 
