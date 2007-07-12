@@ -81,14 +81,14 @@
 
 #define POSTFIX_X_HEADER        "action=prepend X-Greylist: Passed"
 #define POSTFIX_GOOD            "action=dunno\n\n"
-#define POSTFIX_GREYLIST        "action=defer_if_permit Policy Rejection-"
-#define POSTFIX_BAD_SIZE        "action=reject Policy Rejection-"
-#define POSTFIX_SPAMTRAP        "action=reject Policy Rejection-"
-#define POSTFIX_BLACKLIST_PERM  "action=reject Policy Rejection-"
-#define POSTFIX_BLACKLIST_TEMP  "action=defer_if_permit Policy Rejection-"
-#define POSTFIX_MODULE_FAILURE  "action=defer_if_permit Policy Rejection- Invalid data\n\n"
-#define POSTFIX_QUOTA_EXCEEDED_PERM  "action=reject Policy Rejection-"
-#define POSTFIX_QUOTA_EXCEEDED_TEMP  "action=defer_if_permit Policy Rejection-"
+#define POSTFIX_GREYLIST        "action=defer_if_permit"
+#define POSTFIX_BAD_SIZE        "action=reject"
+#define POSTFIX_SPAMTRAP        "action=reject"
+#define POSTFIX_BLACKLIST_PERM  "action=reject"
+#define POSTFIX_BLACKLIST_TEMP  "action=defer_if_permit"
+#define POSTFIX_MODULE_FAILURE  "action=defer_if_permit Invalid data\n\n"
+#define POSTFIX_QUOTA_EXCEEDED_PERM  "action=reject"
+#define POSTFIX_QUOTA_EXCEEDED_TEMP  "action=defer_if_permit"
 
 
 /* MySQL VARIABLES */
