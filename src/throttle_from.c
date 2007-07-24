@@ -47,10 +47,11 @@ throttle_from (unsigned int fd)
     if(atol(triplet_array[fd][3]) >= atol(mysqlchar_array[fd][7]))
       goto abuse;
 
-    logmessage("rcpt=%lu, throttle=new(a), host=%s, from=%s, to=%s, size=%d/%d, "
+    logmessage("rcpt=%lu, throttle=new(a), host=%s (%s), from=%s, to=%s, size=%d/%d, "
       "quota=%d/%d, count=1/%d(1), rcpt=1/%d(1), threshold=0%|0%|0%\n",
       rcpt_count,                       /* recipient count      */
-      host_array[fd][2],                /* host                 */
+      host_array[fd][2],                /* ip address           */
+      host_array[fd][0],                /* hostname             */
       triplet_array[fd][1],             /* from                 */
       triplet_array[fd][2],             /* to                   */
       atol(triplet_array[fd][3]),       /* size_cur             */
@@ -84,10 +85,11 @@ throttle_from (unsigned int fd)
   if(atol(triplet_array[fd][3]) >= atol(mysqlchar_array[fd][7]))
   {
 abuse:
-    logmessage("rcpt=%lu, throttle=abuse(f), host=%s, from=%s, to=%s, size=%d/%d, "
+    logmessage("rcpt=%lu, throttle=abuse(f), host=%s (%s), from=%s, to=%s, size=%d/%d, "
       "quota=%d/%d, count=%d/%d(%d), rcpt=%d/%d(%d), threshold=%d%|%d%|%d%\n",
       rcpt_count,                       /* recipient count      */
-      host_array[fd][2],                /* host                 */
+      host_array[fd][2],                /* ip address           */
+      host_array[fd][0],                /* hostname             */
       triplet_array[fd][1],             /* from                 */
       triplet_array[fd][2],             /* to                   */
       atol(triplet_array[fd][3]),       /* size_cur             */
@@ -111,10 +113,11 @@ abuse:
   /* if time has expired, clear quota for size+message+rcpt count */
   if(timenow > (unsigned int)(atol(mysqlchar_array[fd][6])+atol(mysqlchar_array[fd][3])))
   {
-    logmessage("rcpt=%lu, throttle=clear(a), host=%s, from=%s, to=%s, size=%d/%d, "
+    logmessage("rcpt=%lu, throttle=clear(a), host=%s (%s), from=%s, to=%s, size=%d/%d, "
       "quota=%d/%d, count=1/%d(%d), rcpt=1/%d(%d), threshold=0%|0%|0%\n",
       rcpt_count,                       /* recipient count      */
-      host_array[fd][2],                /* host                 */
+      host_array[fd][2],                /* ip address           */
+      host_array[fd][0],                /* hostname             */
       triplet_array[fd][1],             /* from                 */
       triplet_array[fd][2],             /* to                   */
       atol(triplet_array[fd][3]),       /* size_cur             */
@@ -158,10 +161,11 @@ abuse:
     if((instance_inc[fd] == 0) && (atol(mysqlchar_array[fd][10]) < atol(mysqlchar_array[fd][9])))
       goto update;
 
-    logmessage("rcpt=%lu, throttle=abuse(f), host=%s, from=%s, to=%s, size=%d/%d, "
+    logmessage("rcpt=%lu, throttle=abuse(f), host=%s (%s), from=%s, to=%s, size=%d/%d, "
       "quota=%d/%d, count=%d/%d(%d), rcpt=%d/%d(%d), abuse=%d, threshold=%d%|%d%|%d%\n",
       rcpt_count,                       /* recipient count      */
-      host_array[fd][2],                /* host                 */
+      host_array[fd][2],                /* ip address           */
+      host_array[fd][0],                /* hostname             */
       triplet_array[fd][1],             /* from                 */
       triplet_array[fd][2],             /* to                   */
       atol(triplet_array[fd][3]),       /* size_cur             */
@@ -206,10 +210,11 @@ abuse:
         /* execute query */
         if(db_doquery(fd) == -1) return(db_failure(fd, "throttle"));
 
-        logmessage("rcpt=%lu, throttle=blacklisted(f), host=%s, from=%s, to=%s, size=%d/%d, "
+        logmessage("rcpt=%lu, throttle=blacklisted(f), host=%s (%s), from=%s, to=%s, size=%d/%d, "
                    "quota=%d/%d, count=%d/%d(%d), rcpt=%d/%d(%d), abuse=%d, threshold=%d%|%d%|%d%\n",
                    rcpt_count,                       /* recipient count      */
-                   host_array[fd][2],                /* host                 */
+                   host_array[fd][2],                /* ip address           */
+                   host_array[fd][0],                /* hostname             */
                    triplet_array[fd][1],             /* from                 */
                    triplet_array[fd][2],             /* to                   */
                    atol(triplet_array[fd][3]),       /* size_cur             */
@@ -236,11 +241,12 @@ abuse:
 update:
   
   /* sender has not reached his quota, increase count */
-  logmessage("rcpt=%lu, throttle=update(%c), host=%s, from=%s, to=%s, size=%d/%d, "
+  logmessage("rcpt=%lu, throttle=update(%c), host=%s (%s), from=%s, to=%s, size=%d/%d, "
     "quota=%d/%d, count=%d/%d(%d), rcpt=%d/%d(%d), threshold=%d%|%d%|%d%\n",
     rcpt_count,                                              /* recipient count */
     tattrib_array[fd][0],                                    /* attribute state */
-    host_array[fd][2],                                       /* host            */
+    host_array[fd][2],                                       /* ip address      */
+    host_array[fd][0],                                       /* hostname        */
     triplet_array[fd][1],                                    /* from            */
     triplet_array[fd][2],                                    /* to              */
     atol(triplet_array[fd][3]),                              /* size_cur        */

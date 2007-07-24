@@ -74,10 +74,11 @@ throttle_rcpt (unsigned int fd)
   /* user is not in the database */
   if(strlen(mysqlchar_array[fd][0]) < 2)
   {
-    logmessage("rcpt=%lu, throttle_rcpt=new(a), host=%s, from=%s, to=%s, "
+    logmessage("rcpt=%lu, throttle_rcpt=new(a), host=%s (%s), from=%s, to=%s, "
       "count=1/%d(1), threshold=0%\n",
       rcpt_count,                       /* recipient count      */
-      host_array[fd][2],                /* host                 */
+      host_array[fd][2],                /* ip address           */
+      host_array[fd][0],                /* hostname             */
       triplet_array[fd][1],             /* from                 */
       triplet_array[fd][2],             /* to                   */
       atol(mysqlchar_array[fd][1])      /* count_max            */
@@ -100,10 +101,11 @@ throttle_rcpt (unsigned int fd)
   /* if time has expired, clear quota for message count */
   if(timenow > (unsigned int)(atol(mysqlchar_array[fd][4])+atol(mysqlchar_array[fd][3])))
   {
-    logmessage("rcpt=%lu, throttle_rcpt=clear(a), host=%s, from=%s, to=%s, "
+    logmessage("rcpt=%lu, throttle_rcpt=clear(a), host=%s (%s), from=%s, to=%s, "
       "count=0/%d(%d), threshold=0%\n",
       rcpt_count,                       /* recipient count      */
-      host_array[fd][2],                /* host                 */
+      host_array[fd][2],                /* ip address           */
+      host_array[fd][0],                /* hostname             */
       triplet_array[fd][1],             /* from                 */
       triplet_array[fd][2],             /* to                   */
       atol(mysqlchar_array[fd][1]),     /* count_max            */
@@ -130,10 +132,11 @@ throttle_rcpt (unsigned int fd)
   /* then reject the message */
   if(atol(mysqlchar_array[fd][2]) >= atol(mysqlchar_array[fd][1]))
   {
-    logmessage("rcpt=%lu, throttle_rcpt=abuse(f), host=%s, from=%s, to=%s, "
+    logmessage("rcpt=%lu, throttle_rcpt=abuse(f), host=%s (%s), from=%s, to=%s, "
       "count=%d/%d(%d), threshold=%d%\n",
       rcpt_count,                       /* recipient count      */
-      host_array[fd][2],                /* host                 */
+      host_array[fd][2],                /* ip address           */
+      host_array[fd][0],                /* hostname             */
       triplet_array[fd][1],             /* from                 */
       triplet_array[fd][2],             /* to                   */
       atol(mysqlchar_array[fd][2]),     /* count_cur            */
@@ -154,11 +157,12 @@ throttle_rcpt (unsigned int fd)
   }
 
   /* if the recipient has not reached his quota, increase count */
-  logmessage("rcpt=%lu, throttle_rcpt=update(%c), host=%s, from=%s, to=%s, "
+  logmessage("rcpt=%lu, throttle_rcpt=update(%c), host=%s (%s), from=%s, to=%s, "
     "count=%d/%d(%d), threshold=%d%\n",
     rcpt_count,                       /* recipient count      */
     tattrib_array[fd][0],             /* attribute state      */
-    host_array[fd][2],                /* host                 */
+    host_array[fd][2],                /* ip address           */
+    host_array[fd][0],                /* hostname             */
     triplet_array[fd][1],             /* from                 */
     triplet_array[fd][2],             /* to                   */
     atol(mysqlchar_array[fd][2])+1,   /* count_cur            */
