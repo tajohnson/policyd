@@ -388,7 +388,7 @@ db_printquery(unsigned int volatile fd)
     {
       unsigned long *lengths;
       lengths = mysql_fetch_lengths(res);
-      logmessage("%s\t->  %s", row[0], row[1]);
+      logmessage("%s\t->  %s\n", row[0], row[1]);
     }
     mysql_free_result(res);
   }
