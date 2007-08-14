@@ -46,6 +46,7 @@ w_mysql_query(unsigned int volatile fd, const char *function)
     if(timenow >= (last_mysql_failure+30))
     {                                 /* timer has expired     */
       mysql_failure_count=0;
+      mysql_close(mysql);
       mysql = db_connect(MYSQLDBASE); /* reconnect to database */
     } else {                          /* timer has not expired */
 
@@ -98,8 +99,7 @@ w_mysql_query(unsigned int volatile fd, const char *function)
   signal (SIGALRM, SIG_DFL);
 
   /* ensure that we only go into bypass mode after 3 consecutive failures */
-  if(mysql_failure_count > 0)
-    mysql_failure_count--;  /* decrease count if that is not the case */
+  mysql_failure_count=0;
 
   return (0); /* success */
 }
