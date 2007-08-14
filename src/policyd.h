@@ -65,6 +65,9 @@
     #else
       #define MSG_NOSIGNAL 0
     #endif
+  /* Not supported under Solaris */
+  #elif defined(__SVR4) && defined(__sun)
+    #define MSG_NOSIGNAL 0
   #else
     #error Your OS doesnt support MSG_NOSIGNAL or SO_NOSIGPIPE, please report to policyd-devel@lists.sf.net
   #endif
