@@ -71,7 +71,7 @@
 
 /* CONFIGS */
 #define PROJECT         "policyd"
-#define VERSION         "v1.81a"
+#define VERSION         "v1.82"
 
 /* Miscellaneous constants */
 #define LISTENQ         1023    /* 2nd argument to listen() */
