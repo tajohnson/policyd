@@ -177,6 +177,7 @@ policyd_SOURCES = policyd.c syslog.c generic.c mysql.c greylist.c \
 	blacklist_helo.c whitelist.c throttle_host.c throttle_sasl.c \
 	throttle_from.c throttle_rcpt.c helo.c rcpt_acl.c policyd.h
 policyd_LDADD = @LIBMYSQLCLIENT@
+policyd_LDFLAGS = -lm
 policyd_CFLAGS = @MYSQL_INCLUDE@ $(AM_CFLAGS)
 cleanup_SOURCES = cleanup.c syslog.c cidr.c generic.c sockets.c mysql.c policyd.h
 cleanup_LDADD = @LIBMYSQLCLIENT@
