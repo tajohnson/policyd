@@ -108,7 +108,7 @@ w_bind(unsigned int fd, const struct sockaddr *sa, socklen_t salen)
   int n;
   
   /* set options on socket (reuse port/address) */
-  if(setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) < 0)
+  if(setsockopt(fd, SOL_SOCKET, SO_REUSEADDR | POLICYD_SOCKOPTS, &yes, sizeof(yes)) < 0)
   {
     logmessage("fatal: setsockopt(): %s\n", strerror(errno));
     exit(-1);
@@ -155,7 +155,7 @@ w_read(unsigned int fd, char *ptr, size_t max_size)
   size_t   data_read = 0;                                    /* for debug only */
 
   /* receive data. disable signals are do not wait */
-  while ((n = recv(fd, (void *) ptr + buf_counter[fd], 1, MSG_DONTWAIT | MSG_NOSIGNAL)) == 1)
+  while ((n = recv(fd, (void *) ptr + buf_counter[fd], 1, MSG_DONTWAIT | POLICYD_MSGOPTS)) == 1)
   {
     data_read++;
     buf_counter[fd]++;
@@ -251,7 +251,7 @@ w_write(unsigned int fd, const void *vbuf)
   ssize_t nbytes;
 
   /* send data. disable signals are do not wait */
-  nbytes = send(fd, vbuf + buf_counter[fd], buf_size[fd] - buf_counter[fd], MSG_DONTWAIT | MSG_NOSIGNAL);
+  nbytes = send(fd, vbuf + buf_counter[fd], buf_size[fd] - buf_counter[fd], MSG_DONTWAIT | POLICYD_MSGOPTS);
 
   /* check if send returned an error */ 
   if (nbytes == -1)

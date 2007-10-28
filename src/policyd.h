@@ -57,20 +57,28 @@
 #ifndef MSG_NOSIGNAL
   /* Operating systems which have SO_NOSIGPIPE but not MSG_NOSIGNAL */
   #if defined (__FreeBSD__) || defined (__OpenBSD__) || defined(__APPLE__)
-    #define MSG_NOSIGNAL SO_NOSIGPIPE
+    #define POLICYD_SOCKOPTS SO_NOSIGPIPE
   /* Some versions of NetBSD dont have SO_NOSIGPIPE, check if we can use it or define as 0 */
   #elif defined(__NetBSD__)
     #ifdef SO_NOSIGPIPE
-      #define MSG_NOSIGNAL SO_NOSIGPIPE
-    #else
-      #define MSG_NOSIGNAL 0
+      #define POLICYD_SOCKOPTS SO_NOSIGPIPE
     #endif
   /* Not supported under Solaris */
   #elif defined(__SVR4) && defined(__sun)
-    #define MSG_NOSIGNAL 0
+    #define POLICYD_MSGOPTS 0
+  /* Totally unsupported? */
   #else
     #error Your OS doesnt support MSG_NOSIGNAL or SO_NOSIGPIPE, please report to policyd-devel@lists.sf.net
   #endif
+#else
+  #define POLICYD_MSGOPTS MSG_NOSIGNAL
+#endif
+/* If nothing was defined, then define as 0 */
+#ifndef POLICYD_SOCKOPTS
+  #define POLICYD_SOCKOPTS 0
+#endif
+#ifndef POLICYD_MSGOPTS
+  #define POLICYD_MSGOPTS 0
 #endif
 
 /* Miscellaneous constants */
