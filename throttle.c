@@ -155,17 +155,22 @@ throttle_check (unsigned int fd)
     logmessage("DEBUG: fd: %d: tresult: %d\n", fd, tresult);
 
   /* percentage won, set attribute accordingly */
-  switch (tresult)
+  if (tresult >= 0 && tresult <= 49)
   {
-    
-    case 0 ... 49:      tattrib_array[fd][0] = 'a'; break;
-    case 50 ... 89:     tattrib_array[fd][0] = 'w'; break;
-    case 90 ... 900000: tattrib_array[fd][0] = 'p'; break;
-    /* allow for big percentage overshoot */
-
-    default:
-      logmessage("fatal: throttle_check(): invalid tresult: %d\n", tresult);
-      return (-1);
+    tattrib_array[fd][0] = 'a'; 
+  } 
+  else if (tresult >= 50 && tresult <= 89)
+  {
+    tattrib_array[fd][0] = 'w';
+  }
+  else if (tresult >= 90)
+  {
+    tattrib_array[fd][0] = 'p';
+  }
+  else
+  {
+    logmessage("fatal: throttle_check(): invalid tresult: %d\n", tresult);
+    return (-1);
   }
 
   /* we selectively choose which throttle module we want */
