@@ -232,6 +232,7 @@ main(int argc, char **argv)
 	  
 	  case -2:                      /* got the information needed */
             chk_pol(sockfd);            /* sort Postfix's information */
+            bzero(buf[sockfd], sizeof(buf[sockfd]));  /* Clear buffer in case we're doing pipelining */
             FD_CLR(sockfd, &rallset);   /* remove fd from read set    */
             FD_SET(sockfd, &wallset);   /* add fd to write set        */
             break;
