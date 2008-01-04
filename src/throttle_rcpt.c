@@ -61,15 +61,23 @@ throttle_rcpt (unsigned int fd)
   trcpt[fd] = atof(mysqlchar_array[fd][2]) / atof(mysqlchar_array[fd][1]) * 100;
 
   /* percentage won, set attribute accordingly */
-  switch (trcpt[fd])
+  if (trcpt[fd] >= 0 && trcpt[fd] <= 49)
   {
-    case 0 ... 49:    tattrib_array[fd][0] = 'a'; break;
-    case 50 ... 89:   tattrib_array[fd][0] = 'w'; break;
-    case 90 ... 1000: tattrib_array[fd][0] = 'p'; break;
-
-    default:
-      logmessage("fatal: throttle_rcpt(): invalid tresult: %d\n", trcpt[fd]);
+    tattrib_array[fd][0] = 'a';
   }
+  else if (trcpt[fd] >= 50 && trcpt[fd] <= 89)
+  {
+    tattrib_array[fd][0] = 'w';
+  }
+  else if (trcpt[fd] >= 90)
+  {
+    tattrib_array[fd][0] = 'p';
+  }
+  else
+  {
+    logmessage("fatal: throttle_rcpt(): invalid tresult: %d\n", trcpt[fd]);
+  }
+
   
   /* user is not in the database */
   if(strlen(mysqlchar_array[fd][0]) < 2)

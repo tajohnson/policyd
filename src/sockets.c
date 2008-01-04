@@ -178,7 +178,7 @@ w_read(unsigned int fd, char *ptr, size_t max_size)
       if (memcmp(ptr + buf_counter[fd] - 2, "\n\n", 2) == 0)
       {
 	if (DEBUG > 2)
-          logmessage("DEBUG: fd %d: %s: returning -2 after reading %d bytes\n",fd, __FUNCTION__, data_read);
+          logmessage("DEBUG: fd %d: %s: returning -2 after reading %d bytes\n",fd, __func__, data_read);
 	
         return -2;
       }	
