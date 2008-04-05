@@ -190,7 +190,7 @@ abuse:
     /* build up & execute query */
     snprintf(mysqlquery_array[fd], 512,
       "UPDATE throttle SET"
-      " _abuse_cur=1"
+      " _abuse_cur=_abuse_cur+1"
       " WHERE _from='%s'",
       triplet_array[fd][1]);
     if(db_doquery(fd) == -1) return(db_failure(fd, "throttle"));
