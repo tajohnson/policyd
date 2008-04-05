@@ -21,7 +21,7 @@ CFLAGS   := -g -W -Wall -DMAXFDS=4096
 OS_NAME  := $(shell uname | tr [A-Z] [a-z])
 LDLIBS    = $(lib) -lmysqlclient -lz
 
-ifeq "${OS_NAME}" "sunos"
+ifeq ($(OS_NAME),"sunos")
 LDLIBS   += -lsocket -lnsl -lm
 endif
 
