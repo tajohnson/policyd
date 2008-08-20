@@ -117,7 +117,7 @@ sub getPolicy
 	# Process the Members
 	foreach my $policyMember (@policyMembers) {
 		# Make debugging a bit easier
-		my $debugTxt = sprintf('ID:%s/Name:%s',$policyMember->{'ID'},$policyMember->{'Name'});
+		my $debugTxt = sprintf('[ID:%s/Name:%s]',$policyMember->{'ID'},$policyMember->{'Name'});
 
 		#
 		# Source Test
@@ -126,74 +126,36 @@ sub getPolicy
 
 		# No source or "any"
 		if (!defined($policyMember->{'Source'}) || lc($policyMember->{'Source'}) eq "any") {
+			$server->log(LOG_DEBUG,"[POLICIES] $debugTxt: Source not defined or 'any', explicit match: matched=1") if ($log);
 			$sourceMatch = 1;
 
 		} else {
 			# Split off sources
 			my @rawSources = split(/,/,$policyMember->{'Source'});
 			
-			$server->log(LOG_DEBUG,"[POLICIES] $debugTxt: Raw sources '".join(',',@rawSources)."'") if ($log);
+			$server->log(LOG_DEBUG,"[POLICIES] $debugTxt: Main policy sources '".join(',',@rawSources)."'") if ($log);
 
-			# Parse in group data
-			my @sources;
-			foreach my $source (@rawSources) {
-				# Match group
-				if (my ($negate,$group) = ($source =~ /^(!?)?%(\S+)$/)) {
-
-					# Grab group members
-					my $members = getGroupMembers($group);
-					if (ref $members ne "ARRAY") {
-						$server->log(LOG_WARN,"[POLICIES] $debugTxt: Error '$members' while retrieving group members for source group '$group'");
-						next;
-					}
-					# Check if actually have any
-					if (@{$members} < 1) {
-						$server->log(LOG_WARN,"[POLICIES] $debugTxt: No group members for source group '$group'");
-					}
-
-					# Check if we should negate
-					foreach my $member (@{$members}) {
-						if (!($member =~ /^!/) && $negate) {
-							$member = "!$member";
-						}
-						push(@sources,$member);
-					}
-
-				# If its not a group, just add
+			# Default to no match
+			my $history = {};  # Used to track depth & loops
+			foreach my $item (@rawSources) {
+				# Process item
+				my $res = policySourceItemMatches($server,$debugTxt,$history,$item,$sourceIP,$emailFrom,$saslUsername);
+				# Check for error
+				if ($res < 0) {
+					$server->log(LOG_WARN,"[POLICIES] $debugTxt: Error while processing source item '$item', skipping...");
+					$sourceMatch = 0;
+					last;
+				# Check for success
+				} elsif ($res == 1) {
+					$sourceMatch = 1;
+				# Check for failure, 0 and anything else
 				} else {
-					push(@sources,$source);
+					$sourceMatch = 0;
+					last;
 				}
-				$server->log(LOG_DEBUG,"[POLICIES] $debugTxt: Resolved sources '".join(',',@sources)."'") if ($log);
-			}
-		
-
-			# Process sources and see if we match
-			foreach my $source (@sources) {
-				my $res = 0;
-
-				# Match IP
-				if ($source =~ /^!?\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(?:\/\d{1,2})$/) {
-					$res = ipMatches($sourceIP,$source);
-					$server->log(LOG_DEBUG,"[POLICIES] $debugTxt: - Resolved source '$source' to a IP/CIDR specification, match = $res") if ($log);
-
-				# Match SASL user, must be above email addy to match SASL usernames in the same format as email addies
-				} elsif ($source =~ /^!?\$\S+$/) {
-					$res = saslUsernameMatches($saslUsername,$source);
-					$server->log(LOG_DEBUG,"[POLICIES] $debugTxt: - Resolved source '$source' to a SASL user specification, match = $res") if ($log);
-
-				# Match email addy
-				} elsif ($source =~ /^!?\S*@\S+$/) {
-					$res = emailAddressMatches($emailFrom,$source);
-					$server->log(LOG_DEBUG,"[POLICIES] $debugTxt: - Resolved source '$source' to a email address specification, match = $res") if ($log);
-
-				} else {
-					$server->log(LOG_WARN,"[POLICIES] $debugTxt: - Source '".$source."' is not a valid specification");
-				}
-
-				# Check result
-				$sourceMatch = 1 if ($res);
 			}
 		}
+		
 		$server->log(LOG_INFO,"[POLICIES] $debugTxt: Source matching result: matched=$sourceMatch");
 		# Check if we passed the tests
 		next if (!$sourceMatch);
@@ -205,63 +167,33 @@ sub getPolicy
 
 		# No destination or "any"
 		if (!defined($policyMember->{'Destination'}) || lc($policyMember->{'Destination'}) eq "any") {
+			$server->log(LOG_DEBUG,"[POLICIES] $debugTxt: Destination not defined or 'any', explicit match: matched=1") if ($log);
 			$destinationMatch = 1;
 		
 		} else {
 			# Split off destinations
 			my @rawDestinations = split(/,/,$policyMember->{'Destination'});
 				
-			$server->log(LOG_DEBUG,"[POLICIES] $debugTxt: Raw destinations '".join(',',@rawDestinations)."'") if ($log);
+			$server->log(LOG_DEBUG,"[POLICIES] $debugTxt: Main policy destinations '".join(',',@rawDestinations)."'") if ($log);
 
 			# Parse in group data
-			my @destinations;
-			foreach my $destination (@rawDestinations) {
-				# Match group
-				if (my ($negate,$group) = ($destination =~ /^(!?)?%(\S+)$/)) {
-
-					# Grab group members
-					my $members = getGroupMembers($group);
-					if (ref $members ne "ARRAY") {
- 						$server->log(LOG_WARN,"[POLICIES] $debugTxt: Error '$members' while retrieving group members for destination group '$group'");
-						next;
-					}
-
-					# Check if actually have any
-					if (@{$members} < 1) {
-						$server->log(LOG_WARN,"[POLICIES] $debugTxt: No group members for destination group '$group'");
-					}
-
-					# Check if we should negate
-					foreach my $member (@{$members}) {
-						if (!($member =~ /^!/) && $negate) {
-							$member = "!$member";
-						}
-						push(@destinations,$member);
-					}
-
-
-				# If its not a group, just add
+			my $history = {};  # Used to track depth & loops
+			foreach my $item (@rawDestinations) {
+				# Process item
+				my $res = policyDestinationItemMatches($server,$debugTxt,{},$item,$emailTo);
+				# Check for error
+				if ($res < 0) {
+					$server->log(LOG_WARN,"[POLICIES] $debugTxt: Error while processing destination item '$item', skipping...");
+					$destinationMatch = 0;
+					last;
+				# Check for success
+				} elsif ($res == 1) {
+					$destinationMatch = 1;
+				# Check for failure, 0 and anything else
 				} else {
-					push(@destinations,$destination);
+					$destinationMatch = 0;
+					last;
 				}
-				$server->log(LOG_DEBUG,"[POLICIES] $debugTxt: Resolved destinations '".join(',',@destinations)."'") if ($log);
-			}
-			
-			# Process destinations and see if we match
-			foreach my $destination (@destinations) {
-				my $res = 0;
-
-				# Match email addy
-				if ($destination =~ /^!?\S*@\S+$/) {
-					$res = emailAddressMatches($emailTo,$destination);
-					$server->log(LOG_DEBUG,"[POLICIES] $debugTxt: - Resolved destination '$destination' to a email address specification, match = $res") if ($log);
-
-				} else {
-					$server->log(LOG_WARN,"[POLICIES] $debugTxt: - Destination '".$destination."' is not a valid specification");
-				}
-
-				# Check result
-				$destinationMatch = 1 if ($res);
 			}
 		}
 		$server->log(LOG_INFO,"[POLICIES] $debugTxt: Destination matching result: matched=$destinationMatch") if ($log);
@@ -274,7 +206,7 @@ sub getPolicy
 	# If we logging, display a list
 	if ($log) {
 		foreach my $prio (sort keys %matchedPolicies) {
-			$server->log(LOG_DEBUG,"[POLICIES] END RESULT: prio=$prio - policy_list=".join(',',@{$matchedPolicies{$prio}}));
+			$server->log(LOG_DEBUG,"[POLICIES] END RESULT: prio=$prio => policy ids: ".join(',',@{$matchedPolicies{$prio}}));
 		}
 	}
 
@@ -320,6 +252,172 @@ sub getGroupMembers
 }
 
 
+# Check if this source item matches, this function automagically resolves groups aswell
+sub policySourceItemMatches
+{
+	my ($server,$debugTxt,$history,$rawItem,$sourceIP,$emailFrom,$saslUsername) = @_;
+	my $log = defined($server->{'config'}{'logging'}{'policies'});
+
+
+	# Rip out negate if we have it, and clean the item
+	my ($negate,$tmpItem) = ($rawItem =~ /^(!)?(.*)/);
+	# See if we match %, if we do its a group
+	my ($isGroup,$item) = ($tmpItem =~ /^(%)?(.*)/);
+	
+	# Check if this is a group
+	my $match = 0;
+	if ($isGroup) {
+		# Make sure we're not looping
+		if (defined($history->{$item})) {
+			$server->log(LOG_WARN,"[POLICIES] $debugTxt: Source policy group '$item' appears to be used more than once, possible loop, aborting!");
+			return -1;
+		}
+		
+		# We going deeper, record the depth
+		$history->{$item} = keys(%{$history});
+		# Check if we not tooo deep
+		if ($history->{$item} > 5) {
+			$server->log(LOG_WARN,"[POLICIES] $debugTxt: This source policy is recursing too deep, aborting!");
+			return -1;
+		}
+
+		# Get group members
+		my $groupMembers = getGroupMembers($item);
+		if (ref $groupMembers ne "ARRAY") {
+			$server->log(LOG_WARN,"[POLICIES] $debugTxt: Error '$groupMembers' while retrieving group members for source group '$item'");
+			return -1;
+		}
+		$server->log(LOG_DEBUG,"[POLICIES] $debugTxt: Group '$item' has ".@{$groupMembers}." source(s) => ".join(',',@{$groupMembers})) if ($log);
+		# Check if actually have any
+		if (@{$groupMembers} > 0) {
+			foreach my $gmember (@{$groupMembers}) {
+				# Process this group member
+				my $res = policySourceItemMatches($server,"$debugTxt=>(group:$item)",$history,$gmember,$sourceIP,$emailFrom,$saslUsername);
+				# Check for hard error
+				if ($res < 0) {
+					return $res;
+				# Check for match
+				} elsif ($res) {
+					$match = 1;
+					last;
+				}
+			}
+		} else {
+			$server->log(LOG_WARN,"[POLICIES] $debugTxt: No group members for source group '$item'");
+		}
+		$server->log(LOG_DEBUG,"[POLICIES] $debugTxt=>(group:$item): Source group result: matched=$match") if ($log);
+
+	# Normal member
+	} else {
+		my $res = 0;
+
+		# Match IP
+		if ($item =~ /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(?:\/\d{1,2})$/) {
+			$res = ipMatches($sourceIP,$item);
+			$server->log(LOG_DEBUG,"[POLICIES] $debugTxt: - Resolved source '$item' to a IP/CIDR specification, match = $res") if ($log);
+
+		# Match SASL user, must be above email addy to match SASL usernames in the same format as email addies
+		} elsif ($item =~ /^\$\S+$/) {
+			$res = saslUsernameMatches($saslUsername,$item);
+			$server->log(LOG_DEBUG,"[POLICIES] $debugTxt: - Resolved source '$item' to a SASL user specification, match = $res") if ($log);
+
+		# Match email addy
+		} elsif ($item =~ /^\S*@\S+$/) {
+			$res = emailAddressMatches($emailFrom,$item);
+			$server->log(LOG_DEBUG,"[POLICIES] $debugTxt: - Resolved source '$item' to a email address specification, match = $res") if ($log);
+
+		# Not valid
+		} else {
+			$server->log(LOG_WARN,"[POLICIES] $debugTxt: - Source '".$item."' is not a valid specification");
+		}
+		
+		$match = 1 if ($res);
+	}
+
+	# Check the result, if its undefined or 0, return 0, if its 1 return 1
+	# !1 == undef
+	return ($negate ? !$match : $match) ? 1 : 0;
+}
+
+
+
+# Check if this destination item matches, this function automagically resolves groups aswell
+sub policyDestinationItemMatches
+{
+	my ($server,$debugTxt,$history,$rawItem,$emailTo) = @_;
+	my $log = defined($server->{'config'}{'logging'}{'policies'});
+
+
+	# Rip out negate if we have it, and clean the item
+	my ($negate,$tmpItem) = ($rawItem =~ /^(!)?(.*)/);
+	# See if we match %, if we do its a group
+	my ($isGroup,$item) = ($tmpItem =~ /^(%)?(.*)/);
+	
+	# Check if this is a group
+	my $match = 0;
+	if ($isGroup) {
+		# Make sure we're not looping
+		if (defined($history->{$item})) {
+			$server->log(LOG_WARN,"[POLICIES] $debugTxt: Destination policy group '$item' appears to be used more than once, possible loop, aborting!");
+			return -1;
+		}
+		
+		# We going deeper, record the depth
+		$history->{$item} = keys(%{$history});
+		# Check if we not tooo deep
+		if ($history->{$item} > 5) {
+			$server->log(LOG_WARN,"[POLICIES] $debugTxt: This destination policy is recursing too deep, aborting!");
+			return -1;
+		}
+
+		# Get group members
+		my $groupMembers = getGroupMembers($item);
+		if (ref $groupMembers ne "ARRAY") {
+			$server->log(LOG_WARN,"[POLICIES] $debugTxt: Error '$groupMembers' while retrieving group members for destination group '$item'");
+			return -1;
+		}
+		$server->log(LOG_DEBUG,"[POLICIES] $debugTxt: Group '$item' has ".@{$groupMembers}." destination(s) => ".join(',',@{$groupMembers})) if ($log);
+		# Check if actually have any
+		if (@{$groupMembers} > 0) {
+			foreach my $gmember (@{$groupMembers}) {
+				# Process this group member
+				my $res = policyDestinationItemMatches($server,"$debugTxt=>(group:$item)",$history,$gmember,$emailTo);
+				# Check for hard error
+				if ($res < 0) {
+					return $res;
+				# Check for match
+				} elsif ($res) {
+					$match = 1;
+					last;
+				}
+			}
+		} else {
+			$server->log(LOG_WARN,"[POLICIES] $debugTxt: No group members for destination group '$item'");
+		}
+		$server->log(LOG_DEBUG,"[POLICIES] $debugTxt=>(group:$item): Destination group result: matched=$match");
+
+	# Normal member
+	} else {
+		my $res = 0;
+
+		# Match email addy
+		if ($item =~ /^!?\S*@\S+$/) {
+			$res = emailAddressMatches($emailTo,$item);
+			$server->log(LOG_DEBUG,"[POLICIES] $debugTxt: - Resolved destination '$item' to a email address specification, match = $res") if ($log);
+
+		} else {
+			$server->log(LOG_WARN,"[POLICIES] $debugTxt: - Destination '$item' is not a valid specification");
+		}
+		
+		$match = 1 if ($res);
+	}
+
+	# Check the result, if its undefined or 0, return 0, if its 1 return 1
+	# !1 == undef
+	return ($negate ? !$match : $match) ? 1 : 0;
+}
+
+
 
 # Check if first arg falls within second arg CIDR
 sub ipMatches
@@ -328,7 +426,7 @@ sub ipMatches
 
 
 	# Pull off parts of IP
-	my ($cidr_negate,$cidr_address,$cidr_mask) = ($cidr =~ /^(!?)(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(?:\/(\d{1,2}))$/);
+	my ($cidr_address,$cidr_mask) = ($cidr =~ /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(?:\/(\d{1,2}))$/);
 
 	# Pull long for IP we going to test
 	my $ip_long = ip_to_long($ip);
@@ -350,12 +448,6 @@ sub ipMatches
 
 	# Check IP is within range
 	if ($ip_long >= $cidr_network_long && $ip_long <= $cidr_broadcast_long) {
-		# Check for match, we cannot be negating though
-		if (!$cidr_negate) {
-			$match = 1;
-		}
-	# If we didn't match and its a negation, its actually a match
-	} elsif ($cidr_negate) {
 		$match = 1;
 	}
 
@@ -372,13 +464,9 @@ sub emailAddressMatches
 
 	# Strip email addy
 	my ($email_user,$email_domain) = ($email =~ /^(\S+)@(\S+)$/);
-	my ($template_negate,$template_user,$template_domain) = ($template =~ /^(!)?(\S*)@(\S+)$/);
+	my ($template_user,$template_domain) = ($template =~ /^(\S*)@(\S+)$/);
 
 	if (lc($email_domain) eq lc($template_domain) && (lc($email_user) eq lc($template_user) || $template_user eq "")) {
-		if (!$template_negate) {
-			$match = 1;
-		}
-	} elsif ($template_negate) {
 		$match = 1;
 	}
 
@@ -394,18 +482,13 @@ sub saslUsernameMatches
 	my $match = 0;
 
 	# Decipher template
-	my ($template_negate,$template_user) = ($template =~ /^(!?)?\$(\S+)$/);
+	my ($template_user) = ($template =~ /^\$(\S+)$/);
 
 	# $- is a special case which allows matching against no SASL username
 	if ($template_user eq '-' && !$saslUsername) {
-		if (!$template_negate) {
-			$match = 1;
-		}
+		$match = 1;
+	# Else normal match
 	} elsif (lc($saslUsername) eq lc($template_user) || $template_user eq "*") {
-		if (!$template_negate) {
-			$match = 1;
-		}
-	} elsif ($template_negate) {
 		$match = 1;
 	}
 
