@@ -1,0 +1,22 @@
+------------------------------------------------------------------------
+r295 | nkukard | 2008-08-20 21:10:52 +0000 (Wed, 20 Aug 2008) | 2 lines
+
+* Merged in commits 290-294 from trunk, fixes bug #9
+
+Summary:
+--------
+1. In this case...
+
+	%test = a,b,c
+	policy = def,%test,fed
+
+groups used as policy members were incorrectly resolved into 
+
+	def AND (!a OR !b OR !c) AND fed
+
+this is corrected now and resolves into...
+	
+	def AND !(a OR b OR c) AND fed
+
+2. Gropus can now also contain other groups
+------------------------------------------------------------------------
