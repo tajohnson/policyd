@@ -453,7 +453,7 @@ sub check {
 	
 	# Setup result
 	if (!defined($verdict)) {
-		$server->maillog("module=Quotas, action=none, host=%s, helo=%s, from=%s, to=%s, reason=no_quota",
+		$server->maillog("module=Quotas, action=none, host=%s, helo=%s, from=%s, to=%s, reason=no_verdict",
 				$sessionData->{'ClientAddress'},
 				$sessionData->{'Helo'},
 				$sessionData->{'Sender'},
