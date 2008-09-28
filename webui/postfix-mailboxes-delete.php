@@ -112,7 +112,7 @@ if ($_POST['frmaction'] == "delete") {
 
 			if ($res !== FALSE) {	
 				$res = $db->exec("DELETE FROM mailboxes WHERE ID = ".$db->quote($_POST['postfix_mailbox_id']));
-				if ($res !== FALSE) {
+				if ($res) {
 ?>
 					<div class="notice">Mailbox deleted</div>
 <?php

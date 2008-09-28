@@ -77,7 +77,7 @@ if ($_POST['frmaction'] == "delete") {
 			$db->beginTransaction();
 
 			$res = $db->exec("DELETE FROM policy_members WHERE PolicyID = ".$db->quote($_POST['policy_id']));
-			if ($res) {
+			if ($res !== FALSE) {
 ?>
 				<div class="notice">Policy members deleted</div>
 <?php
