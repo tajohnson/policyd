@@ -1,0 +1,31 @@
+WebUI:
+* Updated links in pages to new website urls
+* Clarified that policy priorities are prcessed in an ascending fashion, 0 being highest priority (first), 100 being the lowest (last).
+* Check the return codes from removing database entries more carefully
+* Fixed error message when deleting policies
+* Fixed use of short PHP tags <?  with  <?php
+* Backported SASL username opiton in webui
+
+cbpolicyd/cbpadmin:
+* Better loadable module handling for cbpadmin
+* Fixed module logging in main cbpolicyd server
+* Announce the version of policyd we're using when starting up
+* Backported support for reverse DNS policies
+
+Quotas:
+* Fixed logging when Quotas which are not matched
+* Fixed logging of verdict in quotas module
+* no_quota should read no_verdict in Quotas module
+* Fixed typo on 'size'
+* Fixed typo in debug message
+* Fixed bug where end-of-data state was not being processed
+* Fixed stray comma 
+* Fixed bug in Quotas module where if all limits were disabled a temporary 450 result was generated
+
+Amavis:
+* Added comment with mysql DB config in to amavisd-policyd integration module
+* Add more debugging info to amavisd module so we can catch the received line if its not parsable
+
+Misc:
+* Removed stray file
+* Backported database portability fixes from trunk
