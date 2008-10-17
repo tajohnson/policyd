@@ -312,7 +312,7 @@ sub policySourceItemMatches
 		my $res = 0;
 
 		# Match IP
-		if ($item =~ /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(?:\/\d{1,2})$/) {
+		if ($item =~ /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(?:\/\d{1,2})?$/) {
 			$res = ipMatches($sessionData->{'ClientAddress'},$item);
 			$server->log(LOG_DEBUG,"[POLICIES] $debugTxt: - Resolved source '$item' to a IP/CIDR specification, match = $res") if ($log);
 
@@ -431,7 +431,7 @@ sub ipMatches
 
 
 	# Pull off parts of IP
-	my ($cidr_address,$cidr_mask) = ($cidr =~ /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(?:\/(\d{1,2}))$/);
+	my ($cidr_address,$cidr_mask) = ($cidr =~ /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(?:\/(\d{1,2}))?$/);
 
 	# Pull long for IP we going to test
 	my $ip_long = ip_to_long($ip);
@@ -556,21 +556,25 @@ sub decodePolicyData
 	my $recipientData = shift;
 
 
-	my %recipientToPolicy;
+	my %recipientToPolicy = ();
 	# Build policy str list and recipients list
 	foreach my $item (split(/\//,$recipientData)) {
 		# Skip over first /
 		next if ($item eq "");
 
 		my ($email,$rawPolicy) = ($item =~ /<([^>]*)>#(.*)/);
-		
-		# Loop with raw policies
-		foreach my $policy (split(/;/,$rawPolicy)) {
-			# Strip off priority and policy IDs
-			my ($prio,$policyIDs) = ( $policy =~ /(\d+)=(.*)/ );
-			# Pull off policyID's from string
-			foreach my $pid (split(/,/,$policyIDs)) {
-				push(@{$recipientToPolicy{$email}{$prio}},$pid);
+
+		# Make sure that the recipient data in the DB is not null, ie. it may 
+		# of been killed by the admin before it updated it	
+		if (defined($email) && defined($rawPolicy)) {
+			# Loop with raw policies
+			foreach my $policy (split(/;/,$rawPolicy)) {
+				# Strip off priority and policy IDs
+				my ($prio,$policyIDs) = ( $policy =~ /(\d+)=(.*)/ );
+				# Pull off policyID's from string
+				foreach my $pid (split(/,/,$policyIDs)) {
+					push(@{$recipientToPolicy{$email}{$prio}},$pid);
+				}
 			}
 		}
 	}
