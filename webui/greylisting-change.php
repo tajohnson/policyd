@@ -489,13 +489,13 @@ if ($_POST['frmaction'] == "change") {
 	# Autowhitelist	
 	if (!empty($_POST['greylisting_useawl'])) {
 		if ($_POST['greylisting_useawl'] == "1") {
-			$useawl = null;
+			$useawl = "NULL";
 		} elseif ($_POST['greylisting_useawl'] == "2") {
-			$useawl = 1;
+			$useawl = $db->quote(1);
 		} elseif ($_POST['greylisting_useawl'] == "3") {
-			$useawl = 0;
+			$useawl = $db->quote(0);
 		}
-		array_push($updates,"UseAutoWhitelist = ".$db->quote($useawl));
+		array_push($updates,"UseAutoWhitelist = $useawl");
 	}
 
 	if (!empty($_POST['greylisting_awlperiod_m'])) {
@@ -518,7 +518,7 @@ if ($_POST['frmaction'] == "change") {
 	}
 
 	# AWL Percentage
-	if (!empty($_POST['greylisting_awlpercentage_m'])) {
+	if (isset($_POST['greylisting_awlpercentage_m'])) {
 		if ($_POST['greylisting_awlpercentage_m'] == "1") {
 			$awlpercentage = null;
 		} else {
@@ -530,13 +530,13 @@ if ($_POST['frmaction'] == "change") {
 	# Autoblacklist
 	if (!empty($_POST['greylisting_useabl'])) {
 		if ($_POST['greylisting_useabl'] == "1") {
-			$useabl = null;
+			$useabl = "NULL"; 
 		} elseif ($_POST['greylisting_useabl'] == "2") {
-			$useabl = 1;
+			$useabl = $db->quote(1);
 		} elseif ($_POST['greylisting_useabl'] == "3") {
-			$useabl = 0;
+			$useabl = $db->quote(0);
 		}
-		array_push($updates,"UseAutoBlacklist = ".$db->quote($useabl));
+		array_push($updates,"UseAutoBlacklist = $useabl");
 	}
 
 	if (!empty($_POST['greylisting_ablperiod_m'])) {
@@ -559,7 +559,7 @@ if ($_POST['frmaction'] == "change") {
 	}
 
 	# AWL Percentage
-	if (!empty($_POST['greylisting_ablpercentage_m'])) {
+	if (isset($_POST['greylisting_ablpercentage_m'])) {
 		if ($_POST['greylisting_ablpercentage_m'] == "1") {
 			$ablpercentage = null;
 		} else {
