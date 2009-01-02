@@ -185,7 +185,6 @@ sub check {
 								# Check for violation
 								if ($qtrack->{'Counter'} > $limit->{'CounterLimit'}) {
 									$hasExceeded = "Policy rejection; Message count quota exceeded";
-									$exceededLimit = $limit;
 								}
 								# Bump up limit
 								$newCounters{$qtrack->{'QuotasLimitsID'}}++;
@@ -195,7 +194,6 @@ sub check {
 								# Check for violation
 								if ($qtrack->{'Counter'} > $limit->{'CounterLimit'}) {
 									$hasExceeded = "Policy rejection; Cumulative message size quota exceeded";
-									$exceededLimit = $limit;
 								}
 							}
 	
@@ -217,11 +215,11 @@ sub check {
 						
 						# Setup some stuff we need for logging
 						$qtrack->{'DBKey'} = $key;
-						$qtrack->{'CounterLimit'} = $exceededLimit->{'CounterLimit'};
-						$qtrack->{'LimitType'} = $exceededLimit->{'Type'};
+						$qtrack->{'CounterLimit'} = $limit->{'CounterLimit'};
+						$qtrack->{'LimitType'} = $limit->{'Type'};
 						$qtrack->{'PolicyID'} = $policyID;
 						$qtrack->{'QuotaID'} = $quota->{'ID'};
-						$qtrack->{'LimitID'} = $exceededLimit->{'ID'};
+						$qtrack->{'LimitID'} = $limit->{'ID'};
 						$qtrack->{'Verdict'} = $quota->{'Verdict'};
 						$qtrack->{'VerdictData'} = $quota->{'Data'};
 
