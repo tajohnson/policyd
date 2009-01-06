@@ -1,0 +1,115 @@
+------------------------------------------------------------------------
+r405 | nkukard | 2009-01-02 16:16:28 +0000 (Fri, 02 Jan 2009) | 2 lines
+Changed paths:
+   M /branches/v2.0.x/cbp/modules/Quotas.pm
+   M /trunk/cbp/modules/Quotas.pm
+
+* Fixed bug in quotas where non-existant counters were being used
+
+------------------------------------------------------------------------
+r386 | nkukard | 2008-11-11 20:45:40 +0000 (Tue, 11 Nov 2008) | 2 lines
+Changed paths:
+   M /branches/v2.0.x/webui/greylisting-change.php
+   M /trunk/webui/greylisting-change.php
+
+* Fixed the rest of the options in greylisting not working with inherit option set
+
+------------------------------------------------------------------------
+r385 | nkukard | 2008-11-11 20:09:10 +0000 (Tue, 11 Nov 2008) | 2 lines
+Changed paths:
+   M /branches/v2.0.x/webui/greylisting-change.php
+   M /trunk/webui/greylisting-change.php
+
+* Fixed same inherit bug for percentages
+
+------------------------------------------------------------------------
+r384 | nkukard | 2008-11-11 19:57:21 +0000 (Tue, 11 Nov 2008) | 2 lines
+Changed paths:
+   M /branches/v2.0.x/webui/greylisting-change.php
+   M /trunk/webui/greylisting-change.php
+
+* Fixed changing of use autowhitelist/blacklist to work properly with changing to "Inherit"
+
+------------------------------------------------------------------------
+r382 | nkukard | 2008-11-11 19:32:27 +0000 (Tue, 11 Nov 2008) | 2 lines
+Changed paths:
+   M /branches/v2.0.x/webui/greylisting-add.php
+   M /branches/v2.0.x/webui/greylisting-change.php
+   M /trunk/webui/greylisting-add.php
+   M /trunk/webui/greylisting-change.php
+
+* Fixed disabling of greylisting, it showed up always as inherited and not disabled
+
+------------------------------------------------------------------------
+r375 | nkukard | 2008-11-10 20:16:56 +0000 (Mon, 10 Nov 2008) | 2 lines
+Changed paths:
+   M /branches/v2.0.x/INSTALL
+   M /trunk/INSTALL
+
+* Added requirement of Mail::SPF for SPF support
+
+------------------------------------------------------------------------
+r374 | nkukard | 2008-11-10 19:42:33 +0000 (Mon, 10 Nov 2008) | 3 lines
+Changed paths:
+   M /branches/v2.0.x/INSTALL
+   M /trunk/INSTALL
+
+* Added requirement for database server
+* Added requirement for PHP v5
+
+------------------------------------------------------------------------
+r373 | nkukard | 2008-11-10 05:33:09 +0000 (Mon, 10 Nov 2008) | 2 lines
+Changed paths:
+   M /branches/v2.0.x/cbp/policies.pm
+   M /trunk/cbp/policies.pm
+
+* Fixed bug where non-SASL authenticated email was being matched by the $* specification
+
+------------------------------------------------------------------------
+r371 | nkukard | 2008-10-30 09:47:45 +0000 (Thu, 30 Oct 2008) | 2 lines
+Changed paths:
+   M /branches/v2.0.x/cbp/modules/Quotas.pm
+   M /trunk/cbp/modules/Quotas.pm
+
+* Fixed bug where the last quota limit was reported as the one generating a verdict regardless of which one before it actually did
+
+------------------------------------------------------------------------
+r370 | nkukard | 2008-10-30 09:44:53 +0000 (Thu, 30 Oct 2008) | 3 lines
+Changed paths:
+   M /branches/v2.0.x/cbp/modules/Quotas.pm
+
+* Sucked in r369 from trunk, reversion of r327
+- We already output logs regarding the verdict, no use doing it again
+
+------------------------------------------------------------------------
+r365 | nkukard | 2008-10-17 06:30:23 +0000 (Fri, 17 Oct 2008) | 2 lines
+Changed paths:
+   M /branches/v2.0.x/webui/policy-add.php
+   M /trunk/webui/policy-add.php
+
+* Fix error beign displayed when policy priority is 0
+
+------------------------------------------------------------------------
+r364 | nkukard | 2008-10-17 06:20:53 +0000 (Fri, 17 Oct 2008) | 2 lines
+Changed paths:
+   M /branches/v2.0.x/cbp/policies.pm
+   M /trunk/cbp/policies.pm
+
+* Initialize recipient data to an empty hash, we may not even get any recipient data and we don't want this to be undefined
+
+------------------------------------------------------------------------
+r363 | nkukard | 2008-10-17 06:18:47 +0000 (Fri, 17 Oct 2008) | 2 lines
+Changed paths:
+   M /branches/v2.0.x/cbp/policies.pm
+   M /trunk/cbp/policies.pm
+
+* Ignore recipient data in the DB if its null
+
+------------------------------------------------------------------------
+r362 | nkukard | 2008-10-17 05:58:56 +0000 (Fri, 17 Oct 2008) | 2 lines
+Changed paths:
+   M /branches/v2.0.x/cbp/policies.pm
+   M /trunk/cbp/policies.pm
+
+* Make the CIDR value for IP specifications optional, an IP without it now defaults to /32
+
