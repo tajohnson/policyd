@@ -2,7 +2,7 @@
 # this path is hardcoded
 %define cblibdir %{_libdir}/policyd-2.0
 
-%define version 2.0.6a
+%define version 2.0.7a
 %define release 1
 %define tarver %{version}
 
