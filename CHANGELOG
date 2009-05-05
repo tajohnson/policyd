@@ -1,0 +1,50 @@
+------------------------------------------------------------------------
+r430 | nkukard | 2009-04-08 08:27:59 +0000 (Wed, 08 Apr 2009) | 2 lines
+
+* Fixed bug where getPolicy was being called in the amavisd-policyd module with incorrect parameters. This was triggered when recipeits changed because of aliases or similar and the alias is not found in the session data stored during the Postfix RCPT checks.
+
+------------------------------------------------------------------------
+r428 | nkukard | 2009-03-29 12:48:09 +0000 (Sun, 29 Mar 2009) | 2 lines
+
+* Fixed spurious "REJECT" in CheckHelo module
+
+------------------------------------------------------------------------
+r426 | nkukard | 2009-03-28 16:10:51 +0000 (Sat, 28 Mar 2009) | 2 lines
+
+* Install cbpolicyd in sbin and cbpadmin in bin
+
+------------------------------------------------------------------------
+r425 | nkukard | 2009-03-28 15:16:46 +0000 (Sat, 28 Mar 2009) | 2 lines
+
+* Fixed Amavis support, the last Received: header was being accessed in the wrong way
+
+------------------------------------------------------------------------
+r424 | nkukard | 2009-03-24 10:25:55 +0000 (Tue, 24 Mar 2009) | 2 lines
+
+* No feedback from testers, assuming this patch fixes the greylisting race condition
+
+------------------------------------------------------------------------
+r423 | nkukard | 2009-02-28 20:37:01 +0000 (Sat, 28 Feb 2009) | 2 lines
+
+* Add support for RFC3848 headers in amavis plugin
+
+------------------------------------------------------------------------
+r416 | nkukard | 2009-02-18 09:55:20 +0000 (Wed, 18 Feb 2009) | 2 lines
+
+* Made old and new Config::IniFiles work
+
+------------------------------------------------------------------------
+r411 | nkukard | 2009-02-14 14:19:01 +0000 (Sat, 14 Feb 2009) | 2 lines
+
+* Fixed up Config::IniFiles usage, this fixes breakage introduced with functionality changes in newer versions
+
+------------------------------------------------------------------------
+r410 | nkukard | 2009-02-09 12:19:04 +0000 (Mon, 09 Feb 2009) | 2 lines
+
+* Fixed Postfix quota being overwritten
+
+------------------------------------------------------------------------
+r409 | nkukard | 2009-01-07 16:32:14 +0000 (Wed, 07 Jan 2009) | 3 lines
+
+* Fixed default naming of the cluebringer database in the webui config to be inline with the other config file
+* Added note that the Postfix support in the webui is unsupported
