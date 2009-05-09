@@ -662,7 +662,7 @@ sub protocol_getresponse
 
 # Display help
 sub displayHelp {
-	print(STDERR "Policyd (ClueBringer) v".VERSION." - Copyright (c) 2007-2008 LinuxRulz\n");
+	print(STDERR "Policyd (ClueBringer) v".VERSION." - Copyright (c) 2007-2009 AllWorldIT\n");
 
 	print(STDERR<<EOF);
 

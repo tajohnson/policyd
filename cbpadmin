@@ -32,7 +32,7 @@ use cbp::logging;
 use cbp::version;
 
 	
-print("Policyd Admin Tool (ClueBringer) v".VERSION." - Copyright (c) 2007-2008 LinuxRulz\n");
+print("Policyd Admin Tool (ClueBringer) v".VERSION." - Copyright (c) 2007-2009 AllWorldIT\n");
 
 # Fire up commandline processing...
 my %opts;
