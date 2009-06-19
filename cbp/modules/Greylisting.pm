@@ -441,7 +441,7 @@ sub check {
 								# Update blacklisting to the new details
 								$sth = DBDo('
 									UPDATE 
-										@TP@greylisting_autoblacklist
+										greylisting_autoblacklist
 									SET
 										TrackKey = ?,
 										Added = ?,
@@ -459,7 +459,7 @@ sub check {
 							} else {
 								# Record blacklisting
 								$sth = DBDo('
-									INSERT INTO @TP@greylisting_autoblacklist
+									INSERT INTO greylisting_autoblacklist
 										(TrackKey,Added,Comment)
 									VALUES
 										(?,?,?)
