@@ -676,7 +676,7 @@ sub check {
 								# Update whitelisting to the new details
 								$sth = DBDo('
 									UPDATE 
-										@TP@greylisting_autowhitelist
+										greylisting_autowhitelist
 									SET
 										TrackKey = ?,
 										Added = ?,
@@ -694,7 +694,7 @@ sub check {
 							} else {
 								# Update whitelisting to the new details
 								$sth = DBDo('
-									INSERT INTO @TP@greylisting_autowhitelist
+									INSERT INTO greylisting_autowhitelist
 										(TrackKey,Added,LastSeen,Comment)
 									VALUES
 										(?,?,?,?)
