@@ -449,7 +449,7 @@ sub check {
 									WHERE
 										ID = ?
 									',
-									$key,$sessionData->{'UnixTimestamp'},$blacklist,$currentAutoBlacklistEntry
+									$key,$sessionData->{'Timestamp'},$blacklist,$currentAutoBlacklistEntry
 								);
 								if (!$sth) {
 									$server->log(LOG_ERR,"[GREYLISTING] Database update failed: ".cbp::dblayer::Error());
@@ -464,7 +464,7 @@ sub check {
 									VALUES
 										(?,?,?)
 									',
-									$key,$sessionData->{'UnixTimestamp'},$blacklist
+									$key,$sessionData->{'Timestamp'},$blacklist
 								);
 								if (!$sth) {
 									$server->log(LOG_ERR,"[GREYLISTING] Database insert failed: ".cbp::dblayer::Error());
@@ -685,7 +685,7 @@ sub check {
 									WHERE
 										ID = ?
 									',
-									$key,$sessionData->{'UnixTimestamp'},$sessionData->{'UnixTimestamp'},$whitelist,$currentAutoWhitelistEntry
+									$key,$sessionData->{'Timestamp'},$sessionData->{'Timestamp'},$whitelist,$currentAutoWhitelistEntry
 								);
 								if (!$sth) {
 									$server->log(LOG_ERR,"[GREYLISTING] Database update failed: ".cbp::dblayer::Error());
@@ -699,7 +699,7 @@ sub check {
 									VALUES
 										(?,?,?,?)
 									',
-									$key,$sessionData->{'UnixTimestamp'},$sessionData->{'UnixTimestamp'},$whitelist
+									$key,$sessionData->{'Timestamp'},$sessionData->{'Timestamp'},$whitelist
 								);
 								if (!$sth) {
 									$server->log(LOG_ERR,"[GREYLISTING] Database insert failed: ".cbp::dblayer::Error());
