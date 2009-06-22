@@ -116,13 +116,13 @@ sub DBSelect
 # Args: <command statement>
 sub DBDo
 {
-	my $command = shift;
+	my ($command,@params) = @_;
 
 
 	# Prepare query
 	my $sth;
-	if (!($sth = $dbh->do($command))) {
-		setError("Error executing command: ".$dbh->Error());
+	if (!($sth = $dbh->do($command,@params))) {
+		setError("Error executing command '$command': ".$dbh->Error());
 		return undef;	
 	}
 
