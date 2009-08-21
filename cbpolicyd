@@ -204,7 +204,7 @@ sub configure {
 	if (defined($config{'server'}{'log_mail'}) && $config{'server'}{'log_mail'} ne "main") {
 		# COMPATIBILITY
 		if ($config{'server'}{'log_mail'} eq "maillog") {
-			$cfg->{'log_mail'} = 'mail@syslog:native';
+			$cfg->{'log_mail'} = 'mail@syslog:unix';
 		} else {
 			$cfg->{'log_mail'} = $config{'server'}{'log_mail'};
 		}
