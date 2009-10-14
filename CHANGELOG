@@ -1,0 +1,97 @@
+------------------------------------------------------------------------
+r479 | nkukard | 2009-08-21 08:14:23 +0000 (Fri, 21 Aug 2009) | 3 lines
+
+* Default to unix logging to be compatibile with most installations as native is not yet supported
+- v2.1.x defaults to native
+
+------------------------------------------------------------------------
+r478 | nkukard | 2009-08-14 06:08:50 +0000 (Fri, 14 Aug 2009) | 2 lines
+
+* More flexible configuration of logging
+
+------------------------------------------------------------------------
+r475 | nkukard | 2009-07-16 10:53:17 +0000 (Thu, 16 Jul 2009) | 2 lines
+
+* Sender IP is a CIDR mask, not a network mask
+
+------------------------------------------------------------------------
+r474 | nkukard | 2009-07-15 12:12:05 +0000 (Wed, 15 Jul 2009) | 11 lines
+
+* Fixes for greylisting portion of web interface, which is slighlty broken.
+- by Tomoyuki Murakami
+
+I have noticed that setting greylisting preferences from webui updates 
+(or reset) things in-correctly. For instance, GreylistUnAuthValidity 
+cannot set any seconds. AWL After Percentage always reset to nothing 
+(not NULL) and, so on.
+
+Here is a patch to quick fix.
+
+
+------------------------------------------------------------------------
+r473 | nkukard | 2009-07-05 15:05:01 +0000 (Sun, 05 Jul 2009) | 2 lines
+
+* Pulled in r472 from trunk, indentation fixup
+
+------------------------------------------------------------------------
+r471 | nkukard | 2009-06-29 07:25:52 +0000 (Mon, 29 Jun 2009) | 2 lines
+
+* Fixed logging issues when protocol attributes are invalid
+
+------------------------------------------------------------------------
+r467 | nkukard | 2009-06-22 12:11:26 +0000 (Mon, 22 Jun 2009) | 3 lines
+
+* Allow DBDo() to take parameters, this fixes bugs with all queries utilizing ?'s as placeholders
+- Thanks Peter Kiem
+
+------------------------------------------------------------------------
+r466 | nkukard | 2009-06-22 08:45:17 +0000 (Mon, 22 Jun 2009) | 2 lines
+
+* Use Timestamp and not UnixTimestamp
+
+------------------------------------------------------------------------
+r465 | nkukard | 2009-06-21 20:47:41 +0000 (Sun, 21 Jun 2009) | 3 lines
+
+* Fixed tempfail inversion
+- Closes bug #14
+
+------------------------------------------------------------------------
+r464 | nkukard | 2009-06-19 06:50:29 +0000 (Fri, 19 Jun 2009) | 2 lines
+
+* Remove more table prefixes that crept in
+
+------------------------------------------------------------------------
+r463 | nkukard | 2009-06-19 06:08:26 +0000 (Fri, 19 Jun 2009) | 2 lines
+
+* Table prefixes are not supported in v2.0.x yet
+
+------------------------------------------------------------------------
+r461 | nkukard | 2009-06-01 06:03:27 +0000 (Mon, 01 Jun 2009) | 2 lines
+
+* Added support for OK in access control module
+
+------------------------------------------------------------------------
+r460 | nkukard | 2009-06-01 05:32:46 +0000 (Mon, 01 Jun 2009) | 2 lines
+
+* Fixed bug when handling .something.example.com style reverse dns names
+
+------------------------------------------------------------------------
+r441 | nkukard | 2009-05-20 10:26:39 +0000 (Wed, 20 May 2009) | 3 lines
+
+* Remember to closeCuror() before we start doing embedded queries, some versions of PHP don't like this
+- Thanks Eugene Krapivin
+
+------------------------------------------------------------------------
+r440 | nkukard | 2009-05-17 19:23:18 +0000 (Sun, 17 May 2009) | 2 lines
+
+* Fixed AUTHORS
+
+------------------------------------------------------------------------
+r437 | nkukard | 2009-05-09 07:59:10 +0000 (Sat, 09 May 2009) | 2 lines
+
+* Fixed logging lines being displayed when they were disabled
+
+------------------------------------------------------------------------
+r436 | nkukard | 2009-05-09 06:59:21 +0000 (Sat, 09 May 2009) | 2 lines
+
+* Small copyright fixes
