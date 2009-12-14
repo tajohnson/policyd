@@ -2,7 +2,7 @@
 # this path is hardcoded
 %define cblibdir %{_libdir}/policyd-2.0
 
-%define cvsver yyyymmddhhmm
+%define cvsver 200912140631
 
 %if %{cvsver}
 %define version 2.1
