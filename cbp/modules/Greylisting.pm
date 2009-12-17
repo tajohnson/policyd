@@ -436,18 +436,16 @@ sub check {
 							# Check if we already have an expired autoblacklist entry, this happens if the cleanup has not run yet
 							if (defined($currentAutoBlacklistEntry)) {
 								# Update blacklisting to the new details
-								$sth = DBDo('
+								$sth = DBDo("
 									UPDATE 
 										greylisting_autoblacklist
 									SET
-										TrackKey = ?,
-										Added = ?,
-										Comment = ?
+										TrackKey = ".DBQuote($key).",
+										Added = ".DBQuote($sessionData->{'Timestamp'}).",
+										Comment = ".DBQuote($blacklist)."
 									WHERE
-										ID = ?
-									',
-									$key,$sessionData->{'Timestamp'},$blacklist,$currentAutoBlacklistEntry
-								);
+										ID = ".DBQuote($currentAutoBlacklistEntry)."
+								");
 								if (!$sth) {
 									$server->log(LOG_ERR,"[GREYLISTING] Database update failed: ".cbp::dblayer::Error());
 									return $server->protocol_response(PROTO_DB_ERROR);
@@ -455,14 +453,16 @@ sub check {
 							# If we don't have an entry we can use, create one
 							} else {
 								# Record blacklisting
-								$sth = DBDo('
+								$sth = DBDo("
 									INSERT INTO greylisting_autoblacklist
 										(TrackKey,Added,Comment)
 									VALUES
-										(?,?,?)
-									',
-									$key,$sessionData->{'Timestamp'},$blacklist
-								);
+										(
+											".DBQuote($key).",
+											".DBQuote($sessionData->{'Timestamp'}).",
+											".DBQuote($blacklist)."
+										)
+								");
 								if (!$sth) {
 									$server->log(LOG_ERR,"[GREYLISTING] Database insert failed: ".cbp::dblayer::Error());
 									return $server->protocol_response(PROTO_DB_ERROR);
@@ -671,33 +671,34 @@ sub check {
 							# Check if we already have an expired autowhitelist entry, this happens if the cleanup has not run yet
 							if (defined($currentAutoWhitelistEntry)) {
 								# Update whitelisting to the new details
-								$sth = DBDo('
+								$sth = DBDo("
 									UPDATE 
 										greylisting_autowhitelist
 									SET
-										TrackKey = ?,
-										Added = ?,
-										LastSeen = ?,
-										Comment = ?
+										TrackKey = ".DBQuote($key).",
+										Added = ".DBQuote($sessionData->{'Timestamp'}).",
+										LastSeen = ".DBQuote($sessionData->{'Timestamp'}).",
+										Comment = ".DBQuote($whitelist)."
 									WHERE
-										ID = ?
-									',
-									$key,$sessionData->{'Timestamp'},$sessionData->{'Timestamp'},$whitelist,$currentAutoWhitelistEntry
-								);
+										ID = ".DBQuote($currentAutoWhitelistEntry)."
+								");
 								if (!$sth) {
 									$server->log(LOG_ERR,"[GREYLISTING] Database update failed: ".cbp::dblayer::Error());
 									return $server->protocol_response(PROTO_DB_ERROR);
 								}
 							} else {
 								# Update whitelisting to the new details
-								$sth = DBDo('
+								$sth = DBDo("
 									INSERT INTO greylisting_autowhitelist
 										(TrackKey,Added,LastSeen,Comment)
 									VALUES
-										(?,?,?,?)
-									',
-									$key,$sessionData->{'Timestamp'},$sessionData->{'Timestamp'},$whitelist
-								);
+										(
+											".DBQuote($key).",
+											".DBQuote($sessionData->{'Timestamp'}).",
+											".DBQuote($sessionData->{'Timestamp'}).",
+											".DBQuote($whitelist)."
+										)
+								");
 								if (!$sth) {
 									$server->log(LOG_ERR,"[GREYLISTING] Database insert failed: ".cbp::dblayer::Error());
 									return $server->protocol_response(PROTO_DB_ERROR);
