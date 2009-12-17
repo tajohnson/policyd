@@ -34,7 +34,7 @@ our (@ISA,@EXPORT,@EXPORT_OK);
 
 
 use constant {
-	VERSION		=> "2.0.10a",
+	VERSION		=> "2.0.11a",
 };
 
 # vim: ts=4
