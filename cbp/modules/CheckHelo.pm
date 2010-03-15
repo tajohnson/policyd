@@ -112,33 +112,36 @@ sub check {
 				$server->log(LOG_ERR,"[CHECKHELO] Database query failed: ".cbp::dblayer::Error());
 				return $server->protocol_response(PROTO_DB_ERROR);
 			}
-			while (my $row = $sth->fetchrow_hashref()) {
+			while (my $row = hashifyLCtoMC($sth->fetchrow_hashref(),
+					qw( UseBlacklist BlacklistPeriod UseHRP HRPPeriod HRPLimit RejectInvalid RejectIP RejectUnresolvable )
+			)) {
+
 				# If defined, its to override
-				if (defined($row->{'useblacklist'})) {
-					$policy{'UseBlacklist'} = $row->{'useblacklist'};
+				if (defined($row->{'UseBlacklist'})) {
+					$policy{'UseBlacklist'} = $row->{'UseBlacklist'};
 				}
-				if (defined($row->{'blacklistperiod'})) {
-					$policy{'BlacklistPeriod'} = $row->{'blacklistperiod'};
-				}
-	
-				if (defined($row->{'usehrp'})) {
-					$policy{'UseHRP'} = $row->{'usehrp'};
-				}
-				if (defined($row->{'hrpperiod'})) {
-					$policy{'HRPPeriod'} = $row->{'hrpperiod'};
-				}
-				if (defined($row->{'hrplimit'})) {
-					$policy{'HRPLimit'} = $row->{'hrplimit'};
+				if (defined($row->{'BlacklistPeriod'})) {
+					$policy{'BlacklistPeriod'} = $row->{'BlacklistPeriod'};
 				}
 	
-				if (defined($row->{'rejectinvalid'})) {
-					$policy{'RejectInvalid'} = $row->{'rejectinvalid'};
+				if (defined($row->{'UseHRP'})) {
+					$policy{'UseHRP'} = $row->{'UseHRP'};
 				}
-				if (defined($row->{'rejectip'})) {
-					$policy{'RejectIP'} = $row->{'rejectip'};
+				if (defined($row->{'HRPPeriod'})) {
+					$policy{'HRPPeriod'} = $row->{'HRPPeriod'};
 				}
-				if (defined($row->{'rejectunresolvable'})) {
-					$policy{'RejectUnresolvable'} = $row->{'rejectunresolvable'};
+				if (defined($row->{'HRPLimit'})) {
+					$policy{'HRPLimit'} = $row->{'HRPLimit'};
+				}
+	
+				if (defined($row->{'RejectInvalid'})) {
+					$policy{'RejectInvalid'} = $row->{'RejectInvalid'};
+				}
+				if (defined($row->{'RejectIP'})) {
+					$policy{'RejectIP'} = $row->{'RejectIP'};
+				}
+				if (defined($row->{'RejectUnresolvable'})) {
+					$policy{'RejectUnresolvable'} = $row->{'RejectUnresolvable'};
 				}
 			} # while (my $row = $sth->fetchrow_hashref())
 		} # foreach my $policyID (@{$sessionData->{'Policy'}->{$priority}})
@@ -203,9 +206,9 @@ sub check {
 		return $server->protocol_response(PROTO_DB_ERROR);
 	}
 	# Loop with whitelist and calculate
-	while (my $row = $sth->fetchrow_hashref()) {
+	while (my $row = hashifyLCtoMC($sth->fetchrow_hashref(), qw( Source ))) {
 		# Check format is SenderIP
-		if ((my $address = $row->{'source'}) =~ s/^SenderIP://i) {
+		if ((my $address = $row->{'Source'}) =~ s/^SenderIP://i) {
 
 			# Parse CIDR into its various peices
 			my $parsedIP = parseCIDR($address);
@@ -229,7 +232,7 @@ sub check {
 			}
 
 		} else {
-			$server->log(LOG_ERR,"[CHECKHELO] Whitelist entry '".$row->{'source'}."' is invalid.");
+			$server->log(LOG_ERR,"[CHECKHELO] Whitelist entry '".$row->{'Source'}."' is invalid.");
 			DBFreeRes($sth);
 			return $server->protocol_response(PROTO_DATA_ERROR);
 		}
@@ -366,10 +369,10 @@ sub check {
 			$server->log(LOG_ERR,"Database query failed: ".cbp::dblayer::Error());
 			return $server->protocol_response(PROTO_DB_ERROR);
 		}
-		my $row = $sth->fetchrow_hashref();
+		my $row = hashifyLCtoMC($sth->fetchrow_hashref(), qw( Count ));
 
 		# If count > 0 , then its blacklisted
-		if ($row->{'count'} > 0) {
+		if ($row->{'Count'} > 0) {
 			$server->maillog("module=CheckHelo, action=reject, host=%s, helo=%s, from=%s, to=%s, reason=blacklisted",
 					$sessionData->{'ClientAddress'},
 					$sessionData->{'Helo'},
@@ -418,11 +421,11 @@ sub check {
 							$server->log(LOG_ERR,"Database query failed: ".cbp::dblayer::Error());
 							return $server->protocol_response(PROTO_DB_ERROR);
 						}
-						my $row = $sth->fetchrow_hashref();
+						my $row = hashifyLCtoMC($sth->fetchrow_hashref(), qw( Count ));
 
 
 						# If count > $limit , reject
-						if ($row->{'count'} > $policy{'HRPLimit'}) {
+						if ($row->{'Count'} > $policy{'HRPLimit'}) {
 							$server->maillog("module=CheckHelo, action=reject, host=%s, helo=%s, from=%s, to=%s, reason=hrp_blacklisted",
 									$sessionData->{'ClientAddress'},
 									$sessionData->{'Helo'},
@@ -484,13 +487,13 @@ sub cleanup
 		$server->log(LOG_ERR,"[CHECKHELO] Failed to query maximum periods: ".cbp::dblayer::Error());
 		return -1;
 	}
-	my $row = $sth->fetchrow_hashref();
+	my $row = hashifyLCtoMC($sth->fetchrow_hashref(), qw( BlacklistPeriod HRPPeriod));
 
 	# Check we have results
-	return if (!defined($row->{'blacklistperiod'}) || !defined($row->{'hrpperiod'}));
+	return if (!defined($row->{'BlacklistPeriod'}) || !defined($row->{'HRPPeriod'}));
 
 	# Work out which one is largest
-	my $period = $row->{'blacklistperiod'} > $row->{'hrpperiod'} ? $row->{'blacklistperiod'} : $row->{'hrpperiod'};
+	my $period = $row->{'BlacklistPeriod'} > $row->{'HRPPeriod'} ? $row->{'BlacklistPeriod'} : $row->{'HRPPeriod'};
 
 	# Bork if we didn't find anything of interest
 	return if (!($period > 0));
