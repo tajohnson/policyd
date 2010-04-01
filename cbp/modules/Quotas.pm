@@ -495,6 +495,11 @@ sub getEmailKey
 
 	my $key;
 
+	# Short-circuit <>
+	if ($addy eq '') {
+		return "@";
+	}
+
 	# We need to track the sender
 	if ($spec eq 'user@domain') {
 		$key = $addy;
