@@ -165,17 +165,19 @@ sub check {
 							my $elapsedTime = defined($qtrack->{'LastUpdate'}) ? ( $now - $qtrack->{'LastUpdate'} ) : $quota->{'Period'};
 							
 							# Check if elapsedTime is longer than period, or negative (time diff between servers?)
+							my $currentCounter;
 							if ($elapsedTime > $quota->{'Period'} || $elapsedTime < 0) {
 								$qtrack->{'Counter'} = 0;
 	
 							# Calculate the % of the period we have, and multiply it with the counter ... this should give us a reasonably
 							# accurate counting
 							} else {
-								$qtrack->{'Counter'} = ( 1 - ($elapsedTime / $quota->{'Period'}) ) * $qtrack->{'Counter'};
+								$currentCounter = ( 1 - ($elapsedTime / $quota->{'Period'}) ) * $qtrack->{'Counter'};
 							}
 								
 							# Make sure increment is at least 0
-							$newCounters{$qtrack->{'QuotasLimitsID'}} = $qtrack->{'Counter'} 
+							$newCounters{$qtrack->{'QuotasLimitsID'}} = defined($qtrack->{'Counter'}) ?
+									$qtrack->{'Counter'} - $currentCounter : $qtrack->{'Counter'}
 									if (!defined($newCounters{$qtrack->{'QuotasLimitsID'}}));
 	
 							# Limit type
@@ -202,6 +204,7 @@ sub check {
 							$qtrack->{'QuotasLimitsID'} = $limit->{'ID'};
 							$qtrack->{'TrackKey'} = $key;
 							$qtrack->{'Counter'} = 0;
+							$qtrack->{'LastUpdate'} = $now;
 								
 							# Make sure increment is at least 0
 							$newCounters{$qtrack->{'QuotasLimitsID'}} = $qtrack->{'Counter'} 
@@ -244,14 +247,14 @@ sub check {
 			foreach my $qtrack (@trackingList) {
 					
 				# Percent used
-				my $pused =  sprintf('%.1f', ( $newCounters{$qtrack->{'QuotasLimitsID'}} / $qtrack->{'CounterLimit'} ) * 100);
+				my $pused =  sprintf('%.1f', ( ($newCounters{$qtrack->{'QuotasLimitsID'}} + $qtrack->{'QuotasLimitsID'}) / $qtrack->{'CounterLimit'} ) * 100);
 
 				# Update database
 				my $sth = DBDo("
 					UPDATE 
 						quotas_tracking
 					SET
-						Counter = ".DBQuote($newCounters{$qtrack->{'QuotasLimitsID'}}).",
+						Counter = Counter + ".DBQuote($newCounters{$qtrack->{'QuotasLimitsID'}}).",
 						LastUpdate = ".DBQuote($now)."
 					WHERE
 						QuotasLimitsID = ".DBQuote($qtrack->{'QuotasLimitsID'})."
@@ -293,7 +296,7 @@ sub check {
 							$qtrack->{'LimitID'},
 							$qtrack->{'DBKey'},
 							$qtrack->{'LimitType'},
-							sprintf('%.0f',$newCounters{$qtrack->{'QuotasLimitsID'}}),
+							sprintf('%.0f',$newCounters{$qtrack->{'QuotasLimitsID'}} + $qtrack->{'QuotasLimitsID'}),
 							$qtrack->{'CounterLimit'},
 							$pused);
 
@@ -312,7 +315,7 @@ sub check {
 							$qtrack->{'LimitID'},
 							$qtrack->{'DBKey'},
 							$qtrack->{'LimitType'},
-							sprintf('%.0f',$newCounters{$qtrack->{'QuotasLimitsID'}}),
+							sprintf('%.0f',$newCounters{$qtrack->{'QuotasLimitsID'}} + $qtrack->{'QuotasLimitsID'}),
 							$qtrack->{'CounterLimit'},
 							$pused);
 
@@ -326,7 +329,7 @@ sub check {
 		# If we have exceeded, set verdict
 		} else {
 			# Percent used
-			my $pused =  sprintf('%.1f', ( $newCounters{$exceededQtrack->{'QuotasLimitsID'}} / $exceededQtrack->{'CounterLimit'} ) * 100);
+			my $pused =  sprintf('%.1f', ( ($newCounters{$exceededQtrack->{'QuotasLimitsID'}} + $exceededQtrack->{'QuotasLimitsID'}) / $exceededQtrack->{'CounterLimit'} ) * 100);
 
 			# Log rejection to mail log
 			$server->maillog("module=Quotas, action=%s, host=%s, helo=%s, from=%s, to=%s, reason=quota_match, policy=%s, quota=%s, limit=%s, track=%s, "
@@ -341,7 +344,7 @@ sub check {
 					$exceededQtrack->{'LimitID'},
 					$exceededQtrack->{'DBKey'},
 					$exceededQtrack->{'LimitType'},
-					sprintf('%.0f',$newCounters{$exceededQtrack->{'QuotasLimitsID'}}),
+					sprintf('%.0f',$newCounters{$exceededQtrack->{'QuotasLimitsID'}} + $exceededQtrack->{'QuotasLimitsID'}),
 					$exceededQtrack->{'CounterLimit'},
 					$pused);
 
