@@ -1,8 +1,8 @@
 %define apacheconfdir %{_sysconfdir}/httpd/conf.d
 # this path is hardcoded
-%define cblibdir %{_libdir}/policyd-2.0
+%define cblibdir %{_libdir}/policyd-2.1
 
-%define cvsver yyyymmddhhmm
+%define cvsver 201009061133
 
 %if %{cvsver}
 %define version 2.1
@@ -135,6 +135,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Sep 06 2010 Nigel Kukard  <nkukard@lbsd.net>
+- Release of snapshot-201009061133
+
 * Wed Nov 19 2008 Nigel Kukard  <nkukard@lbsd.net>
 - Various updates and changes
 
