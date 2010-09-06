@@ -1,0 +1,1942 @@
+------------------------------------------------------------------------
+r512 | nkukard | 2010-09-06 11:38:11 +0000 (Mon, 06 Sep 2010) | 2 lines
+
+* Added lib64 to v2.0.x aswell
+
+------------------------------------------------------------------------
+r509 | nkukard | 2010-08-26 06:58:23 +0000 (Thu, 26 Aug 2010) | 3 lines
+
+* Race condition fix when updating quota values
+- Robert Anderson <randerson@lbsd.net>
+
+------------------------------------------------------------------------
+r508 | nkukard | 2010-05-17 10:46:03 +0000 (Mon, 17 May 2010) | 5 lines
+
+* Fix cleanup of helo/ehlo data
+- Robert Anderson <randerson@lbsd.net>
+
+Thanks Tomoyuki Murakami
+
+------------------------------------------------------------------------
+r507 | nkukard | 2010-04-14 19:53:51 +0000 (Wed, 14 Apr 2010) | 2 lines
+
+* Fixed display of errors when there is a configuration issue
+
+------------------------------------------------------------------------
+r505 | nkukard | 2010-04-01 08:31:17 +0000 (Thu, 01 Apr 2010) | 3 lines
+
+* Treat <> properly in tracking tables
+- Closes bug #16
+
+------------------------------------------------------------------------
+r503 | nkukard | 2010-03-15 08:33:07 +0000 (Mon, 15 Mar 2010) | 2 lines
+
+* Fixed case issue with some database column names as this could cause some queries to fail
+
+------------------------------------------------------------------------
+r501 | nkukard | 2009-12-17 06:40:40 +0000 (Thu, 17 Dec 2009) | 2 lines
+
+* Bumped to 2.0.11a
+
+------------------------------------------------------------------------
+r499 | nkukard | 2009-12-17 06:23:05 +0000 (Thu, 17 Dec 2009) | 2 lines
+
+* Converted  template SQL statements into strings, bug crept in with a code sync to trunk
+
+------------------------------------------------------------------------
+r496 | nkukard | 2009-12-14 06:20:23 +0000 (Mon, 14 Dec 2009) | 2 lines
+
+* Bumped version to 2.0.10a
+
+------------------------------------------------------------------------
+r485 | nkukard | 2009-11-24 12:52:30 +0000 (Tue, 24 Nov 2009) | 3 lines
+
+* If we encounter an invalid IP in the greylisting whitelist, throw a warning not a hard error
+- Robert Anderson <randerson@lbsd.net>
+
+------------------------------------------------------------------------
+r484 | nkukard | 2009-11-24 10:59:24 +0000 (Tue, 24 Nov 2009) | 2 lines
+
+* Cleaned up INSTALL doc and config file
+
+------------------------------------------------------------------------
+r483 | nkukard | 2009-11-16 07:36:23 +0000 (Mon, 16 Nov 2009) | 3 lines
+
+* Better handling of CIDR's in parseCIDR()
+- Rober Anderson <randerson@lbsd.net>
+
+------------------------------------------------------------------------
+r482 | nkukard | 2009-11-10 11:20:28 +0000 (Tue, 10 Nov 2009) | 2 lines
+
+* Protocol constant fix
+
+------------------------------------------------------------------------
+r481 | nkukard | 2009-10-14 09:14:57 +0000 (Wed, 14 Oct 2009) | 2 lines
+
+* Version bump to 2.0.9a
+
+------------------------------------------------------------------------
+r479 | nkukard | 2009-08-21 08:14:23 +0000 (Fri, 21 Aug 2009) | 3 lines
+
+* Default to unix logging to be compatibile with most installations as native is not yet supported
+- v2.1.x defaults to native
+
+------------------------------------------------------------------------
+r478 | nkukard | 2009-08-14 06:08:50 +0000 (Fri, 14 Aug 2009) | 2 lines
+
+* More flexible configuration of logging
+
+------------------------------------------------------------------------
+r475 | nkukard | 2009-07-16 10:53:17 +0000 (Thu, 16 Jul 2009) | 2 lines
+
+* Sender IP is a CIDR mask, not a network mask
+
+------------------------------------------------------------------------
+r474 | nkukard | 2009-07-15 12:12:05 +0000 (Wed, 15 Jul 2009) | 11 lines
+
+* Fixes for greylisting portion of web interface, which is slighlty broken.
+- by Tomoyuki Murakami
+
+I have noticed that setting greylisting preferences from webui updates 
+(or reset) things in-correctly. For instance, GreylistUnAuthValidity 
+cannot set any seconds. AWL After Percentage always reset to nothing 
+(not NULL) and, so on.
+
+Here is a patch to quick fix.
+
+
+------------------------------------------------------------------------
+r473 | nkukard | 2009-07-05 15:05:01 +0000 (Sun, 05 Jul 2009) | 2 lines
+
+* Pulled in r472 from trunk, indentation fixup
+
+------------------------------------------------------------------------
+r471 | nkukard | 2009-06-29 07:25:52 +0000 (Mon, 29 Jun 2009) | 2 lines
+
+* Fixed logging issues when protocol attributes are invalid
+
+------------------------------------------------------------------------
+r467 | nkukard | 2009-06-22 12:11:26 +0000 (Mon, 22 Jun 2009) | 3 lines
+
+* Allow DBDo() to take parameters, this fixes bugs with all queries utilizing ?'s as placeholders
+- Thanks Peter Kiem
+
+------------------------------------------------------------------------
+r466 | nkukard | 2009-06-22 08:45:17 +0000 (Mon, 22 Jun 2009) | 2 lines
+
+* Use Timestamp and not UnixTimestamp
+
+------------------------------------------------------------------------
+r465 | nkukard | 2009-06-21 20:47:41 +0000 (Sun, 21 Jun 2009) | 3 lines
+
+* Fixed tempfail inversion
+- Closes bug #14
+
+------------------------------------------------------------------------
+r464 | nkukard | 2009-06-19 06:50:29 +0000 (Fri, 19 Jun 2009) | 2 lines
+
+* Remove more table prefixes that crept in
+
+------------------------------------------------------------------------
+r463 | nkukard | 2009-06-19 06:08:26 +0000 (Fri, 19 Jun 2009) | 2 lines
+
+* Table prefixes are not supported in v2.0.x yet
+
+------------------------------------------------------------------------
+r461 | nkukard | 2009-06-01 06:03:27 +0000 (Mon, 01 Jun 2009) | 2 lines
+
+* Added support for OK in access control module
+
+------------------------------------------------------------------------
+r460 | nkukard | 2009-06-01 05:32:46 +0000 (Mon, 01 Jun 2009) | 2 lines
+
+* Fixed bug when handling .something.example.com style reverse dns names
+
+------------------------------------------------------------------------
+r441 | nkukard | 2009-05-20 10:26:39 +0000 (Wed, 20 May 2009) | 3 lines
+
+* Remember to closeCuror() before we start doing embedded queries, some versions of PHP don't like this
+- Thanks Eugene Krapivin
+
+------------------------------------------------------------------------
+r440 | nkukard | 2009-05-17 19:23:18 +0000 (Sun, 17 May 2009) | 2 lines
+
+* Fixed AUTHORS
+
+------------------------------------------------------------------------
+r437 | nkukard | 2009-05-09 07:59:10 +0000 (Sat, 09 May 2009) | 2 lines
+
+* Fixed logging lines being displayed when they were disabled
+
+------------------------------------------------------------------------
+r436 | nkukard | 2009-05-09 06:59:21 +0000 (Sat, 09 May 2009) | 2 lines
+
+* Small copyright fixes
+
+------------------------------------------------------------------------
+r433 | nkukard | 2009-05-08 06:58:39 +0000 (Fri, 08 May 2009) | 2 lines
+
+* Bump svn branch to 2.0.8a
+
+------------------------------------------------------------------------
+r431 | nkukard | 2009-05-05 07:56:44 +0000 (Tue, 05 May 2009) | 2 lines
+
+* Copyright update
+
+------------------------------------------------------------------------
+r430 | nkukard | 2009-04-08 08:27:59 +0000 (Wed, 08 Apr 2009) | 2 lines
+
+* Fixed bug where getPolicy was being called in the amavisd-policyd module with incorrect parameters. This was triggered when recipeits changed because of aliases or similar and the alias is not found in the session data stored during the Postfix RCPT checks.
+
+------------------------------------------------------------------------
+r428 | nkukard | 2009-03-29 12:48:09 +0000 (Sun, 29 Mar 2009) | 2 lines
+
+* Fixed spurious "REJECT" in CheckHelo module
+
+------------------------------------------------------------------------
+r426 | nkukard | 2009-03-28 16:10:51 +0000 (Sat, 28 Mar 2009) | 2 lines
+
+* Install cbpolicyd in sbin and cbpadmin in bin
+
+------------------------------------------------------------------------
+r425 | nkukard | 2009-03-28 15:16:46 +0000 (Sat, 28 Mar 2009) | 2 lines
+
+* Fixed Amavis support, the last Received: header was being accessed in the wrong way
+
+------------------------------------------------------------------------
+r424 | nkukard | 2009-03-24 10:25:55 +0000 (Tue, 24 Mar 2009) | 2 lines
+
+* No feedback from testers, assuming this patch fixes the greylisting race condition
+
+------------------------------------------------------------------------
+r423 | nkukard | 2009-02-28 20:37:01 +0000 (Sat, 28 Feb 2009) | 2 lines
+
+* Add support for RFC3848 headers in amavis plugin
+
+------------------------------------------------------------------------
+r416 | nkukard | 2009-02-18 09:55:20 +0000 (Wed, 18 Feb 2009) | 2 lines
+
+* Made old and new Config::IniFiles work
+
+------------------------------------------------------------------------
+r411 | nkukard | 2009-02-14 14:19:01 +0000 (Sat, 14 Feb 2009) | 2 lines
+
+* Fixed up Config::IniFiles usage, this fixes breakage introduced with functionality changes in newer versions
+
+------------------------------------------------------------------------
+r410 | nkukard | 2009-02-09 12:19:04 +0000 (Mon, 09 Feb 2009) | 2 lines
+
+* Fixed Postfix quota being overwritten
+
+------------------------------------------------------------------------
+r409 | nkukard | 2009-01-07 16:32:14 +0000 (Wed, 07 Jan 2009) | 3 lines
+
+* Fixed default naming of the cluebringer database in the webui config to be inline with the other config file
+* Added note that the Postfix support in the webui is unsupported
+
+------------------------------------------------------------------------
+r408 | nkukard | 2009-01-06 07:03:37 +0000 (Tue, 06 Jan 2009) | 2 lines
+
+* Bump branch to 2.0.7a
+
+------------------------------------------------------------------------
+r406 | nkukard | 2009-01-06 06:53:09 +0000 (Tue, 06 Jan 2009) | 2 lines
+
+* Commit of resources required to build a .rpm
+
+------------------------------------------------------------------------
+r405 | nkukard | 2009-01-02 16:16:28 +0000 (Fri, 02 Jan 2009) | 2 lines
+
+* Fixed bug in quotas where non-existant counters were being used
+
+------------------------------------------------------------------------
+r386 | nkukard | 2008-11-11 20:45:40 +0000 (Tue, 11 Nov 2008) | 2 lines
+
+* Fixed the rest of the options in greylisting not working with inherit option set
+
+------------------------------------------------------------------------
+r385 | nkukard | 2008-11-11 20:09:10 +0000 (Tue, 11 Nov 2008) | 2 lines
+
+* Fixed same inherit bug for percentages
+
+------------------------------------------------------------------------
+r384 | nkukard | 2008-11-11 19:57:21 +0000 (Tue, 11 Nov 2008) | 2 lines
+
+* Fixed changing of use autowhitelist/blacklist to work properly with changing to "Inherit"
+
+------------------------------------------------------------------------
+r382 | nkukard | 2008-11-11 19:32:27 +0000 (Tue, 11 Nov 2008) | 2 lines
+
+* Fixed disabling of greylisting, it showed up always as inherited and not disabled
+
+------------------------------------------------------------------------
+r375 | nkukard | 2008-11-10 20:16:56 +0000 (Mon, 10 Nov 2008) | 2 lines
+
+* Added requirement of Mail::SPF for SPF support
+
+------------------------------------------------------------------------
+r374 | nkukard | 2008-11-10 19:42:33 +0000 (Mon, 10 Nov 2008) | 3 lines
+
+* Added requirement for database server
+* Added requirement for PHP v5
+
+------------------------------------------------------------------------
+r373 | nkukard | 2008-11-10 05:33:09 +0000 (Mon, 10 Nov 2008) | 2 lines
+
+* Fixed bug where non-SASL authenticated email was being matched by the $* specification
+
+------------------------------------------------------------------------
+r371 | nkukard | 2008-10-30 09:47:45 +0000 (Thu, 30 Oct 2008) | 2 lines
+
+* Fixed bug where the last quota limit was reported as the one generating a verdict regardless of which one before it actually did
+
+------------------------------------------------------------------------
+r370 | nkukard | 2008-10-30 09:44:53 +0000 (Thu, 30 Oct 2008) | 3 lines
+
+* Sucked in r369 from trunk, reversion of r327
+- We already output logs regarding the verdict, no use doing it again
+
+------------------------------------------------------------------------
+r365 | nkukard | 2008-10-17 06:30:23 +0000 (Fri, 17 Oct 2008) | 2 lines
+
+* Fix error beign displayed when policy priority is 0
+
+------------------------------------------------------------------------
+r364 | nkukard | 2008-10-17 06:20:53 +0000 (Fri, 17 Oct 2008) | 2 lines
+
+* Initialize recipient data to an empty hash, we may not even get any recipient data and we don't want this to be undefined
+
+------------------------------------------------------------------------
+r363 | nkukard | 2008-10-17 06:18:47 +0000 (Fri, 17 Oct 2008) | 2 lines
+
+* Ignore recipient data in the DB if its null
+
+------------------------------------------------------------------------
+r362 | nkukard | 2008-10-17 05:58:56 +0000 (Fri, 17 Oct 2008) | 2 lines
+
+* Make the CIDR value for IP specifications optional, an IP without it now defaults to /32
+
+------------------------------------------------------------------------
+r360 | nkukard | 2008-10-01 08:56:29 +0000 (Wed, 01 Oct 2008) | 2 lines
+
+* Bumped version to 2.0.6a
+
+------------------------------------------------------------------------
+r358 | nkukard | 2008-09-30 18:19:47 +0000 (Tue, 30 Sep 2008) | 3 lines
+
+Pulled in r350 from trunk
+* Updated links in pages to new website urls
+
+------------------------------------------------------------------------
+r357 | nkukard | 2008-09-30 18:06:46 +0000 (Tue, 30 Sep 2008) | 3 lines
+
+Pulled in r356 from trunk
+* Clarified that policy priorities are prcessed in an ascending fashion, 0 being highest priority (first), 100 being the lowest (last).
+
+------------------------------------------------------------------------
+r344 | nkukard | 2008-09-28 11:48:26 +0000 (Sun, 28 Sep 2008) | 3 lines
+
+Pulled in r343 from trunk
+* Better loadable module handling for cbpadmin
+
+------------------------------------------------------------------------
+r341 | nkukard | 2008-09-28 08:11:35 +0000 (Sun, 28 Sep 2008) | 2 lines
+
+* Check the return codes from removing database entries more carefully
+
+------------------------------------------------------------------------
+r340 | nkukard | 2008-09-28 07:41:58 +0000 (Sun, 28 Sep 2008) | 2 lines
+
+* Fixed error message when deleting policies
+
+------------------------------------------------------------------------
+r338 | nkukard | 2008-09-27 22:03:49 +0000 (Sat, 27 Sep 2008) | 2 lines
+
+* Fixed module logging in main cbpolicyd server
+
+------------------------------------------------------------------------
+r336 | nkukard | 2008-09-27 21:01:10 +0000 (Sat, 27 Sep 2008) | 2 lines
+
+* Fixed logging when Quotas which are not matched
+
+------------------------------------------------------------------------
+r334 | nkukard | 2008-09-27 20:28:37 +0000 (Sat, 27 Sep 2008) | 2 lines
+
+* Added comment with mysql DB config in to amavisd-policyd integration module
+
+------------------------------------------------------------------------
+r333 | nkukard | 2008-09-27 20:21:45 +0000 (Sat, 27 Sep 2008) | 3 lines
+
+Pulled in r332 from trunk
+* Removed stray file
+
+------------------------------------------------------------------------
+r328 | nkukard | 2008-09-27 16:55:15 +0000 (Sat, 27 Sep 2008) | 3 lines
+
+Pulled in r327 from trunk
+* Fixed logging of verdict in quotas module
+
+------------------------------------------------------------------------
+r324 | nkukard | 2008-09-27 16:35:14 +0000 (Sat, 27 Sep 2008) | 2 lines
+
+* no_quota should read no_verdict in Quotas module
+
+------------------------------------------------------------------------
+r323 | nkukard | 2008-09-26 18:36:50 +0000 (Fri, 26 Sep 2008) | 7 lines
+
+Pulled in r315
+-
+Quotas:
+* Fixed type on 'size'
+* Fixed typo in debug message
+* Fixed bug where end-of-data state was not being processed
+
+------------------------------------------------------------------------
+r322 | nkukard | 2008-09-26 18:33:45 +0000 (Fri, 26 Sep 2008) | 4 lines
+
+Pulled in r314 from trunk
+-
+* Removed stray files
+
+------------------------------------------------------------------------
+r321 | nkukard | 2008-09-26 18:30:53 +0000 (Fri, 26 Sep 2008) | 4 lines
+
+Pulled in r316 from trunk
+-
+* Fixed stray comma in Quotas module
+
+------------------------------------------------------------------------
+r313 | nkukard | 2008-09-20 18:35:55 +0000 (Sat, 20 Sep 2008) | 3 lines
+
+* Fixed bug in Quotas module where if all limits were disabled a temporary 450 result was generated
+- Thanks J. Duggan
+
+------------------------------------------------------------------------
+r312 | nkukard | 2008-09-11 05:23:52 +0000 (Thu, 11 Sep 2008) | 2 lines
+
+* Add more debugging info to amavisd module so we can catch the received line if its not parsable
+
+------------------------------------------------------------------------
+r311 | nkukard | 2008-09-09 16:05:33 +0000 (Tue, 09 Sep 2008) | 2 lines
+
+* Backported database portability fixes from trunk
+
+------------------------------------------------------------------------
+r310 | nkukard | 2008-09-09 15:53:25 +0000 (Tue, 09 Sep 2008) | 2 lines
+
+* Fixed use of short PHP tags <?  with  <?php
+
+------------------------------------------------------------------------
+r309 | nkukard | 2008-09-09 12:56:14 +0000 (Tue, 09 Sep 2008) | 2 lines
+
+* Announce the version of policyd we're using when starting up
+
+------------------------------------------------------------------------
+r305 | nkukard | 2008-09-06 06:47:00 +0000 (Sat, 06 Sep 2008) | 2 lines
+
+* Backported support for reverse DNS policies
+
+------------------------------------------------------------------------
+r304 | nkukard | 2008-09-05 10:01:52 +0000 (Fri, 05 Sep 2008) | 2 lines
+
+* Ported commit 303 to stable v2.0.x
+
+------------------------------------------------------------------------
+r302 | nkukard | 2008-08-30 17:57:17 +0000 (Sat, 30 Aug 2008) | 2 lines
+
+* Backported SASL username opiton in webui
+
+------------------------------------------------------------------------
+r297 | nkukard | 2008-08-21 07:38:56 +0000 (Thu, 21 Aug 2008) | 2 lines
+
+* Version bump to 2.0.5a
+
+------------------------------------------------------------------------
+r295 | nkukard | 2008-08-20 21:10:52 +0000 (Wed, 20 Aug 2008) | 2 lines
+
+* Merged in commits 290-294 from trunk, fixes bug #9
+
+------------------------------------------------------------------------
+r289 | nkukard | 2008-08-19 10:11:33 +0000 (Tue, 19 Aug 2008) | 2 lines
+
+* Version bump to 2.0.4a
+
+------------------------------------------------------------------------
+r287 | nkukard | 2008-08-18 19:17:40 +0000 (Mon, 18 Aug 2008) | 2 lines
+
+* Fixed spelling mistakes & typos
+
+------------------------------------------------------------------------
+r286 | nkukard | 2008-08-18 19:14:26 +0000 (Mon, 18 Aug 2008) | 3 lines
+
+* Better policy debugging
+* Various bug fixes and better handling of folding groups into policy sources and destinations
+
+------------------------------------------------------------------------
+r285 | nkukard | 2008-08-18 18:59:45 +0000 (Mon, 18 Aug 2008) | 2 lines
+
+* Fixed group negation in destination aswell
+
+------------------------------------------------------------------------
+r284 | nkukard | 2008-08-18 17:09:42 +0000 (Mon, 18 Aug 2008) | 3 lines
+
+* Fixed group negation
+- Big thanks to Johannes Russek for tracking this down
+
+------------------------------------------------------------------------
+r282 | nkukard | 2008-08-18 16:59:10 +0000 (Mon, 18 Aug 2008) | 2 lines
+
+* Bumped SVN versions
+
+------------------------------------------------------------------------
+r281 | nkukard | 2008-08-18 16:57:19 +0000 (Mon, 18 Aug 2008) | 2 lines
+
+* Forked off v2.0.x maintenance branch
+
+------------------------------------------------------------------------
+r280 | nkukard | 2008-08-18 16:49:41 +0000 (Mon, 18 Aug 2008) | 3 lines
+
+* Added special case $- for matching no SASL username
+- Thanks Jay
+
+------------------------------------------------------------------------
+r279 | nkukard | 2008-08-18 16:39:00 +0000 (Mon, 18 Aug 2008) | 3 lines
+
+* Match SASL user first, so its not mistaken for a email address
+- Thanks Jay
+
+------------------------------------------------------------------------
+r278 | nkukard | 2008-07-31 11:25:37 +0000 (Thu, 31 Jul 2008) | 2 lines
+
+* Must implement milter support at some stage
+
+------------------------------------------------------------------------
+r277 | nkukard | 2008-07-30 19:17:13 +0000 (Wed, 30 Jul 2008) | 2 lines
+
+* Updated requirements
+
+------------------------------------------------------------------------
+r276 | nkukard | 2008-07-29 19:12:04 +0000 (Tue, 29 Jul 2008) | 2 lines
+
+* Added another requirement Cache::FastMmap
+
+------------------------------------------------------------------------
+r275 | nkukard | 2008-07-29 19:02:21 +0000 (Tue, 29 Jul 2008) | 2 lines
+
+* Added Config::IniFiles to Requirements list
+
+------------------------------------------------------------------------
+r274 | nkukard | 2008-07-29 14:29:13 +0000 (Tue, 29 Jul 2008) | 2 lines
+
+* Updated todo
+
+------------------------------------------------------------------------
+r273 | nkukard | 2008-07-27 17:35:21 +0000 (Sun, 27 Jul 2008) | 2 lines
+
+* Updated TODO
+
+------------------------------------------------------------------------
+r272 | nkukard | 2008-07-25 20:53:35 +0000 (Fri, 25 Jul 2008) | 2 lines
+
+* Updated TODO, setup lists of features to come into 2.1
+
+------------------------------------------------------------------------
+r271 | nkukard | 2008-07-25 20:47:23 +0000 (Fri, 25 Jul 2008) | 2 lines
+
+* Added TODO for helo blacklist wildcard matching
+
+------------------------------------------------------------------------
+r270 | nkukard | 2008-07-25 20:41:05 +0000 (Fri, 25 Jul 2008) | 2 lines
+
+* Fixed DEFER option for quotas
+
+------------------------------------------------------------------------
+r269 | nkukard | 2008-07-24 07:45:47 +0000 (Thu, 24 Jul 2008) | 2 lines
+
+* Updated TODO with whitelist & blacklist support
+
+------------------------------------------------------------------------
+r267 | nkukard | 2008-07-21 09:14:21 +0000 (Mon, 21 Jul 2008) | 2 lines
+
+* Version bump to 2.0.2
+
+------------------------------------------------------------------------
+r266 | nkukard | 2008-07-18 08:58:03 +0000 (Fri, 18 Jul 2008) | 2 lines
+
+* Updated todo
+
+------------------------------------------------------------------------
+r265 | nkukard | 2008-07-18 07:44:32 +0000 (Fri, 18 Jul 2008) | 2 lines
+
+* Initialize protocol before processing requests
+
+------------------------------------------------------------------------
+r264 | nkukard | 2008-07-18 06:32:03 +0000 (Fri, 18 Jul 2008) | 2 lines
+
+* Added missing greylisting.tsql to install howto
+
+------------------------------------------------------------------------
+r263 | nkukard | 2008-07-15 07:04:33 +0000 (Tue, 15 Jul 2008) | 2 lines
+
+* Add option to defer on quota exceed
+
+------------------------------------------------------------------------
+r262 | nkukard | 2008-07-09 12:33:04 +0000 (Wed, 09 Jul 2008) | 2 lines
+
+* Updated TODO
+
+------------------------------------------------------------------------
+r261 | nkukard | 2008-07-05 22:32:34 +0000 (Sat, 05 Jul 2008) | 2 lines
+
+* Added policyd support patch for amavisd-new 2.6.1
+
+------------------------------------------------------------------------
+r260 | nkukard | 2008-07-05 21:21:43 +0000 (Sat, 05 Jul 2008) | 2 lines
+
+* Fixed stray '
+
+------------------------------------------------------------------------
+r259 | nkukard | 2008-07-03 13:45:36 +0000 (Thu, 03 Jul 2008) | 2 lines
+
+* Few clarifications on installation
+
+------------------------------------------------------------------------
+r258 | nkukard | 2008-07-03 05:47:54 +0000 (Thu, 03 Jul 2008) | 2 lines
+
+* When removing a Postfix email address, remove it from all distribution groups
+
+------------------------------------------------------------------------
+r257 | nkukard | 2008-07-03 05:33:50 +0000 (Thu, 03 Jul 2008) | 2 lines
+
+* Order Postfix distribution group display
+
+------------------------------------------------------------------------
+r256 | nkukard | 2008-07-03 05:30:38 +0000 (Thu, 03 Jul 2008) | 3 lines
+
+* Fix for webui, when creating Postfix configuration don't default to eventhing being disabled
+- Thanks Arno
+
+------------------------------------------------------------------------
+r255 | nkukard | 2008-06-27 08:58:31 +0000 (Fri, 27 Jun 2008) | 2 lines
+
+* Better support for newer versions of Cache-FastMmap
+
+------------------------------------------------------------------------
+r254 | nkukard | 2008-06-27 08:55:02 +0000 (Fri, 27 Jun 2008) | 2 lines
+
+* Fixed handling of Postfix policy delegation protocol
+
+------------------------------------------------------------------------
+r253 | nkukard | 2008-06-26 12:11:59 +0000 (Thu, 26 Jun 2008) | 2 lines
+
+* Set table charset to latin1 for MySQL or we exceed the MySQL index length limitation
+
+------------------------------------------------------------------------
+r252 | nkukard | 2008-06-26 11:37:57 +0000 (Thu, 26 Jun 2008) | 4 lines
+
+* Fixed rogue ,'s in SQL
+* Added CREATE INDEX instead of INDEX() for better cross-database support
+* Added indexing back to sqlite
+
+------------------------------------------------------------------------
+r251 | nkukard | 2008-06-25 14:24:55 +0000 (Wed, 25 Jun 2008) | 3 lines
+
+* Fixed typo and better error message
+- Thanks Ghen
+
+------------------------------------------------------------------------
+r250 | nkukard | 2008-06-24 09:20:27 +0000 (Tue, 24 Jun 2008) | 2 lines
+
+* Fixed support for broken browsers
+
+------------------------------------------------------------------------
+r248 | nkukard | 2008-06-08 18:23:32 +0000 (Sun, 08 Jun 2008) | 2 lines
+
+* Improve indexing of columns used during cleanup and queries
+
+------------------------------------------------------------------------
+r247 | nkukard | 2008-06-08 18:20:00 +0000 (Sun, 08 Jun 2008) | 2 lines
+
+* Improve query speed when cleaning up
+
+------------------------------------------------------------------------
+r246 | nkukard | 2008-06-08 18:17:53 +0000 (Sun, 08 Jun 2008) | 2 lines
+
+* Comitted patch from Geert to fix cbpadmin printing everything out to STDERR
+
+------------------------------------------------------------------------
+r245 | nkukard | 2008-05-13 14:14:31 +0000 (Tue, 13 May 2008) | 2 lines
+
+* Make sure HELO is set, else we are trying to log undefined values
+
+------------------------------------------------------------------------
+r244 | nkukard | 2008-05-12 12:06:40 +0000 (Mon, 12 May 2008) | 2 lines
+
+* Fixed SQL syntax to be compatible with PostgreSQL
+
+------------------------------------------------------------------------
+r243 | nkukard | 2008-05-07 13:57:16 +0000 (Wed, 07 May 2008) | 2 lines
+
+* Added configurable return message result todo
+
+------------------------------------------------------------------------
+r241 | nkukard | 2008-05-07 13:07:46 +0000 (Wed, 07 May 2008) | 2 lines
+
+* Updated TODO & WISHLIST
+
+------------------------------------------------------------------------
+r240 | nkukard | 2008-05-06 13:56:33 +0000 (Tue, 06 May 2008) | 2 lines
+
+* Updated TODO
+
+------------------------------------------------------------------------
+r239 | nkukard | 2008-05-06 13:02:57 +0000 (Tue, 06 May 2008) | 3 lines
+
+* Fixed database timeout not working, thanks Geert
+* Removed duplicate default config for 'timeout'
+
+------------------------------------------------------------------------
+r238 | nkukard | 2008-04-30 12:07:14 +0000 (Wed, 30 Apr 2008) | 2 lines
+
+* Allow use of "helo_name" in HTTP protocols
+
+------------------------------------------------------------------------
+r237 | nkukard | 2008-04-30 12:00:13 +0000 (Wed, 30 Apr 2008) | 2 lines
+
+* Fixed typo
+
+------------------------------------------------------------------------
+r236 | nkukard | 2008-04-30 05:42:36 +0000 (Wed, 30 Apr 2008) | 2 lines
+
+* Fixed IP CIDR's for local ranges, resolves #5 & #6
+
+------------------------------------------------------------------------
+r235 | nkukard | 2008-04-05 07:56:27 +0000 (Sat, 05 Apr 2008) | 3 lines
+
+* Use VARCHAR(255) instead to TINYTEXT to be more portable
+- Thanks Andreas
+
+------------------------------------------------------------------------
+r234 | nkukard | 2008-04-02 17:34:10 +0000 (Wed, 02 Apr 2008) | 3 lines
+
+* Quotas: We use big integers for timestamps not DATETIME
+- Thanks Andreas
+
+------------------------------------------------------------------------
+r233 | nkukard | 2008-04-02 14:59:04 +0000 (Wed, 02 Apr 2008) | 3 lines
+
+* PostgreSQL requires 'PRIMARY KEY' to be specified for SERIAL types to achive the same as MySQL's SERIAL type
+- Thanks Andreas
+
+------------------------------------------------------------------------
+r232 | nkukard | 2008-03-30 22:16:03 +0000 (Sun, 30 Mar 2008) | 2 lines
+
+* Whitelisting must be done by ech module
+
+------------------------------------------------------------------------
+r231 | nkukard | 2008-03-28 14:17:09 +0000 (Fri, 28 Mar 2008) | 2 lines
+
+* Bigfish.com operates a large number of servers behind single IP's
+
+------------------------------------------------------------------------
+r230 | nkukard | 2008-03-26 14:03:16 +0000 (Wed, 26 Mar 2008) | 2 lines
+
+* Added support to display, #1
+
+------------------------------------------------------------------------
+r229 | nkukard | 2008-03-25 05:28:59 +0000 (Tue, 25 Mar 2008) | 2 lines
+
+* Updated TODO
+
+------------------------------------------------------------------------
+r228 | nkukard | 2008-03-24 16:11:33 +0000 (Mon, 24 Mar 2008) | 2 lines
+
+* Fixed disabled flag not working with postfix mailboxes
+
+------------------------------------------------------------------------
+r227 | nkukard | 2008-03-24 16:03:02 +0000 (Mon, 24 Mar 2008) | 2 lines
+
+* Encrypt mailbox passwords
+
+------------------------------------------------------------------------
+r226 | nkukard | 2008-03-21 19:37:07 +0000 (Fri, 21 Mar 2008) | 2 lines
+
+* small JS fixup not to display tooltip for normal links
+
+------------------------------------------------------------------------
+r225 | nkukard | 2008-03-21 18:33:50 +0000 (Fri, 21 Mar 2008) | 2 lines
+
+* Added fancy tooltips to most of the config options to make it easier for first-timers to configure Policyd v2
+
+------------------------------------------------------------------------
+r224 | nkukard | 2008-03-20 12:30:38 +0000 (Thu, 20 Mar 2008) | 2 lines
+
+* Close cursor on fetchObject
+
+------------------------------------------------------------------------
+r223 | nkukard | 2008-03-20 11:00:28 +0000 (Thu, 20 Mar 2008) | 2 lines
+
+* Removed a debug line
+
+------------------------------------------------------------------------
+r222 | nkukard | 2008-03-20 09:25:38 +0000 (Thu, 20 Mar 2008) | 3 lines
+
+* Fixed bugin amavisd-change regarding list fields
+* Added Protocols to main features page
+
+------------------------------------------------------------------------
+r221 | nkukard | 2008-03-20 07:26:49 +0000 (Thu, 20 Mar 2008) | 2 lines
+
+* Updated install document
+
+------------------------------------------------------------------------
+r220 | nkukard | 2008-03-20 06:49:47 +0000 (Thu, 20 Mar 2008) | 2 lines
+
+* Added library path to executables & amavisd module
+
+------------------------------------------------------------------------
+r219 | nkukard | 2008-03-19 16:07:02 +0000 (Wed, 19 Mar 2008) | 2 lines
+
+* Check if result is defined, not the result of the function
+
+------------------------------------------------------------------------
+r218 | nkukard | 2008-03-19 15:22:15 +0000 (Wed, 19 Mar 2008) | 2 lines
+
+* Added support to tune server preforking mechanism
+
+------------------------------------------------------------------------
+r217 | nkukard | 2008-03-19 15:00:24 +0000 (Wed, 19 Mar 2008) | 2 lines
+
+* Fixed pretty serious bug, when one specified auto blacklisting percentage, if the count was reached it would always blacklist the host
+
+------------------------------------------------------------------------
+r216 | nkukard | 2008-03-19 07:50:09 +0000 (Wed, 19 Mar 2008) | 2 lines
+
+* Fixed typo in accesscontrol-add
+
+------------------------------------------------------------------------
+r215 | nkukard | 2008-03-19 07:14:32 +0000 (Wed, 19 Mar 2008) | 2 lines
+
+* Remove ID column from session_tracking, requirement for this was removed yesterday
+
+------------------------------------------------------------------------
+r214 | nkukard | 2008-03-18 18:45:24 +0000 (Tue, 18 Mar 2008) | 2 lines
+
+* Removed some debugging info which shouldn't be here
+
+------------------------------------------------------------------------
+r213 | nkukard | 2008-03-18 18:39:27 +0000 (Tue, 18 Mar 2008) | 4 lines
+
+* Added config option log_mail, this is where we log the mail logs to ... either "main" or "maillog"
+- main logs to cbpolicyd's log mechanism
+- maillog logs to syslog under mail/info
+
+------------------------------------------------------------------------
+r212 | nkukard | 2008-03-18 17:51:51 +0000 (Tue, 18 Mar 2008) | 2 lines
+
+* We don't use GreylistingID anymore, did we ever?
+
+------------------------------------------------------------------------
+r211 | nkukard | 2008-03-18 16:46:48 +0000 (Tue, 18 Mar 2008) | 2 lines
+
+* Fixed cidr_allow and cidr_deny. Comma, whitespace or semi-colon separated.
+
+------------------------------------------------------------------------
+r210 | nkukard | 2008-03-18 15:56:15 +0000 (Tue, 18 Mar 2008) | 2 lines
+
+* Fixed typo in debug messages, this is Bizanga, not Postfix
+
+------------------------------------------------------------------------
+r209 | nkukard | 2008-03-18 15:50:04 +0000 (Tue, 18 Mar 2008) | 2 lines
+
+* Added more protocol validation debugging
+
+------------------------------------------------------------------------
+r208 | nkukard | 2008-03-18 15:11:48 +0000 (Tue, 18 Mar 2008) | 2 lines
+
+* Allow <> email address to be used as sender in protocols data validation functions
+
+------------------------------------------------------------------------
+r207 | nkukard | 2008-03-18 14:43:03 +0000 (Tue, 18 Mar 2008) | 2 lines
+
+* Use count(*) instead of count(ID)
+
+------------------------------------------------------------------------
+r206 | nkukard | 2008-03-18 13:59:58 +0000 (Tue, 18 Mar 2008) | 3 lines
+
+* Fixed up debug message format a bit
+* Added protocol data validation
+
+------------------------------------------------------------------------
+r205 | nkukard | 2008-03-18 13:20:07 +0000 (Tue, 18 Mar 2008) | 2 lines
+
+* Sanitized the HTTP response codes for Bizanga
+
+------------------------------------------------------------------------
+r204 | nkukard | 2008-03-18 12:59:10 +0000 (Tue, 18 Mar 2008) | 2 lines
+
+* close cursor when we done with it
+
+------------------------------------------------------------------------
+r203 | nkukard | 2008-03-18 12:52:49 +0000 (Tue, 18 Mar 2008) | 2 lines
+
+* Store ProtocolTransport in session data
+
+------------------------------------------------------------------------
+r202 | nkukard | 2008-03-18 12:16:39 +0000 (Tue, 18 Mar 2008) | 3 lines
+
+* Fixed uninitialized errors while doing a cleanup
+* Fixed typo in tracking.pm
+
+------------------------------------------------------------------------
+r201 | nkukard | 2008-03-18 11:51:06 +0000 (Tue, 18 Mar 2008) | 3 lines
+
+* Added index to tracking table for those databases which support indexes
+* Removed requirement on ID column for tracking of smtp sessions
+
+------------------------------------------------------------------------
+r200 | nkukard | 2008-03-18 11:49:23 +0000 (Tue, 18 Mar 2008) | 2 lines
+
+* Removed ID column from tracking table
+
+------------------------------------------------------------------------
+r199 | nkukard | 2008-03-18 11:43:14 +0000 (Tue, 18 Mar 2008) | 2 lines
+
+* Removed requirement for ID auto-increment column
+
+------------------------------------------------------------------------
+r198 | nkukard | 2008-03-18 11:28:48 +0000 (Tue, 18 Mar 2008) | 2 lines
+
+* Major schema change, remove the auto-incrementing ID column
+
+------------------------------------------------------------------------
+r197 | nkukard | 2008-03-18 11:22:54 +0000 (Tue, 18 Mar 2008) | 3 lines
+
+* Added support for database specific tracking key length
+* Added support for indexes, some databases don't like indexes?? (sqlite)
+
+------------------------------------------------------------------------
+r196 | nkukard | 2008-03-18 09:50:11 +0000 (Tue, 18 Mar 2008) | 2 lines
+
+* Added some error checking and cleaned up commandline usage
+
+------------------------------------------------------------------------
+r195 | nkukard | 2008-03-18 09:41:44 +0000 (Tue, 18 Mar 2008) | 2 lines
+
+* Added bypass_timeout, this delays the destruction of the child and database reconnection
+
+------------------------------------------------------------------------
+r194 | nkukard | 2008-03-18 09:13:48 +0000 (Tue, 18 Mar 2008) | 2 lines
+
+* Fixed database bypass mode, we were looking in the [server] section and not in the [database] section
+
+------------------------------------------------------------------------
+r193 | nkukard | 2008-03-18 08:57:20 +0000 (Tue, 18 Mar 2008) | 2 lines
+
+* Removed stray debugging info
+
+------------------------------------------------------------------------
+r192 | nkukard | 2008-03-18 08:54:53 +0000 (Tue, 18 Mar 2008) | 5 lines
+
+* Major schema change:
+- Removed Authenticated column
+- Added Tries column, this counts how many ties a greylisting entry is tried and fails
+- Added Count column, this counts how many mails pass through after being authenticated
+
+------------------------------------------------------------------------
+r191 | nkukard | 2008-03-18 08:11:28 +0000 (Tue, 18 Mar 2008) | 2 lines
+
+* Fixed some logging bugs
+
+------------------------------------------------------------------------
+r190 | nkukard | 2008-03-17 19:46:38 +0000 (Mon, 17 Mar 2008) | 2 lines
+
+* Fixed database connection issues with new BYPASS code
+
+------------------------------------------------------------------------
+r189 | nkukard | 2008-03-17 18:50:29 +0000 (Mon, 17 Mar 2008) | 2 lines
+
+* Added closing of cursor when we're done with it, this should solve some LAMP issues
+
+------------------------------------------------------------------------
+r188 | nkukard | 2008-03-17 18:11:30 +0000 (Mon, 17 Mar 2008) | 3 lines
+
+* Fixed multiple logging bugs
+* Standardized logging
+
+------------------------------------------------------------------------
+r187 | nkukard | 2008-03-17 18:10:25 +0000 (Mon, 17 Mar 2008) | 2 lines
+
+* Added database bypass_mode option, you can now tempfail or defer based on database failure
+
+------------------------------------------------------------------------
+r186 | nkukard | 2008-03-17 16:42:11 +0000 (Mon, 17 Mar 2008) | 2 lines
+
+* Updated amavisd plugin to new framework
+
+------------------------------------------------------------------------
+r185 | nkukard | 2008-03-17 16:40:30 +0000 (Mon, 17 Mar 2008) | 2 lines
+
+* Fixed using non-existent logging mechanism
+
+------------------------------------------------------------------------
+r184 | nkukard | 2008-03-17 16:39:28 +0000 (Mon, 17 Mar 2008) | 2 lines
+
+* Fixed logging in tracking module, mostly relating to external plugins
+
+------------------------------------------------------------------------
+r183 | nkukard | 2008-03-17 15:43:12 +0000 (Mon, 17 Mar 2008) | 2 lines
+
+* Added config variable log_detail which you can use to specify extreme detail to show in debugging for a specific module/section of policyd
+
+------------------------------------------------------------------------
+r182 | nkukard | 2008-03-17 14:00:18 +0000 (Mon, 17 Mar 2008) | 4 lines
+
+* Fixed error...
+Use of uninitialized value in concatenation (.) or string at cbp/protocols/Bizanga.pm line 215.
+- Thanks Geert
+
+------------------------------------------------------------------------
+r181 | nkukard | 2008-03-17 12:56:32 +0000 (Mon, 17 Mar 2008) | 3 lines
+
+* More debugging info
+* Fixed bug where we were not getting a policy for HTTP protocols
+
+------------------------------------------------------------------------
+r180 | nkukard | 2008-03-17 12:46:52 +0000 (Mon, 17 Mar 2008) | 2 lines
+
+* Added whacks of debugging info
+
+------------------------------------------------------------------------
+r179 | nkukard | 2008-03-17 11:39:19 +0000 (Mon, 17 Mar 2008) | 3 lines
+
+* Major change, renamed policy acls to policy members. This is less confusing.
+* Schema changed, renamed policy_acls to policy_members
+
+------------------------------------------------------------------------
+r178 | nkukard | 2008-03-17 09:30:46 +0000 (Mon, 17 Mar 2008) | 3 lines
+
+* Better protocol module handling, don't panic and die if we cannot identify the first line straight away
+* Cosmetic fix in system.pm
+
+------------------------------------------------------------------------
+r177 | nkukard | 2008-03-17 09:29:08 +0000 (Mon, 17 Mar 2008) | 3 lines
+
+* Fixed bug with uninitalized SessionData
+* Fixed bug when HTTP protocols are not recognised (spelling mistake)
+
+------------------------------------------------------------------------
+r176 | nkukard | 2008-03-17 09:28:11 +0000 (Mon, 17 Mar 2008) | 2 lines
+
+* Remove extra newline at end of HTTP protocol
+
+------------------------------------------------------------------------
+r175 | nkukard | 2008-03-17 09:26:53 +0000 (Mon, 17 Mar 2008) | 2 lines
+
+* Added some debugging to Postfix protocol to predict if it may be Postfix protocol or not
+
+------------------------------------------------------------------------
+r174 | nkukard | 2008-03-17 09:25:00 +0000 (Mon, 17 Mar 2008) | 2 lines
+
+* Better Bizanga protocol matching
+
+------------------------------------------------------------------------
+r173 | nkukard | 2008-03-16 20:48:45 +0000 (Sun, 16 Mar 2008) | 2 lines
+
+* Added some extra debug to catch some potential bugs
+
+------------------------------------------------------------------------
+r172 | nkukard | 2008-03-16 20:46:32 +0000 (Sun, 16 Mar 2008) | 2 lines
+
+* Fixed returns in Greylisting, this should be the new framework
+
+------------------------------------------------------------------------
+r171 | nkukard | 2008-03-16 16:19:58 +0000 (Sun, 16 Mar 2008) | 2 lines
+
+* XHML 1.0 Strict fixes
+
+------------------------------------------------------------------------
+r170 | nkukard | 2008-03-16 16:10:20 +0000 (Sun, 16 Mar 2008) | 2 lines
+
+* Add <> to tracking of sessions
+
+------------------------------------------------------------------------
+r169 | nkukard | 2008-03-16 09:42:19 +0000 (Sun, 16 Mar 2008) | 2 lines
+
+* Added some debugging info to tracking.pm to try catch uninitialized data bug
+
+------------------------------------------------------------------------
+r168 | nkukard | 2008-03-16 09:37:30 +0000 (Sun, 16 Mar 2008) | 2 lines
+
+* Skip SPF if we have no local explanation
+
+------------------------------------------------------------------------
+r167 | nkukard | 2008-03-15 23:29:20 +0000 (Sat, 15 Mar 2008) | 2 lines
+
+* Fixed typo in variable name
+
+------------------------------------------------------------------------
+r166 | nkukard | 2008-03-15 23:24:35 +0000 (Sat, 15 Mar 2008) | 2 lines
+
+* Fixed whitelisting in CheckHelo and Greylisting
+
+------------------------------------------------------------------------
+r165 | nkukard | 2008-03-15 23:23:34 +0000 (Sat, 15 Mar 2008) | 2 lines
+
+* Add parsed client address to session data
+
+------------------------------------------------------------------------
+r164 | nkukard | 2008-03-15 22:34:00 +0000 (Sat, 15 Mar 2008) | 2 lines
+
+* Fixed some debugging
+
+------------------------------------------------------------------------
+r163 | nkukard | 2008-03-15 22:32:55 +0000 (Sat, 15 Mar 2008) | 2 lines
+
+* Try 15 second timeout on resolving SPF, some queries took minutes due to SERVFAIL which generated very high load
+
+------------------------------------------------------------------------
+r162 | nkukard | 2008-03-15 17:45:22 +0000 (Sat, 15 Mar 2008) | 2 lines
+
+* Bizanga PASS should be code 200 not 503
+
+------------------------------------------------------------------------
+r160 | nkukard | 2008-03-15 15:28:05 +0000 (Sat, 15 Mar 2008) | 2 lines
+
+* Fixed web interface with changes in schema over the past week
+
+------------------------------------------------------------------------
+r159 | nkukard | 2008-03-15 15:20:38 +0000 (Sat, 15 Mar 2008) | 2 lines
+
+* Removed some debugging info
+
+------------------------------------------------------------------------
+r158 | nkukard | 2008-03-15 14:59:52 +0000 (Sat, 15 Mar 2008) | 2 lines
+
+* Forgot to add protocol constants file
+
+------------------------------------------------------------------------
+r157 | nkukard | 2008-03-15 14:57:02 +0000 (Sat, 15 Mar 2008) | 2 lines
+
+* Fixed Bizanga response generation, perl seems to like this better
+
+------------------------------------------------------------------------
+r156 | nkukard | 2008-03-15 14:46:15 +0000 (Sat, 15 Mar 2008) | 2 lines
+
+* Ported all modules over to new protocol-neutral framework
+
+------------------------------------------------------------------------
+r155 | nkukard | 2008-03-15 14:40:27 +0000 (Sat, 15 Mar 2008) | 3 lines
+
+* Checkin of protocol updates
+* Renamed HTTP to Bizanga
+
+------------------------------------------------------------------------
+r154 | nkukard | 2008-03-15 14:39:18 +0000 (Sat, 15 Mar 2008) | 2 lines
+
+* Fixed IP arithmatic in policies.pm ... this looks better
+
+------------------------------------------------------------------------
+r153 | nkukard | 2008-03-15 14:38:16 +0000 (Sat, 15 Mar 2008) | 2 lines
+
+* Fix byte-order in translation of IP's to unsigned long integers and visa versa
+
+------------------------------------------------------------------------
+r152 | nkukard | 2008-03-14 08:13:13 +0000 (Fri, 14 Mar 2008) | 2 lines
+
+* Differentiate tracking based on protocol transport
+
+------------------------------------------------------------------------
+r151 | nkukard | 2008-03-14 08:12:05 +0000 (Fri, 14 Mar 2008) | 4 lines
+
+* Various cosmetic fixes
+* Changed _Policy to Policy in session data hash
+* Fixed a spelling mistake or two
+
+------------------------------------------------------------------------
+r150 | nkukard | 2008-03-14 08:10:20 +0000 (Fri, 14 Mar 2008) | 2 lines
+
+* Parse HTTP GET into request hash & set protocol transport
+
+------------------------------------------------------------------------
+r149 | nkukard | 2008-03-14 08:09:09 +0000 (Fri, 14 Mar 2008) | 2 lines
+
+* Set protocol transport for Postfix
+
+------------------------------------------------------------------------
+r148 | nkukard | 2008-03-13 20:10:40 +0000 (Thu, 13 Mar 2008) | 2 lines
+
+* Added protocol parser for HTTP requests
+
+------------------------------------------------------------------------
+r147 | nkukard | 2008-03-13 19:20:53 +0000 (Thu, 13 Mar 2008) | 3 lines
+
+* Added support for protocol plugins
+* Rewrote the network IO handling in cbpolicyd, no more use of alarms, rather use select()
+
+------------------------------------------------------------------------
+r146 | nkukard | 2008-03-13 19:18:34 +0000 (Thu, 13 Mar 2008) | 2 lines
+
+* Added postfix and HTTP protocol plugins
+
+------------------------------------------------------------------------
+r145 | nkukard | 2008-03-12 20:43:08 +0000 (Wed, 12 Mar 2008) | 2 lines
+
+* Lowercase SASL username aswell
+
+------------------------------------------------------------------------
+r144 | nkukard | 2008-03-12 19:36:44 +0000 (Wed, 12 Mar 2008) | 2 lines
+
+* Fixed parseCIDR function, there was a typo breaking everyhing!
+
+------------------------------------------------------------------------
+r143 | nkukard | 2008-03-12 18:54:16 +0000 (Wed, 12 Mar 2008) | 2 lines
+
+* Fixed support for SenderIP: syntax in CheckHelo and Greylisting module
+
+------------------------------------------------------------------------
+r142 | nkukard | 2008-03-12 18:47:59 +0000 (Wed, 12 Mar 2008) | 2 lines
+
+* Fixed typo
+
+------------------------------------------------------------------------
+r141 | nkukard | 2008-03-12 18:46:49 +0000 (Wed, 12 Mar 2008) | 2 lines
+
+* Fixed up CheckHelo column Address, renamed it to Source as it supports various kinds of formats (or will in future)
+
+------------------------------------------------------------------------
+r140 | nkukard | 2008-03-12 18:26:05 +0000 (Wed, 12 Mar 2008) | 2 lines
+
+* Skip over modules without checks defined
+
+------------------------------------------------------------------------
+r139 | nkukard | 2008-03-12 18:23:21 +0000 (Wed, 12 Mar 2008) | 2 lines
+
+* Fixed bugs regarding debugging and foreground mode
+
+------------------------------------------------------------------------
+r138 | nkukard | 2008-03-12 18:14:33 +0000 (Wed, 12 Mar 2008) | 2 lines
+
+* Updated readme with core module priority
+
+------------------------------------------------------------------------
+r137 | nkukard | 2008-03-12 18:13:43 +0000 (Wed, 12 Mar 2008) | 2 lines
+
+* Added cleanup functionality
+
+------------------------------------------------------------------------
+r136 | nkukard | 2008-03-12 17:49:52 +0000 (Wed, 12 Mar 2008) | 2 lines
+
+* Added basic cleanup functionality, this should more than likely need to be refined based on the limits period
+
+------------------------------------------------------------------------
+r135 | nkukard | 2008-03-12 17:47:56 +0000 (Wed, 12 Mar 2008) | 2 lines
+
+* Added cleanup functionality
+
+------------------------------------------------------------------------
+r134 | nkukard | 2008-03-12 15:41:34 +0000 (Wed, 12 Mar 2008) | 2 lines
+
+* Added admin tool, the main purpose of this tool at the moment is to do the DB cleanup
+
+------------------------------------------------------------------------
+r133 | nkukard | 2008-03-12 15:40:34 +0000 (Wed, 12 Mar 2008) | 2 lines
+
+* Removed redundant function
+
+------------------------------------------------------------------------
+r132 | nkukard | 2008-03-12 15:38:57 +0000 (Wed, 12 Mar 2008) | 2 lines
+
+* Added core module, this is for system functions used in a modular fashion (ie. the cleanup tool)
+
+------------------------------------------------------------------------
+r131 | nkukard | 2008-03-12 15:37:28 +0000 (Wed, 12 Mar 2008) | 2 lines
+
+* Added version module to be shared between commandline tools
+
+------------------------------------------------------------------------
+r130 | nkukard | 2008-03-12 15:23:48 +0000 (Wed, 12 Mar 2008) | 4 lines
+
+* Fixed background vs. foreground issues in cbpolicyd
+* Fixed defaults
+* Added  --fg  for forced foreground operation
+
+------------------------------------------------------------------------
+r129 | nkukard | 2008-03-12 11:51:28 +0000 (Wed, 12 Mar 2008) | 3 lines
+
+* List of hosts for checkhelo and greylisting exceptions
+- Please feel free to post nominations to developers mailing list!
+
+------------------------------------------------------------------------
+r128 | nkukard | 2008-03-12 07:38:17 +0000 (Wed, 12 Mar 2008) | 3 lines
+
+* Fixed daemonization, cbpolicyd is now daemonized by default
+* Set a few config defaults in cbpolicyd
+
+------------------------------------------------------------------------
+r127 | nkukard | 2008-03-12 06:51:00 +0000 (Wed, 12 Mar 2008) | 3 lines
+
+* Fixed auto-whitelisting, it would of worked in the opposite way as expected
+* Cosmetic fixes
+
+------------------------------------------------------------------------
+r126 | nkukard | 2008-03-11 19:23:02 +0000 (Tue, 11 Mar 2008) | 2 lines
+
+* Updated index page
+
+------------------------------------------------------------------------
+r125 | nkukard | 2008-03-11 19:00:07 +0000 (Tue, 11 Mar 2008) | 2 lines
+
+* Honor the % specified in the Greylisting rule properly, its % of total triplets, not unauthenticated vs. authenticated
+
+------------------------------------------------------------------------
+r123 | nkukard | 2008-03-11 17:45:09 +0000 (Tue, 11 Mar 2008) | 2 lines
+
+* Stop processing modules if we have a verdict
+
+------------------------------------------------------------------------
+r122 | nkukard | 2008-03-11 17:35:03 +0000 (Tue, 11 Mar 2008) | 3 lines
+
+* Fixed auto-whitelisting and auto-blacklisting
+* Updated TODO with a good greylisting idea from Xpoint
+
+------------------------------------------------------------------------
+r121 | nkukard | 2008-03-11 17:02:34 +0000 (Tue, 11 Mar 2008) | 3 lines
+
+* Fixed multiple SQL query errors
+* Some cosmetic fixes
+
+------------------------------------------------------------------------
+r120 | nkukard | 2008-03-11 16:25:09 +0000 (Tue, 11 Mar 2008) | 2 lines
+
+* Fixed problems when changing a checkhelo, "UNKNOWN" was displayed instead of "No"
+
+------------------------------------------------------------------------
+r119 | nkukard | 2008-03-11 15:26:02 +0000 (Tue, 11 Mar 2008) | 2 lines
+
+* Added TXT file with some module priorities
+
+------------------------------------------------------------------------
+r118 | nkukard | 2008-03-11 15:24:44 +0000 (Tue, 11 Mar 2008) | 2 lines
+
+* Added greylisting webui
+
+------------------------------------------------------------------------
+r117 | nkukard | 2008-03-11 15:23:42 +0000 (Tue, 11 Mar 2008) | 2 lines
+
+* Fixed label on tab at top of page
+
+------------------------------------------------------------------------
+r116 | nkukard | 2008-03-11 15:20:00 +0000 (Tue, 11 Mar 2008) | 3 lines
+
+* Fixed missing track by 'Policy' option
+* Cleaned up quotas deleting
+
+------------------------------------------------------------------------
+r115 | nkukard | 2008-03-11 14:59:15 +0000 (Tue, 11 Mar 2008) | 2 lines
+
+* Added greylisting sql tables
+
+------------------------------------------------------------------------
+r114 | nkukard | 2008-03-11 14:57:42 +0000 (Tue, 11 Mar 2008) | 3 lines
+
+* Added greylisting support
+* Updated config file example and cleaned it up a bit
+
+------------------------------------------------------------------------
+r113 | nkukard | 2008-03-11 14:53:57 +0000 (Tue, 11 Mar 2008) | 3 lines
+
+* Added defer support to cbpolicyd
+* Updated TODO
+
+------------------------------------------------------------------------
+r112 | nkukard | 2008-03-11 14:51:27 +0000 (Tue, 11 Mar 2008) | 2 lines
+
+* Reduce address field to 64 characters instead of 255
+
+------------------------------------------------------------------------
+r111 | nkukard | 2008-03-11 14:50:43 +0000 (Tue, 11 Mar 2008) | 3 lines
+
+* Various code cleanups
+* Added priority to each module
+
+------------------------------------------------------------------------
+r110 | nkukard | 2008-03-11 14:49:09 +0000 (Tue, 11 Mar 2008) | 4 lines
+
+* Use parseCIDR
+* Various code cleanups
+* Added module priority
+
+------------------------------------------------------------------------
+r109 | nkukard | 2008-03-11 14:47:39 +0000 (Tue, 11 Mar 2008) | 2 lines
+
+* Added parsing of CIDR support, this code is repeated in numerous places
+
+------------------------------------------------------------------------
+r108 | nkukard | 2008-03-11 14:44:50 +0000 (Tue, 11 Mar 2008) | 3 lines
+
+* Call getPolicy function with SASL information
+* Small cosmetic fixes in amavis plugin
+
+------------------------------------------------------------------------
+r107 | nkukard | 2008-03-11 14:34:26 +0000 (Tue, 11 Mar 2008) | 4 lines
+
+* Added SASL support to policy library
+* Fixed bug in parsing in policy rules regarding email address specifications
+* Some small regex cleanups
+
+------------------------------------------------------------------------
+r106 | nkukard | 2008-03-06 09:22:41 +0000 (Thu, 06 Mar 2008) | 2 lines
+
+* Minor bugfixes and cosmetic changes to webui
+
+------------------------------------------------------------------------
+r105 | nkukard | 2008-03-05 12:08:52 +0000 (Wed, 05 Mar 2008) | 2 lines
+
+* Fixed various record removal issues
+
+------------------------------------------------------------------------
+r104 | nkukard | 2008-03-05 11:18:36 +0000 (Wed, 05 Mar 2008) | 3 lines
+
+* Added some checks in cbpolicyd for failed session data functions
+* Removed some debugging from tracking.pm
+
+------------------------------------------------------------------------
+r103 | nkukard | 2008-03-05 11:10:25 +0000 (Wed, 05 Mar 2008) | 2 lines
+
+* Ported amavisd module to new framework
+
+------------------------------------------------------------------------
+r102 | nkukard | 2008-03-05 11:08:51 +0000 (Wed, 05 Mar 2008) | 2 lines
+
+* Major changes to entire framework, this new framework allows tracking of email through policyd v2 and into a 3rd-party module
+
+------------------------------------------------------------------------
+r101 | nkukard | 2008-03-05 11:05:58 +0000 (Wed, 05 Mar 2008) | 3 lines
+
+* Fixed bug with disabled postfix aliases
+* Remvoed debug information from amavis-add
+
+------------------------------------------------------------------------
+r100 | nkukard | 2008-03-05 11:02:27 +0000 (Wed, 05 Mar 2008) | 2 lines
+
+* Added message tacking module
+
+------------------------------------------------------------------------
+r99 | nkukard | 2008-03-01 20:01:47 +0000 (Sat, 01 Mar 2008) | 3 lines
+
+* Updated TODO
+* Fixed typo in CheckSPF module
+
+------------------------------------------------------------------------
+r98 | nkukard | 2008-03-01 19:58:19 +0000 (Sat, 01 Mar 2008) | 2 lines
+
+* Make SPF reason for rejection include link and be more pretty
+
+------------------------------------------------------------------------
+r97 | nkukard | 2008-03-01 19:17:09 +0000 (Sat, 01 Mar 2008) | 2 lines
+
+* Added Amavis always_bcc option as Interception/BCC To
+
+------------------------------------------------------------------------
+r96 | nkukard | 2008-03-01 18:15:27 +0000 (Sat, 01 Mar 2008) | 2 lines
+
+* Disable postfix integration by default
+
+------------------------------------------------------------------------
+r95 | nkukard | 2008-03-01 18:12:11 +0000 (Sat, 01 Mar 2008) | 2 lines
+
+* Added main.cf_snippet
+
+------------------------------------------------------------------------
+r94 | nkukard | 2008-03-01 18:11:33 +0000 (Sat, 01 Mar 2008) | 3 lines
+
+* Added removing of child table columns on some of the modules
+* Added displaying of SQL errors on error
+
+------------------------------------------------------------------------
+r93 | nkukard | 2008-03-01 16:37:22 +0000 (Sat, 01 Mar 2008) | 2 lines
+
+* added some error checking to some of the webui
+
+------------------------------------------------------------------------
+r92 | nkukard | 2008-03-01 15:55:08 +0000 (Sat, 01 Mar 2008) | 2 lines
+
+* Check if we must add a SPF header when the domain doesn't have a SPF record
+
+------------------------------------------------------------------------
+r91 | nkukard | 2008-03-01 15:40:57 +0000 (Sat, 01 Mar 2008) | 2 lines
+
+* Fixed referential integrity bug reported by xpoint on irc
+
+------------------------------------------------------------------------
+r90 | nkukard | 2008-03-01 15:31:59 +0000 (Sat, 01 Mar 2008) | 2 lines
+
+* Catch invalid HELO's seeping through the cracks
+
+------------------------------------------------------------------------
+r89 | nkukard | 2008-03-01 15:15:44 +0000 (Sat, 01 Mar 2008) | 2 lines
+
+* Use plain local_explanation and not Dumper()
+
+------------------------------------------------------------------------
+r88 | nkukard | 2008-03-01 15:14:34 +0000 (Sat, 01 Mar 2008) | 3 lines
+
+* Use ; in rejections instead of ,
+* Don't do SPF check on <>
+
+------------------------------------------------------------------------
+r87 | nkukard | 2008-03-01 15:10:51 +0000 (Sat, 01 Mar 2008) | 2 lines
+
+* Use ; instead of , in the rejection messages
+
+------------------------------------------------------------------------
+r86 | nkukard | 2008-03-01 15:04:39 +0000 (Sat, 01 Mar 2008) | 3 lines
+
+* Compare database values using text comparison instead of numeric
+* Added some debug info to SPF
+
+------------------------------------------------------------------------
+r85 | nkukard | 2008-03-01 13:30:51 +0000 (Sat, 01 Mar 2008) | 2 lines
+
+* Removed comments at bottom of config file
+
+------------------------------------------------------------------------
+r83 | nkukard | 2008-03-01 11:27:08 +0000 (Sat, 01 Mar 2008) | 2 lines
+
+* Updated install howto
+
+------------------------------------------------------------------------
+r82 | nkukard | 2008-03-01 11:13:36 +0000 (Sat, 01 Mar 2008) | 2 lines
+
+* Added short install howto
+
+------------------------------------------------------------------------
+r81 | nkukard | 2008-02-29 20:19:20 +0000 (Fri, 29 Feb 2008) | 2 lines
+
+* Added CheckSPF module to cbpolicyd
+
+------------------------------------------------------------------------
+r80 | nkukard | 2008-02-29 19:27:50 +0000 (Fri, 29 Feb 2008) | 2 lines
+
+* Added web interface for CheckSPF module
+
+------------------------------------------------------------------------
+r79 | nkukard | 2008-02-28 14:51:20 +0000 (Thu, 28 Feb 2008) | 3 lines
+
+* Added CheckHelo module to backend
+* Various small fixes to Quotas and AccessControl
+
+------------------------------------------------------------------------
+r78 | nkukard | 2008-02-28 14:46:17 +0000 (Thu, 28 Feb 2008) | 2 lines
+
+* Added HELO/EHLO checks to webui
+
+------------------------------------------------------------------------
+r77 | nkukard | 2008-02-24 15:17:06 +0000 (Sun, 24 Feb 2008) | 2 lines
+
+* Fixed configuration for postfix distribution lists to use new table naming scheme
+
+------------------------------------------------------------------------
+r76 | nkukard | 2008-02-23 10:50:23 +0000 (Sat, 23 Feb 2008) | 2 lines
+
+* Added contributed postfix config
+
+------------------------------------------------------------------------
+r75 | nkukard | 2008-02-23 10:34:52 +0000 (Sat, 23 Feb 2008) | 2 lines
+
+* Finished support for optional postfix addon to web interface
+
+------------------------------------------------------------------------
+r74 | nkukard | 2008-02-16 12:46:48 +0000 (Sat, 16 Feb 2008) | 2 lines
+
+* Added postfix transport & mailbox creation support .... this will be more than likely split off into another project as it does not belong in cluebringer
+
+------------------------------------------------------------------------
+r73 | nkukard | 2008-02-07 13:32:41 +0000 (Thu, 07 Feb 2008) | 3 lines
+
+* Added patch to add policy changing to amavisd-new
+* Updated amavis custom module and removed most debugging
+
+------------------------------------------------------------------------
+r72 | nkukard | 2008-02-05 15:10:34 +0000 (Tue, 05 Feb 2008) | 2 lines
+
+* Quite a few fixups to the amavisd plugin module, it still doesn't support merging of certain options (wip).
+
+------------------------------------------------------------------------
+r71 | nkukard | 2008-02-05 15:05:16 +0000 (Tue, 05 Feb 2008) | 3 lines
+
+* This commit should add Amavisd-new integration into the web interface
+* Various fixups
+
+------------------------------------------------------------------------
+r70 | nkukard | 2008-02-03 17:07:25 +0000 (Sun, 03 Feb 2008) | 2 lines
+
+* Changed amavis table to add _rules
+
+------------------------------------------------------------------------
+r69 | nkukard | 2008-01-28 19:31:38 +0000 (Mon, 28 Jan 2008) | 3 lines
+
+* Preliminary contributed module for policyd => amavis integration
+- This will allow for all amavisd features to be available on a per policyd-policy basis, among other things just think about only scanning email for spam if its from a freemail provider, or even setting spam scores especially on freemail providers sending to commonly spammed email addies. The limits are endless.
+
+------------------------------------------------------------------------
+r68 | nkukard | 2008-01-28 19:28:12 +0000 (Mon, 28 Jan 2008) | 2 lines
+
+* Removed DBFreeRes where its not required
+
+------------------------------------------------------------------------
+r67 | nkukard | 2008-01-28 19:26:45 +0000 (Mon, 28 Jan 2008) | 2 lines
+
+* Removed DBFreeRes where its not needed
+
+------------------------------------------------------------------------
+r66 | nkukard | 2008-01-28 19:25:41 +0000 (Mon, 28 Jan 2008) | 2 lines
+
+* Added database schema for amavis integration
+
+------------------------------------------------------------------------
+r65 | nkukard | 2008-01-24 11:33:32 +0000 (Thu, 24 Jan 2008) | 2 lines
+
+* We use PDO, not MDB2 now
+
+------------------------------------------------------------------------
+r64 | nkukard | 2008-01-24 08:30:04 +0000 (Thu, 24 Jan 2008) | 2 lines
+
+* Added customizable returns to quotas being exceeded
+
+------------------------------------------------------------------------
+r63 | nkukard | 2008-01-24 07:35:42 +0000 (Thu, 24 Jan 2008) | 3 lines
+
+* Fixed deleting of quotas, remove limits and limit tracking
+* Small code fixes & cleanups
+
+------------------------------------------------------------------------
+r62 | nkukard | 2008-01-23 20:49:18 +0000 (Wed, 23 Jan 2008) | 2 lines
+
+* Avoid colum name clashing in mysql
+
+------------------------------------------------------------------------
+r61 | nkukard | 2008-01-23 19:35:29 +0000 (Wed, 23 Jan 2008) | 3 lines
+
+* WebUI
+- Commit of the remainding of the quota support
+
+------------------------------------------------------------------------
+r60 | nkukard | 2008-01-23 17:41:42 +0000 (Wed, 23 Jan 2008) | 2 lines
+
+* Various schema changes
+
+------------------------------------------------------------------------
+r59 | nkukard | 2008-01-23 16:24:52 +0000 (Wed, 23 Jan 2008) | 5 lines
+
+* WebUI
+- Added support for Quotas
+- Added support for AccessControl
+- Lots of changes regarding compliance with the relevant specs
+
+------------------------------------------------------------------------
+r57 | nkukard | 2008-01-21 20:06:23 +0000 (Mon, 21 Jan 2008) | 5 lines
+
+* Added support for policies
+* Added support for policy acls
+* Added support for policy groups
+* Added support for policy group members
+
+------------------------------------------------------------------------
+r56 | nkukard | 2008-01-21 20:02:47 +0000 (Mon, 21 Jan 2008) | 2 lines
+
+* Added comment to policy acls
+
+------------------------------------------------------------------------
+r55 | nkukard | 2008-01-19 19:18:30 +0000 (Sat, 19 Jan 2008) | 2 lines
+
+* WebUI: Adding of policies now work
+
+------------------------------------------------------------------------
+r54 | nkukard | 2008-01-19 16:25:43 +0000 (Sat, 19 Jan 2008) | 2 lines
+
+* Added webui framework
+
+------------------------------------------------------------------------
+r53 | nkukard | 2008-01-17 13:50:52 +0000 (Thu, 17 Jan 2008) | 2 lines
+
+* Added wishlist
+
+------------------------------------------------------------------------
+r52 | nkukard | 2008-01-17 13:49:12 +0000 (Thu, 17 Jan 2008) | 2 lines
+
+* Quotas: Added support to track based on policy
+
+------------------------------------------------------------------------
+r51 | nkukard | 2008-01-17 13:26:17 +0000 (Thu, 17 Jan 2008) | 2 lines
+
+* Added logging to maillog
+
+------------------------------------------------------------------------
+r50 | nkukard | 2008-01-17 13:24:01 +0000 (Thu, 17 Jan 2008) | 3 lines
+
+* Fixed up the allowed configuration options
+* Added support to log to maillog
+
+------------------------------------------------------------------------
+r49 | nkukard | 2008-01-17 13:21:48 +0000 (Thu, 17 Jan 2008) | 3 lines
+
+* Added missing configuration options & some comments
+- Updated site with more verbose description
+
+------------------------------------------------------------------------
+r48 | nkukard | 2008-01-17 09:11:53 +0000 (Thu, 17 Jan 2008) | 2 lines
+
+* Don't use #, use /*   */  in sql
+
+------------------------------------------------------------------------
+r46 | nkukard | 2008-01-16 17:53:51 +0000 (Wed, 16 Jan 2008) | 2 lines
+
+* Version bump before snapshot
+
+------------------------------------------------------------------------
+r45 | nkukard | 2008-01-16 11:15:13 +0000 (Wed, 16 Jan 2008) | 2 lines
+
+* Added script to convert tsql files into mysql, pgsql and sqlite format
+
+------------------------------------------------------------------------
+r44 | nkukard | 2008-01-16 10:30:08 +0000 (Wed, 16 Jan 2008) | 3 lines
+
+* Fixed mysql and pgsql conversion scripts
+- Thanks xpoint
+
+------------------------------------------------------------------------
+r43 | nkukard | 2008-01-16 10:06:03 +0000 (Wed, 16 Jan 2008) | 2 lines
+
+* Added quotas support
+
+------------------------------------------------------------------------
+r42 | nkukard | 2008-01-16 10:03:33 +0000 (Wed, 16 Jan 2008) | 3 lines
+
+* cbpolicyd: Track recipients so we can see who's getting the message in EOM
+* database/core: Added SQL table for the recipient tracking
+
+------------------------------------------------------------------------
+r41 | nkukard | 2008-01-16 10:00:21 +0000 (Wed, 16 Jan 2008) | 2 lines
+
+* Commented out access control example
+
+------------------------------------------------------------------------
+r40 | nkukard | 2008-01-16 09:58:31 +0000 (Wed, 16 Jan 2008) | 3 lines
+
+* Removed debug info
+* Various cosmetic fixes
+
+------------------------------------------------------------------------
+r39 | nkukard | 2008-01-16 09:57:25 +0000 (Wed, 16 Jan 2008) | 2 lines
+
+* Removed stray use
+
+------------------------------------------------------------------------
+r38 | nkukard | 2008-01-16 09:56:22 +0000 (Wed, 16 Jan 2008) | 2 lines
+
+* Export IP arithmatic functions
+
+------------------------------------------------------------------------
+r35 | nkukard | 2008-01-11 07:47:42 +0000 (Fri, 11 Jan 2008) | 8 lines
+
+Policies:
+* Remove debuggin info from policy engine
+* Push policies into an array hashed by policy
+
+AccessControl:
+* Basic implementation
+
+
+------------------------------------------------------------------------
+r34 | nkukard | 2008-01-10 12:16:39 +0000 (Thu, 10 Jan 2008) | 2 lines
+
+* Added simple access control schema
+
+------------------------------------------------------------------------
+r33 | nkukard | 2008-01-10 12:15:41 +0000 (Thu, 10 Jan 2008) | 2 lines
+
+* Added simple db creation script
+
+------------------------------------------------------------------------
+r32 | nkukard | 2008-01-10 12:13:27 +0000 (Thu, 10 Jan 2008) | 2 lines
+
+* Sanitized the default policies
+
+------------------------------------------------------------------------
+r31 | nkukard | 2008-01-10 11:45:06 +0000 (Thu, 10 Jan 2008) | 4 lines
+
+* Checked in system module
+* Checked in policiesm odule
+* Checked in caching module
+
+------------------------------------------------------------------------
+r30 | nkukard | 2008-01-08 20:45:03 +0000 (Tue, 08 Jan 2008) | 6 lines
+
+* Added config module
+* Removed modules.pm, don't need this anymore
+* Added DBI layers to support embedded transactions
+* Removed ltable.pm, we'll use direct DB access from now on
+* Updated config file
+
+------------------------------------------------------------------------
+r29 | nkukard | 2008-01-08 15:35:05 +0000 (Tue, 08 Jan 2008) | 4 lines
+
+* Removed feature moduels for now
+* Added database schema for new policy support
+* Added schema for policy based quotas support
+
+------------------------------------------------------------------------
+r28 | nkukard | 2008-01-07 08:18:58 +0000 (Mon, 07 Jan 2008) | 2 lines
+
+* Renamed schemas dir to database
+
+------------------------------------------------------------------------
+r27 | nkukard | 2007-12-17 11:25:38 +0000 (Mon, 17 Dec 2007) | 2 lines
+
+* Commit of my work so far
+
+------------------------------------------------------------------------
+r26 | nkukard | 2007-12-08 18:58:56 +0000 (Sat, 08 Dec 2007) | 2 lines
+
+* Added immediate requirements for contract sponsoring development
+
+------------------------------------------------------------------------
+r25 | nkukard | 2007-06-26 19:28:57 +0000 (Tue, 26 Jun 2007) | 2 lines
+
+* Various changes & fixups
+
+------------------------------------------------------------------------
+r24 | nkukard | 2007-06-24 21:57:54 +0000 (Sun, 24 Jun 2007) | 4 lines
+
+* Reworked databae handling
+* Reworked feature & database modules
+* Fixed up logging a bit
+
+------------------------------------------------------------------------
+r23 | nkukard | 2007-06-22 21:59:51 +0000 (Fri, 22 Jun 2007) | 3 lines
+
+* If a database fails to initialize, don't use it
+* Addd getStatus() function to backend database and ltable layer
+
+------------------------------------------------------------------------
+r22 | nkukard | 2007-06-22 06:15:12 +0000 (Fri, 22 Jun 2007) | 2 lines
+
+* More major changes
+
+------------------------------------------------------------------------
+r21 | nkukard | 2007-06-17 22:06:25 +0000 (Sun, 17 Jun 2007) | 3 lines
+
+* Semi-working lookup abstraction layer
+* Added schmas/mysql/helo.sql schema
+
+------------------------------------------------------------------------
+r20 | nkukard | 2007-06-17 00:19:50 +0000 (Sun, 17 Jun 2007) | 2 lines
+
+* Semi working database/table abstraction layer
+
+------------------------------------------------------------------------
+r19 | nkukard | 2007-06-16 21:27:00 +0000 (Sat, 16 Jun 2007) | 4 lines
+
+* Preliminary work on database table support
+
+[code is currently broken and will not run]
+
+------------------------------------------------------------------------
+r18 | nkukard | 2007-06-16 10:00:25 +0000 (Sat, 16 Jun 2007) | 2 lines
+
+* Renamed features to feature
+
+------------------------------------------------------------------------
+r17 | nkukard | 2007-06-16 09:59:02 +0000 (Sat, 16 Jun 2007) | 2 lines
+
+* Preliminary checkin, moved features into features directory
+
+------------------------------------------------------------------------
+r16 | nkukard | 2007-06-12 08:35:46 +0000 (Tue, 12 Jun 2007) | 2 lines
+
+* Added TODO  for per recipient whitelists & blacklists
+
+------------------------------------------------------------------------
+r15 | nkukard | 2007-06-09 22:25:30 +0000 (Sat, 09 Jun 2007) | 2 lines
+
+* Fixed up logging
+
+------------------------------------------------------------------------
+r14 | nkukard | 2007-06-09 20:57:25 +0000 (Sat, 09 Jun 2007) | 2 lines
+
+* Better config support, preparing for some sort of abstraction the modules can use
+
+------------------------------------------------------------------------
+r13 | nkukard | 2007-06-09 20:02:13 +0000 (Sat, 09 Jun 2007) | 2 lines
+
+* Added skeleton for helo based blacklisting/whitelisting ... etc
+
+------------------------------------------------------------------------
+r12 | nkukard | 2007-06-09 07:14:50 +0000 (Sat, 09 Jun 2007) | 3 lines
+
+* Added reversing of sending server IP check
+* Reworked handling of resolution results of FQDN HELO check
+
+------------------------------------------------------------------------
+r11 | nkukard | 2007-06-09 00:11:12 +0000 (Sat, 09 Jun 2007) | 2 lines
+
+* Check for valid DNS records when verifying HELO/EHLO
+
+------------------------------------------------------------------------
+r10 | nkukard | 2007-06-09 00:06:28 +0000 (Sat, 09 Jun 2007) | 2 lines
+
+* Added DNS checking of HELO/EHLO
+
+------------------------------------------------------------------------
+r9 | nkukard | 2007-06-08 23:26:37 +0000 (Fri, 08 Jun 2007) | 3 lines
+
+* Added FIXME's for helo fqdn check module
+* Possibly bypass HELO checks for sasl users
+
+------------------------------------------------------------------------
+r8 | nkukard | 2007-06-08 23:22:26 +0000 (Fri, 08 Jun 2007) | 3 lines
+
+* Misc bugfixes
+* Working FQDN HELO checking
+
+------------------------------------------------------------------------
+r7 | nkukard | 2007-06-08 21:40:35 +0000 (Fri, 08 Jun 2007) | 2 lines
+
+* Added time to greylisting
+
+------------------------------------------------------------------------
+r6 | nkukard | 2007-06-08 21:33:43 +0000 (Fri, 08 Jun 2007) | 2 lines
+
+* Fixed typo in module result handling
+
+------------------------------------------------------------------------
+r5 | nkukard | 2007-06-08 21:30:05 +0000 (Fri, 08 Jun 2007) | 2 lines
+
+* Fixed typo in greylisting module
+
+------------------------------------------------------------------------
+r4 | nkukard | 2007-06-08 21:27:18 +0000 (Fri, 08 Jun 2007) | 4 lines
+
+* Added module logging function
+* Log what we see in greylisting
+* Lowercase sender & recipient
+
+------------------------------------------------------------------------
+r3 | nkukard | 2007-06-08 19:10:58 +0000 (Fri, 08 Jun 2007) | 3 lines
+
+* Fixed up syslog levels
+* Log to syslog in main program, instead of STDOUT
+
+------------------------------------------------------------------------
+r2 | nkukard | 2007-06-08 18:43:41 +0000 (Fri, 08 Jun 2007) | 2 lines
+
+* Added some stuff to work off of
+
+------------------------------------------------------------------------
+r1 | nkukard | 2007-06-08 15:30:40 +0000 (Fri, 08 Jun 2007) | 2 lines
+
+* Added main svn structure
+
+------------------------------------------------------------------------
