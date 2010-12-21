@@ -163,30 +163,32 @@ sub check {
 						# Check if we have a queue tracking item
 						if (defined($qtrack)) {
 							my $elapsedTime = defined($qtrack->{'LastUpdate'}) ? ( $now - $qtrack->{'LastUpdate'} ) : $quota->{'Period'};
+							# If elapsed time is less than zero, its time diff between servers, meaning no time has elapsed
+							$elapsedTime = 0 if ($elapsedTime < 0);
 							
 							# Check if elapsedTime is longer than period, or negative (time diff between servers?)
 							my $currentCounter;
-							if ($elapsedTime > $quota->{'Period'} || $elapsedTime < 0) {
-								$qtrack->{'Counter'} = 0;
+							if ($elapsedTime > $quota->{'Period'}) {
+								$currentCounter = 0;
 	
 							# Calculate the % of the period we have, and multiply it with the counter ... this should give us a reasonably
 							# accurate counting
 							} else {
 								$currentCounter = ( 1 - ($elapsedTime / $quota->{'Period'}) ) * $qtrack->{'Counter'};
 							}
-								
-							# Make sure increment is at least 0
-							$newCounters{$qtrack->{'QuotasLimitsID'}} = defined($qtrack->{'Counter'}) ?
-									$qtrack->{'Counter'} - $currentCounter : $qtrack->{'Counter'}
-									if (!defined($newCounters{$qtrack->{'QuotasLimitsID'}}));
-	
+
+							# Work out the difference to the DB value, we ONLY DO THIS ONCE!!! so if its defined, leave it alone!
+							if (!defined($newCounters{$qtrack->{'QuotasLimitsID'}})) {
+								$newCounters{$qtrack->{'QuotasLimitsID'}} = $currentCounter - $qtrack->{'Counter'};
+							}
+
 							# Limit type
 							my $limitType = lc($limit->{'Type'});
 
 							# Make sure its the MessageCount counter
 							if ($limitType eq "messagecount") {
 								# Check for violation
-								if ($qtrack->{'Counter'} > $limit->{'CounterLimit'}) {
+								if ($currentCounter > $limit->{'CounterLimit'}) {
 									$hasExceeded = "Policy rejection; Message count quota exceeded";
 								}
 								# Bump up limit
@@ -195,7 +197,7 @@ sub check {
 							# Check for cumulative size violation
 							} elsif ($limitType eq "messagecumulativesize") {
 								# Check for violation
-								if ($qtrack->{'Counter'} > $limit->{'CounterLimit'}) {
+								if ($currentCounter > $limit->{'CounterLimit'}) {
 									$hasExceeded = "Policy rejection; Cumulative message size quota exceeded";
 								}
 							}
@@ -206,9 +208,10 @@ sub check {
 							$qtrack->{'Counter'} = 0;
 							$qtrack->{'LastUpdate'} = $now;
 								
-							# Make sure increment is at least 0
-							$newCounters{$qtrack->{'QuotasLimitsID'}} = $qtrack->{'Counter'} 
-									if (!defined($newCounters{$qtrack->{'QuotasLimitsID'}}));
+							# Work out the difference to the DB value, we ONLY DO THIS ONCE!!! so if its defined, leave it alone!
+							if (!defined($newCounters{$qtrack->{'QuotasLimitsID'}})) {
+								$newCounters{$qtrack->{'QuotasLimitsID'}} = $qtrack->{'Counter'};
+							}
 							
 							# Check if this is a message counter
 							if (lc($limit->{'Type'}) eq "messagecount") {
@@ -247,7 +250,7 @@ sub check {
 			foreach my $qtrack (@trackingList) {
 					
 				# Percent used
-				my $pused =  sprintf('%.1f', ( ($newCounters{$qtrack->{'QuotasLimitsID'}} + $qtrack->{'QuotasLimitsID'}) / $qtrack->{'CounterLimit'} ) * 100);
+				my $pused =  sprintf('%.1f', ( ($newCounters{$qtrack->{'QuotasLimitsID'}} + $qtrack->{'Counter'}) / $qtrack->{'CounterLimit'} ) * 100);
 
 				# Update database
 				my $sth = DBDo("
@@ -296,7 +299,7 @@ sub check {
 							$qtrack->{'LimitID'},
 							$qtrack->{'DBKey'},
 							$qtrack->{'LimitType'},
-							sprintf('%.0f',$newCounters{$qtrack->{'QuotasLimitsID'}} + $qtrack->{'QuotasLimitsID'}),
+							sprintf('%.2f',$newCounters{$qtrack->{'QuotasLimitsID'}} + $qtrack->{'Counter'}),
 							$qtrack->{'CounterLimit'},
 							$pused);
 
@@ -315,7 +318,7 @@ sub check {
 							$qtrack->{'LimitID'},
 							$qtrack->{'DBKey'},
 							$qtrack->{'LimitType'},
-							sprintf('%.0f',$newCounters{$qtrack->{'QuotasLimitsID'}} + $qtrack->{'QuotasLimitsID'}),
+							sprintf('%.2f',$newCounters{$qtrack->{'QuotasLimitsID'}} + $qtrack->{'Counter'}),
 							$qtrack->{'CounterLimit'},
 							$pused);
 
@@ -329,7 +332,7 @@ sub check {
 		# If we have exceeded, set verdict
 		} else {
 			# Percent used
-			my $pused =  sprintf('%.1f', ( ($newCounters{$exceededQtrack->{'QuotasLimitsID'}} + $exceededQtrack->{'QuotasLimitsID'}) / $exceededQtrack->{'CounterLimit'} ) * 100);
+			my $pused =  sprintf('%.1f', ( ($newCounters{$exceededQtrack->{'QuotasLimitsID'}} + $exceededQtrack->{'Counter'}) / $exceededQtrack->{'CounterLimit'} ) * 100);
 
 			# Log rejection to mail log
 			$server->maillog("module=Quotas, action=%s, host=%s, helo=%s, from=%s, to=%s, reason=quota_match, policy=%s, quota=%s, limit=%s, track=%s, "
@@ -344,10 +347,9 @@ sub check {
 					$exceededQtrack->{'LimitID'},
 					$exceededQtrack->{'DBKey'},
 					$exceededQtrack->{'LimitType'},
-					sprintf('%.0f',$newCounters{$exceededQtrack->{'QuotasLimitsID'}} + $exceededQtrack->{'QuotasLimitsID'}),
+					sprintf('%.2f',$newCounters{$exceededQtrack->{'QuotasLimitsID'}} + $exceededQtrack->{'Counter'}),
 					$exceededQtrack->{'CounterLimit'},
 					$pused);
-
 			$verdict = $exceededQtrack->{'Verdict'};
 			$verdict_data = (defined($exceededQtrack->{'VerdictData'}) && $exceededQtrack->{'VerdictData'} ne "") 
 					? $exceededQtrack->{'VerdictData'} : $hasExceeded;
@@ -411,14 +413,14 @@ sub check {
 							# Check if we're working with cumulative sizes
 							if (lc($limit->{'Type'}) eq "messagecumulativesize") {
 								# Bump up counter
-								$qtrack->{'Counter'} += $sessionData->{'Size'};
+								my $currentCounter = $qtrack->{'Counter'} + $sessionData->{'Size'};
 								
 								# Update database
 								my $sth = DBDo("
 									UPDATE 
 										quotas_tracking
 									SET
-										Counter = ".DBQuote($qtrack->{'Counter'}).",
+										Counter = Counter + ".DBQuote($sessionData->{'Size'}).",
 										LastUpdate = ".DBQuote($now)."
 									WHERE
 										QuotasLimitsID = ".DBQuote($qtrack->{'QuotasLimitsID'})."
@@ -430,7 +432,7 @@ sub check {
 								}
 
 								# Percent used
-								my $pused =  sprintf('%.1f', ( $qtrack->{'Counter'} / $limit->{'CounterLimit'} ) * 100);
+								my $pused =  sprintf('%.1f', ( $currentCounter / $limit->{'CounterLimit'} ) * 100);
 
 								# Log update to mail log
 								$server->maillog("module=Quotas, mode=update, host=%s, helo=%s, from=%s, to=%s, reason=quota_update, policy=%s, "
@@ -444,7 +446,7 @@ sub check {
 										$limit->{'ID'},
 										$key,
 										$limit->{'Type'},
-										sprintf('%.0f',$qtrack->{'Counter'}),
+										sprintf('%.2f',$currentCounter),
 										$limit->{'CounterLimit'},
 										$pused);
 							} # if (lc($limit->{'Type'}) eq "messagecumulativesize")
