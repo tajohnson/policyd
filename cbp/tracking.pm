@@ -37,6 +37,7 @@ use cbp::dblayer;
 use cbp::logging;
 use cbp::policies;
 use cbp::system qw(parseCIDR);
+use POSIX qw( ceil );
 
 use Data::Dumper;
 
@@ -138,6 +139,12 @@ sub getSessionDataFromRequest
 			return -1;
 		}
 
+		# Change size to kbyte, we don't want to use bytes
+		my $requestSize;
+		if (defined($request->{'size'})) {
+			$requestSize = ceil($request->{'size'} / 1024);
+		}
+
 		my $row = $sth->fetchrow_hashref();
 				
 		# If no state information, create everything we need
@@ -176,7 +183,7 @@ sub getSessionDataFromRequest
 									".DBQuote($request->{'sasl_username'}).",
 							".DBQuote($request->{'helo_name'}).",
 							".DBQuote($request->{'sender'}).",
-							".DBQuote($request->{'size'})."
+							".DBQuote($requestSize)."
 						)
 				");
 				if (!$sth) {
@@ -203,7 +210,7 @@ sub getSessionDataFromRequest
 			$sessionData->{'SASLUsername'} = $request->{'sasl_username'};
 			$sessionData->{'Helo'} = $request->{'helo_name'};
 			$sessionData->{'Sender'} = $request->{'sender'};
-			$sessionData->{'Size'} = $request->{'size'};
+			$sessionData->{'Size'} = $requestSize;
 			$sessionData->{'RecipientData'} = "";
 		}
 	
@@ -232,7 +239,7 @@ sub getSessionDataFromRequest
 			$server->log(LOG_DEBUG,"[TRACKING] Decoded into: ".Dumper($sessionData->{'_Recipient_To_Policy'})) if ($log);
 
 			# This must be updated here ... we may of got actual size
-			$sessionData->{'Size'} = $request->{'size'};
+			$sessionData->{'Size'} = $requestSize;
 			# Only get a queue id once we have gotten the message
 			$sessionData->{'QueueID'} = $request->{'queue_id'};
 		}
