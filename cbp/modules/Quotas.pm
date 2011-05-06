@@ -730,6 +730,7 @@ sub cleanup
 	");
 	if (!$sth) {
 		$server->log(LOG_ERR,"[QUOTAS] Failed to remove old quota tracking records: ".cbp::dblayer::Error());
+		return -1;
 	}
 	$server->log(LOG_INFO,"[QUOTAS] Removed ".( $sth ne "0E0" ? $sth : 0).." records from tracking table");
 }
