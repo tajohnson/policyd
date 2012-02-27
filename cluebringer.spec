@@ -93,7 +93,7 @@ chmod 0640 $RPM_BUILD_ROOT%{_sysconfdir}/policyd/webui.conf
 # Docdir
 mkdir -p $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}/contrib
 mkdir -p $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}/database
-install -m 644 AUTHORS INSTALL LICENSE TODO WISHLIST CHANGELOG $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}
+install -m 644 AUTHORS INSTALL LICENSE TODO WISHLIST ChangeLog $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}
 cp -R contrib $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}/contrib/amavisd-new
 install -m 644 database/*.sql $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}/database
 
