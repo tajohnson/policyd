@@ -2,7 +2,7 @@
 # this path is hardcoded
 %define cblibdir %{_libdir}/policyd-2.0
 
-%define version 2.0.11a
+%define version 2.0.12
 %define release 1
 %define tarver %{version}
 
@@ -127,6 +127,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu May 10 2012 Nigel Kukard  <nkukard@lbsd.net>
+- 2.0.12 release
+
 * Wed Oct 14 2009 Nigel Kukard  <nkukard@lbsd.net>
 - 2.0.8 release
 
