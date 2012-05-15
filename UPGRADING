@@ -1,4 +1,4 @@
-Updating database for 7ad3d831d7862d95d59a72ed19764264cc77c4b7
+Updating database from < 2.0.12 to 2.0.12+
 --------------------------------------------------------------
 
 UPDATE quotas_limits, quotas_tracking
