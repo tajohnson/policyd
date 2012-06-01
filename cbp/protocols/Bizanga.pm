@@ -136,17 +136,20 @@ sub protocol_parse {
 sub protocol_response 
 {
 	my ($server,$resp,$data) = @_;
+	my $log = defined($server->{'config'}{'logging'}{'protocols'});
 
 
 	# Check protocol responses...
 	if ($resp == PROTO_PASS) {
 		$response = "200";
 		$response_data = $data;
+		$server->log(LOG_DEBUG,"[PROTOCOL/Bizanga] Received PROTO_PASS with response '$response':'$response_data'") if ($log);
 		return CBP_CONTINUE;
 
 	} elsif ($resp == PROTO_OK) {
 		$response = "200";
 		$response_data = $data;
+		$server->log(LOG_DEBUG,"[PROTOCOL/Bizanga] Received PROTO_OK with response '$response':'$response_data'") if ($log);
 		return CBP_STOP;
 
 	} elsif ($resp == PROTO_REJECT) {
@@ -157,6 +160,7 @@ sub protocol_response
 			$response = "403";
 			$response_data = $data;
 		}
+		$server->log(LOG_DEBUG,"[PROTOCOL/Bizanga] Received PROTO_REJECT with response '$response':'$response_data'") if ($log);
 		return CBP_STOP;
 
 	} elsif ($resp == PROTO_DEFER) {
@@ -167,6 +171,7 @@ sub protocol_response
 			$response = "401";
 			$response_data = $data;
 		}
+		$server->log(LOG_DEBUG,"[PROTOCOL/Bizanga] Received PROTO_DEFER with response '$response':'$response_data'") if ($log);
 		return CBP_STOP;
 
 	} elsif ($resp == PROTO_HOLD) {
@@ -192,16 +197,19 @@ sub protocol_response
 	} elsif ($resp == PROTO_ERROR) {
 		$response = "503";
 		$response_data = defined($data) ? $data : "Unknown error";
+		$server->log(LOG_DEBUG,"[PROTOCOL/Bizanga] Received PROTO_ERROR with response '$response':'$response_data'") if ($log);
 		return CBP_STOP;
 
 	} elsif ($resp == PROTO_DB_ERROR) {
 		$response = "504";
 		$response_data = defined($data) ? $data : "Database error";
+		$server->log(LOG_DEBUG,"[PROTOCOL/Bizanga] Received PROTO_DB_ERROR with response '$response':'$response_data'") if ($log);
 		return CBP_STOP;
 	
 	} elsif ($resp == PROTO_DATA_ERROR) {
 		$response = "502";
 		$response_data = defined($data) ? $data : "Database record error";
+		$server->log(LOG_DEBUG,"[PROTOCOL/Bizanga] Received PROTO_DATA_ERROR with response '$response':'$response_data'") if ($log);
 		return CBP_STOP;
 	
 	# Fallthrough
