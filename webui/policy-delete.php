@@ -1,6 +1,6 @@
 <?php
 # Module: Policy delete
-# Copyright (C) 2009, AllWorldIT
+# Copyright (C) 2009-2012, AllWorldIT
 # Copyright (C) 2008, LinuxRulz
 # 
 # This program is free software; you can redistribute it and/or modify
@@ -75,38 +75,86 @@ if ($_POST['frmaction'] == "delete") {
 		
 
 		if ($_POST['confirm'] == "yes") {	
+
 			$db->beginTransaction();
 
 			$res = $db->exec("DELETE FROM policy_members WHERE PolicyID = ".$db->quote($_POST['policy_id']));
+			if ($res === FALSE) {
+?>
+				<div class="warning">Error clearing policy_members!</div>
+				<div class="warning"><?php print_r($db->errorInfo()) ?></div>
+<?php
+			}
+			$res = $db->exec("DELETE FROM greylisting WHERE PolicyID = ".$db->quote($_POST['policy_id']));
+			if ($res === FALSE) {
+?>
+				<div class="warning">Error clearing greylisting!</div>
+				<div class="warning"><?php print_r($db->errorInfo()) ?></div>
+<?php
+			}
+			$res = $db->exec("DELETE FROM access_control WHERE PolicyID = ".$db->quote($_POST['policy_id']));
+			if ($res === FALSE) {
+?>
+				<div class="warning">Error clearing access_control </div>
+				<div class="warning"><?php print_r($db->errorInfo()) ?></div>
+<?php
+			}
+			$res = $db->exec("DELETE FROM checkspf WHERE PolicyID = ".$db->quote($_POST['policy_id']));
+			if ($res === FALSE) {
+?>
+				<div class="warning">Error clearing checkspf!</div>
+				<div class="warning"><?php print_r($db->errorInfo()) ?></div>
+<?php
+			}
+			$res = $db->exec("DELETE FROM checkhelo WHERE PolicyID = ".$db->quote($_POST['policy_id']));
+			if ($res === FALSE) {
+?>
+				<div class="warning">Error clearing checkhelo!</div>
+				<div class="warning"><?php print_r($db->errorInfo()) ?></div>
+<?php
+			}
+
+			# Grab quotas we need to delete
+			$quotas_to_delete = array();
+			foreach ($db->query("SELECT ID FROM quotas WHERE PolicyID = ".$db->quote($_POST['policy_id'])) as $row) {
+				array_push($quotas_to_delete, $row['id']);
+			}
+
+			# Proceed if we actually have quotas
+			if (count($quotas_to_delete) > 0) {
+				$quotas_to_delete = implode(",",$quotas_to_delete);
+
+				# Grab limits we need to delete
+				$limits_to_delete = array();
+				foreach ($db->query("SELECT ID FROM quotas_limits WHERE QuotasID IN (".$quotas_to_delete.")") as $row) {
+					array_push($limits_to_delete, $row['id']);
+				}
+
+				# Proceed if we actually have limits
+				if (count($limits_to_delete) > 0) {
+					$limits_to_delete = implode(",",$limits_to_delete);
+
+					# Do delete of quotas
+					$res = $db->exec("DELETE FROM quotas_tracking WHERE QuotasLimitsID IN (".$limits_to_delete.")");
+					$res = $db->exec("DELETE FROM quotas_limits WHERE ID IN (".$limits_to_delete.")");
+				}
+				$res = $db->exec("DELETE FROM quotas WHERE ID IN (".$quotas_to_delete.")");
+			}
+
+			# Main policy
+			$res = $db->exec("DELETE FROM policies WHERE ID = ".$db->quote($_POST['policy_id']));
+
 			if ($res !== FALSE) {
 ?>
-				<div class="notice">Policy members deleted</div>
+				<div class="notice">Policy deleted</div>
 <?php
+				$db->commit();
 			} else {
 ?>
-				<div class="warning">Error deleting policy members!</div>
+				<div class="warning">Error deleting policy!</div>
 				<div class="warning"><?php print_r($db->errorInfo()) ?></div>
 <?php
 				$db->rollback();
-			}
-
-			if ($res) {
-				$res = $db->exec("DELETE FROM policies WHERE ID = ".$db->quote($_POST['policy_id']));
-				if ($res) {
-?>
-					<div class="notice">Policy deleted</div>
-<?php
-				} else {
-?>
-					<div class="warning">Error deleting policy!</div>
-					<div class="warning"><?php print_r($db->errorInfo()) ?></div>
-<?php
-					$db->rollback();
-				}
-			}
-
-			if ($res) {
-				$db->commit();
 			}
 		} else {
 ?>
