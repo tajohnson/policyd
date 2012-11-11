@@ -127,24 +127,4 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Sun Nov 11 2012 Nigel Kukard  <nkukard@lbsd.net>
-- 2.0.13 release
-
-* Thu May 10 2012 Nigel Kukard  <nkukard@lbsd.net>
-- 2.0.12 release
-
-* Wed Oct 14 2009 Nigel Kukard  <nkukard@lbsd.net>
-- 2.0.8 release
-
-* Tue May 05 2009 Nigel Kukard  <nkukard@lbsd.net>
-- 2.0.7 release
-
-* Tue Jan 06 2009 Nigel Kukard  <nkukard@lbsd.net>
-- 2.0.6 release
-
-* Wed Nov 19 2008 Nigel Kukard  <nkukard@lbsd.net>
-- Various updates and changes
-
-* Tue Nov 18 2008 Christopher St Pierre <stpierre@NebrWesleyan.edu> - 
-- Initial build.
 
