@@ -20,7 +20,7 @@ Installing Policyd v2.
 a. In database/ run...
 $ for i in  core.tsql access_control.tsql quotas.tsql amavis.tsql checkhelo.tsql checkspf.tsql greylisting.tsql
 $ do 
-$        ./convert-tsql mysql $i
+$        ./convert-tsql mysql5 $i
 $ done > policyd.mysql
 
 This will build policyd.mysql, be sure to ALWAYS load core.tsql first, you only really need the
